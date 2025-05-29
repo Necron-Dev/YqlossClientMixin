@@ -10,7 +10,7 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 
 [*.{kt,kts}]
-ij_kotlin_code_style_defaults = KOTLIN_OFFICIAL
+ktlint_code_style = intellij_idea
 ktlint_standard_no-wildcard-imports = disabled
 ktlint_standard_function-expression-body = disabled
 ktlint_standard_filename = disabled
