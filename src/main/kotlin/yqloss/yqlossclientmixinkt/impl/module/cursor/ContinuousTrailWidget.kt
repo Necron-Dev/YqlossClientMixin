@@ -55,13 +55,17 @@ data class ContinuousTrailWidget(
                     val trailT = ((duration + (timeSamples - t - 1) * fade / timeSamples) * 1e9).long
                     val trail =
                         iterator {
+                            var firstRendered = false
                             samplePoints.firstOrNull {
                                 if (time - it.time <= trailT) {
                                     yield(it.position.x to it.position.y)
+                                    firstRendered = true
                                     false
                                 } else {
-                                    val position = mousePositionGetter(time, trailT)
-                                    yield(position.x to position.y)
+                                    if (firstRendered) {
+                                        val position = mousePositionGetter(time, trailT)
+                                        yield(position.x to position.y)
+                                    }
                                     true
                                 }
                             }

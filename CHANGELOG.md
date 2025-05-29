@@ -85,6 +85,7 @@
 * fix(MiningPrediction): use server tick
 * fix(RawInput): generate a separate dll for every Minecraft instance
 
-## 0.11.2 ()
+## 0.11.2 (UTC+8 2025/05/30 02:00)
 
 * feat(Repository): request cooldown
+* feat(Cursor): add Hide When Not Moving

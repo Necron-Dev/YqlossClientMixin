@@ -131,6 +131,12 @@ class CursorOptionsImpl :
             size = 1,
         )
         val keepSamples = 0.1F
+
+        @Switch(
+            name = "Hide When Not Moving",
+            size = 1,
+        )
+        val hideWhenNotMoving = false
     }
 
     @Extract
