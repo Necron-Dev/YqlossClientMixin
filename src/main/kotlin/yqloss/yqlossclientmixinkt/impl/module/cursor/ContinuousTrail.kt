@@ -37,6 +37,10 @@ object ContinuousTrail : Trail<CursorOptionsImpl.Continuous> {
 
     private val renderedPoints = ArrayDeque<SamplePoint>()
 
+    private var lastMouse: Vec2D? = null
+
+    private var lastMouseMoveTime = 0L
+
     private fun ArrayDeque<SamplePoint>.removeDead(
         time: Long,
         alive: Long,
@@ -62,6 +66,11 @@ object ContinuousTrail : Trail<CursorOptionsImpl.Continuous> {
         lastTime: Long,
         options: CursorOptionsImpl.Continuous,
     ) {
+        val lastMouse = lastMouse.also {
+            if (it != mouse) lastMouseMoveTime = time
+            lastMouse = mouse
+        }
+
         if (!options.enabled) {
             clear()
             return
@@ -109,9 +118,11 @@ object ContinuousTrail : Trail<CursorOptionsImpl.Continuous> {
         event.widgets +=
             ContinuousTrailWidget(
                 if (renderedPoints[0] === samplePoints[0]) {
-                    renderedPoints
+                    ArrayDeque(renderedPoints)
+                } else if (options.hideWhenNotMoving && mouse == lastMouse) {
+                    ArrayDeque(renderedPoints prepend samplePoints[0].copy(time = lastMouseMoveTime))
                 } else {
-                    renderedPoints prepend samplePoints[0]
+                    ArrayDeque(renderedPoints prepend samplePoints[0])
                 },
                 options.radius.double,
                 options.bloom.double,
