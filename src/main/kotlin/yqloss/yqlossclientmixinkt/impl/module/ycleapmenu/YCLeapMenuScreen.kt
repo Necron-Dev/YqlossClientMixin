@@ -40,10 +40,10 @@ import yqloss.yqlossclientmixinkt.impl.util.Colors
 import yqloss.yqlossclientmixinkt.module.ensure
 import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenu
 import yqloss.yqlossclientmixinkt.util.MC
+import yqloss.yqlossclientmixinkt.util.accessor.getValue
 import yqloss.yqlossclientmixinkt.util.accessor.outs.Box
 import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
 import yqloss.yqlossclientmixinkt.util.accessor.outs.value
-import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
 import yqloss.yqlossclientmixinkt.util.accessor.refs.inMut
 import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
 import yqloss.yqlossclientmixinkt.util.accessor.refs.value

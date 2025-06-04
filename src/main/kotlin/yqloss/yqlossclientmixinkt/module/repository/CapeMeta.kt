@@ -29,8 +29,9 @@ import yqloss.yqlossclientmixinkt.network.TypedResource
 import yqloss.yqlossclientmixinkt.network.content
 import yqloss.yqlossclientmixinkt.util.CAPE_SWITCH_MAX_DEPTH
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.getValue
 import yqloss.yqlossclientmixinkt.util.accessor.refs.lateVar
+import yqloss.yqlossclientmixinkt.util.accessor.setValue
 import yqloss.yqlossclientmixinkt.util.extension.long
 import yqloss.yqlossclientmixinkt.util.extension.type.undashedLowerString
 import yqloss.yqlossclientmixinkt.util.functional.loop

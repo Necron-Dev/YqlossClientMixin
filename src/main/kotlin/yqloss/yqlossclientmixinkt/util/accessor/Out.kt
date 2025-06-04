@@ -20,7 +20,6 @@
 
 package yqloss.yqlossclientmixinkt.util.accessor
 
-import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 interface Out<out T> : () -> T {
@@ -34,16 +33,7 @@ inline val <T> Out<T>.value get() = get()
 @Suppress("UNCHECKED_CAST")
 inline fun <R> Out<*>.cast() = get() as R
 
-data class OutProperty<X, T>(
-    val accessor: Out<T>,
-) : ReadOnlyProperty<X, T> {
-    override fun getValue(
-        thisRef: X,
-        property: KProperty<*>,
-    ) = accessor.value
-}
-
-inline operator fun <X, T> Out<T>.provideDelegate(
+inline operator fun <X, T> Out<T>.getValue(
     thisRef: X,
-    prop: KProperty<*>,
-): ReadOnlyProperty<X, T> = OutProperty(this)
+    property: KProperty<*>,
+) = value

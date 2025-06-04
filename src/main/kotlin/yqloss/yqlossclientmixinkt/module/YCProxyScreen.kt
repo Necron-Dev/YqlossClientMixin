@@ -23,7 +23,7 @@ import net.minecraft.client.gui.ScaledResolution
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCInputEvent
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.getValue
 import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
 
 abstract class YCProxyScreen<T : GuiScreen> : GuiScreen() {

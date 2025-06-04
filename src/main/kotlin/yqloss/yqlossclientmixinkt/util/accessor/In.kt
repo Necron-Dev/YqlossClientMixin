@@ -16,10 +16,20 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package yqloss.yqlossclientmixinkt.util.accessor
+
+import kotlin.reflect.KProperty
 
 interface In<in T> : (T) -> @UnsafeVariance T {
     fun set(value: T)
 
     override fun invoke(value: T): @UnsafeVariance T = value.also(::set)
 }
+
+inline operator fun <X, T> In<T>.setValue(
+    thisRef: X,
+    property: KProperty<*>,
+    value: T,
+) = set(value)

@@ -26,8 +26,9 @@ import yqloss.yqlossclientmixinkt.module.ensureEnabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.network.Resource
 import yqloss.yqlossclientmixinkt.network.requestAll
-import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.getValue
 import yqloss.yqlossclientmixinkt.util.accessor.refs.lazyVarOf
+import yqloss.yqlossclientmixinkt.util.accessor.setValue
 import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 val INFO_REPOSITORY = moduleInfo<RepositoryOptions>("repository", "Repository")

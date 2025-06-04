@@ -29,11 +29,12 @@ import net.minecraft.world.IBlockAccess
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
+import yqloss.yqlossclientmixinkt.util.accessor.getValue
 import yqloss.yqlossclientmixinkt.util.accessor.outs.Box
 import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
 import yqloss.yqlossclientmixinkt.util.accessor.outs.value
-import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
 import yqloss.yqlossclientmixinkt.util.accessor.refs.threadLocal
+import yqloss.yqlossclientmixinkt.util.accessor.setValue
 import yqloss.yqlossclientmixinkt.util.asVec3I
 import yqloss.yqlossclientmixinkt.util.extension.castTo
 import yqloss.yqlossclientmixinkt.util.math.Vec3I

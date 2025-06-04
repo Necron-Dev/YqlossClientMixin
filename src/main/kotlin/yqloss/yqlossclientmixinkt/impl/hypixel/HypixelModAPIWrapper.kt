@@ -34,7 +34,7 @@ import yqloss.yqlossclientmixinkt.module.NO_MODULE_INFO
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.getValue
 import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
 import yqloss.yqlossclientmixinkt.util.printChat
 import kotlin.jvm.optionals.getOrNull

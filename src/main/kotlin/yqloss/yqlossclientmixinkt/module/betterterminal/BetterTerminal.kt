@@ -31,7 +31,7 @@ import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.module.betterterminal.terminal.*
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.*
-import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.getValue
 import yqloss.yqlossclientmixinkt.util.accessor.refs.triggerOnceUnary
 import yqloss.yqlossclientmixinkt.util.extension.floorInt
 import yqloss.yqlossclientmixinkt.util.extension.type.equalTo

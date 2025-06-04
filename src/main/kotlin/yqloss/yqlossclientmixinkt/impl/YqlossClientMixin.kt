@@ -50,8 +50,9 @@ import yqloss.yqlossclientmixinkt.module.windowproperties.WindowProperties
 import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenu
 import yqloss.yqlossclientmixinkt.nativeapi.loadWindowsX64NativeAPI
 import yqloss.yqlossclientmixinkt.theYC
-import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.getValue
 import yqloss.yqlossclientmixinkt.util.accessor.refs.lateVal
+import yqloss.yqlossclientmixinkt.util.accessor.setValue
 import kotlin.reflect.KClass
 
 const val MOD_ID = "@ID@"

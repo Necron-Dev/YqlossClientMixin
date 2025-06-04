@@ -20,8 +20,9 @@ package yqloss.yqlossclientmixinkt.impl.oneconfiginternal
 
 import cc.polyfrost.oneconfig.renderer.font.Font
 import cc.polyfrost.oneconfig.renderer.font.Fonts
-import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.getValue
 import yqloss.yqlossclientmixinkt.util.accessor.refs.lateVal
+import yqloss.yqlossclientmixinkt.util.accessor.setValue
 import yqloss.yqlossclientmixinkt.util.accessor.value
 
 var nvg: NanoVGAccessor by lateVal()

@@ -27,8 +27,9 @@ import yqloss.yqlossclientmixinkt.event.YCEventDispatcher
 import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.YCManagerEventRegistry
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.getValue
 import yqloss.yqlossclientmixinkt.util.accessor.refs.lateVal
+import yqloss.yqlossclientmixinkt.util.accessor.setValue
 import java.io.File
 import java.net.URI
 import java.net.URL

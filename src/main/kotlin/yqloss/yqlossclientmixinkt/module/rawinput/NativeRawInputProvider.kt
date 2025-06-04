@@ -23,7 +23,7 @@ import org.lwjgl.opengl.Display
 import yqloss.yqlossclientmixinkt.nativeapi.cancelClipCursor
 import yqloss.yqlossclientmixinkt.nativeapi.registerRawInputDevices
 import yqloss.yqlossclientmixinkt.nativeapi.unregisterRawInputDevices
-import yqloss.yqlossclientmixinkt.util.accessor.provideDelegate
+import yqloss.yqlossclientmixinkt.util.accessor.getValue
 import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
 import yqloss.yqlossclientmixinkt.util.scope.noThrow
 

@@ -20,7 +20,6 @@
 
 package yqloss.yqlossclientmixinkt.util.accessor
 
-import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 interface Ref<T> :
@@ -31,25 +30,16 @@ inline var <T> Ref<T>.value
     get() = get()
     set(value) = set(value)
 
-data class RefProperty<X, T>(
-    val accessor: Ref<T>,
-) : ReadWriteProperty<X, T> {
-    override fun getValue(
-        thisRef: X,
-        property: KProperty<*>,
-    ) = accessor.value
-
-    override fun setValue(
-        thisRef: X,
-        property: KProperty<*>,
-        value: T,
-    ) = accessor.set(value)
-}
-
-inline operator fun <X, T> Ref<T>.provideDelegate(
+inline operator fun <X, T> Ref<T>.getValue(
     thisRef: X,
-    prop: KProperty<*>,
-): ReadWriteProperty<X, T> = RefProperty(this)
+    property: KProperty<*>,
+) = value
+
+inline operator fun <X, T> Ref<T>.setValue(
+    thisRef: X,
+    property: KProperty<*>,
+    value: T,
+) = set(value)
 
 inline infix fun <T> Ref<T>.swap(ref: Ref<T>) {
     val v1 = get()
