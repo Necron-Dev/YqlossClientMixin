@@ -18,10 +18,10 @@
 
 package yqloss.yqlossclientmixinkt.event.hypixel
 
+import net.yqloss.uktil.event.Event
 import yqloss.yqlossclientmixinkt.api.YCHypixelLocation
-import yqloss.yqlossclientmixinkt.event.YCEvent
 
-sealed interface YCHypixelAPIEvent : YCEvent {
+sealed interface YCHypixelAPIEvent : Event {
     data class Location(
         val location: YCHypixelLocation?,
     ) : YCHypixelAPIEvent

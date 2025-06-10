@@ -21,12 +21,12 @@ package yqloss.yqlossclientmixinkt.impl.option.gui
 import cc.polyfrost.oneconfig.config.annotations.Color
 import cc.polyfrost.oneconfig.config.annotations.Number
 import cc.polyfrost.oneconfig.config.annotations.Switch
+import net.yqloss.uktil.extension.double
+import net.yqloss.uktil.math.Vec2D
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.nanovgui.widget.backgroundWidget
 import yqloss.yqlossclientmixinkt.impl.util.Colors
-import yqloss.yqlossclientmixinkt.util.extension.double
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
 
 class GUIBackground {
     @Switch(
@@ -78,7 +78,7 @@ class GUIBackground {
         tr: Transformation,
         size: Vec2D,
     ) {
-        if (!enabledOption) return
+        enabledOption || return
         widgets.run {
             add(
                 backgroundWidget(

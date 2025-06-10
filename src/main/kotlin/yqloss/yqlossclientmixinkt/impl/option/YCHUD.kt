@@ -20,11 +20,11 @@ package yqloss.yqlossclientmixinkt.impl.option
 
 import cc.polyfrost.oneconfig.hud.Hud
 import cc.polyfrost.oneconfig.libs.universal.UMatrixStack
+import net.yqloss.uktil.event.Event
+import net.yqloss.uktil.extension.double
+import net.yqloss.uktil.extension.float
+import net.yqloss.uktil.math.Vec2D
 import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.event.YCEvent
-import yqloss.yqlossclientmixinkt.util.extension.double
-import yqloss.yqlossclientmixinkt.util.extension.float
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
 
 class YCHUD(
     enabled: Boolean = false,
@@ -73,10 +73,10 @@ class YCHUD(
     data class GetWidthEvent(
         val hud: Hud,
         var width: Double = 0.0,
-    ) : YCEvent
+    ) : Event
 
     data class GetHeightEvent(
         val hud: Hud,
         var height: Double = 0.0,
-    ) : YCEvent
+    ) : Event
 }

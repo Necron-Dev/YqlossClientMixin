@@ -18,7 +18,7 @@
 
 package yqloss.yqlossclientmixinkt.impl.nanovgui.widget
 
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
+import net.yqloss.uktil.math.Vec2D
 
 fun backgroundWidget(
     pos: Vec2D,
@@ -27,21 +27,19 @@ fun backgroundWidget(
     color: Int,
     radius: Double,
     blur: Double,
-): ListWidget {
-    return ListWidget(
-        ShadowWidget(
-            pos - padding,
-            pos + size + padding,
-            blur,
-            0.0,
-            radius,
-            1.0,
-        ),
-        RoundedRectWidget(
-            pos - padding,
-            pos + size + padding,
-            color,
-            radius,
-        ),
-    )
-}
+) = ListWidget(
+    ShadowWidget(
+        pos - padding,
+        pos + size + padding,
+        blur,
+        0.0,
+        radius,
+        1.0,
+    ),
+    RoundedRectWidget(
+        pos - padding,
+        pos + size + padding,
+        color,
+        radius,
+    ),
+)

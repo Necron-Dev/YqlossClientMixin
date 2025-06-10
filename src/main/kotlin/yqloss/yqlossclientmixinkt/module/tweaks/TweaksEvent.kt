@@ -21,11 +21,11 @@ package yqloss.yqlossclientmixinkt.module.tweaks
 import net.minecraft.client.multiplayer.WorldClient
 import net.minecraft.entity.Entity
 import net.minecraft.item.ItemStack
-import yqloss.yqlossclientmixinkt.event.YCCancelableEvent
-import yqloss.yqlossclientmixinkt.event.YCEvent
-import yqloss.yqlossclientmixinkt.util.math.Vec3I
+import net.yqloss.uktil.event.CancelableEvent
+import net.yqloss.uktil.event.Event
+import net.yqloss.uktil.math.Vec3I
 
-sealed interface TweaksEvent : YCEvent {
+sealed interface TweaksEvent : Event {
     data class SetAnglesPost(
         val entity: Entity,
     ) : TweaksEvent
@@ -35,7 +35,7 @@ sealed interface TweaksEvent : YCEvent {
         val blockPos: Vec3I,
         override var canceled: Boolean = false,
     ) : TweaksEvent,
-        YCCancelableEvent
+        CancelableEvent
 
     data class IsHittingPositionCheck(
         val pos: Vec3I?,
@@ -44,5 +44,5 @@ sealed interface TweaksEvent : YCEvent {
         var returnValue: Boolean = false,
         override var canceled: Boolean = false,
     ) : TweaksEvent,
-        YCCancelableEvent
+        CancelableEvent
 }

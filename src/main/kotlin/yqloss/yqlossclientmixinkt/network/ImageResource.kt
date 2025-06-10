@@ -19,11 +19,11 @@
 package yqloss.yqlossclientmixinkt.network
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import net.yqloss.uktil.scope.usingScope
 import okhttp3.Request
 import okhttp3.coroutines.executeAsync
 import yqloss.yqlossclientmixinkt.YCHttp
 import yqloss.yqlossclientmixinkt.util.LOG_NETWORK_ACTIVITY
-import yqloss.yqlossclientmixinkt.util.scope.usingScope
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
@@ -31,13 +31,13 @@ import javax.imageio.ImageIO
 open class ImageResource(
     url: String,
 ) : SuspendTypedResource<BufferedImage>({
-        usingScope {
-            if (LOG_NETWORK_ACTIVITY) networkLogger.info("ImageResource requesting: $url")
-            val response = YCHttp.newCall(Request.Builder().url(url).build()).executeAsync().using
-            if (LOG_NETWORK_ACTIVITY) networkLogger.info("ImageResource response code ${response.code}: $url")
-            if (response.code != 200) throw Exception("response code ${response.code}: $url")
-            ImageIO.read(response.body.byteStream().using).also {
-                if (LOG_NETWORK_ACTIVITY) networkLogger.info("ImageResource decoding success: $url")
-            }
+    usingScope {
+        if (LOG_NETWORK_ACTIVITY) networkLogger.info("ImageResource requesting: $url")
+        val response = YCHttp.newCall(Request.Builder().url(url).build()).executeAsync().using
+        if (LOG_NETWORK_ACTIVITY) networkLogger.info("ImageResource response code ${response.code}: $url")
+        response.code == 200 || throw Exception("response code ${response.code}: $url")
+        ImageIO.read(response.body.byteStream().using).also {
+            if (LOG_NETWORK_ACTIVITY) networkLogger.info("ImageResource decoding success: $url")
         }
-    })
+    }
+})

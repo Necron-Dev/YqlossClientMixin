@@ -18,10 +18,10 @@
 
 package yqloss.yqlossclientmixinkt.event.hypixel
 
-import yqloss.yqlossclientmixinkt.event.YCEvent
-import yqloss.yqlossclientmixinkt.util.accessor.getValue
-import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
-import yqloss.yqlossclientmixinkt.util.extension.double
+import net.yqloss.uktil.accessor.getValue
+import net.yqloss.uktil.accessor.refs.trigger
+import net.yqloss.uktil.event.Event
+import net.yqloss.uktil.extension.double
 import yqloss.yqlossclientmixinkt.util.frameCounter
 
 var hypixelServerTickCounter = 0L
@@ -34,6 +34,6 @@ val hypixelPartialServerTicks by trigger(::frameCounter) {
     ((System.nanoTime() - hypixelServerTickUpdateTime).double / hypixelServerTickDuration).coerceIn(0.0..1.0)
 }
 
-sealed interface YCHypixelEvent : YCEvent {
+sealed interface YCHypixelEvent : Event {
     data object ServerTick : YCHypixelEvent
 }

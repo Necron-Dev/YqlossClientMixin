@@ -18,7 +18,6 @@
 
 package yqloss.yqlossclientmixinkt.util
 
-const val LONG_RETURN_STACKTRACE = false
 const val LOG_COMMAND_ARGUMENT_PARSING = false
 const val LOG_NETWORK_ACTIVITY = true
 const val CAPE_SWITCH_MAX_DEPTH = 16

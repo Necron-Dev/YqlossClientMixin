@@ -27,6 +27,7 @@ import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerLegit
 import yqloss.yqlossclientmixinkt.module.hotkeys.HotkeysOptions
 import yqloss.yqlossclientmixinkt.module.hotkeys.INFO_HOTKEYS
+import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.MC
 
 class HotkeysOptionsImpl :
@@ -55,7 +56,7 @@ class HotkeysOptionsImpl :
 
     override fun onInitializationPost() {
         registerKeyBind(keyBindDropSingleItem) {
-            if (!enabled) return@registerKeyBind
+            if (!(this as YCModuleOptions).enabled) return@registerKeyBind
             MC.theWorld ?: return@registerKeyBind
             if (!MC.thePlayer.isSpectator) {
                 MC.thePlayer.dropOneItem(false)
@@ -63,7 +64,7 @@ class HotkeysOptionsImpl :
         }
 
         registerKeyBind(keyBindDropItemStack) {
-            if (!enabled) return@registerKeyBind
+            if (!(this as YCModuleOptions).enabled) return@registerKeyBind
             MC.theWorld ?: return@registerKeyBind
             if (!MC.thePlayer.isSpectator) {
                 MC.thePlayer.dropOneItem(true)

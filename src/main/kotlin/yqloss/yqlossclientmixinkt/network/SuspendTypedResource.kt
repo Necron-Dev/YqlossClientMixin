@@ -19,9 +19,9 @@
 package yqloss.yqlossclientmixinkt.network
 
 import kotlinx.coroutines.*
+import net.yqloss.uktil.accessor.outs.Box
+import net.yqloss.uktil.accessor.outs.inBox
 import yqloss.yqlossclientmixinkt.util.NETWORK_ALWAYS_FAIL_REQUEST
-import yqloss.yqlossclientmixinkt.util.accessor.outs.Box
-import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
 
 open class SuspendTypedResource<T>(
     private val function: suspend () -> T,
@@ -36,20 +36,17 @@ open class SuspendTypedResource<T>(
 
     override fun request() {
         synchronized(this) {
-            if (requesting) return
+            requesting && return
             requesting = true
         }
         CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
             try {
-                if (NETWORK_ALWAYS_FAIL_REQUEST) {
-                    throw Exception("NETWORK_ALWAYS_FAIL_REQUEST")
-                }
-                data =
-                    function()
-                        .also {
-                            onAvailable?.invoke()
-                            onTypedAvailable?.invoke(it)
-                        }.inBox
+                NETWORK_ALWAYS_FAIL_REQUEST && throw Exception("NETWORK_ALWAYS_FAIL_REQUEST")
+                data = function()
+                    .also {
+                        onAvailable?.invoke()
+                        onTypedAvailable?.invoke(it)
+                    }.inBox
             } catch (exception: Exception) {
                 networkLogger.warn("exception executing SuspendTypedResource", exception)
             } finally {

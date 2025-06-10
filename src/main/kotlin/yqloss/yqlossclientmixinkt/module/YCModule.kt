@@ -18,14 +18,10 @@
 
 package yqloss.yqlossclientmixinkt.module
 
+import net.yqloss.uktil.accessor.getValue
+import net.yqloss.uktil.accessor.refs.trigger
 import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.event.OperationEventRegistry
-import yqloss.yqlossclientmixinkt.event.YCEventRegistration
-import yqloss.yqlossclientmixinkt.event.YCEventRegistration.Entry
-import yqloss.yqlossclientmixinkt.event.registerEventEntries
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.accessor.getValue
-import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
 
 interface YCModule<T : YCModuleOptions> {
     val id: String
@@ -40,20 +36,12 @@ abstract class YCModuleInfo<T : YCModuleOptions> : YCModule<T> {
 inline fun <reified T : YCModuleOptions> moduleInfo(
     id: String,
     name: String,
-): YCModuleInfo<T> {
-    return object : YCModuleInfo<T>() {
-        override val id = id
-        override val name = name
-        override val options by trigger(YC::configVersion) { YC.getOptionsImpl(T::class) }
-    }
+) = object : YCModuleInfo<T>() {
+    override val id = id
+    override val name = name
+    override val options by trigger(YC::configVersion) { YC.getOptionsImpl(T::class) }
 }
 
 val NO_MODULE_INFO = moduleInfo<YCModuleOptions>("", "")
 
-fun <T> T.buildRegisterEventEntries(
-    function: OperationEventRegistry.() -> Unit,
-): List<Entry> where T : YCEventRegistration, T : YCModule<*> {
-    return mutableListOf<Entry>()
-        .also { function(OperationEventRegistry(it)) }
-        .also { it.registerEventEntries(YC.eventRegistry) }
-}
+val YCModule<*>.enabled get() = options.enabled

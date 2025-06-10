@@ -89,6 +89,7 @@ sourceSets {
 
 repositories {
     mavenCentral()
+    maven("https://maven.yqloss.net")
     maven("https://repo.polyfrost.org/releases")
     maven("https://repo.hypixel.net/repository/Hypixel/")
 }
@@ -106,6 +107,7 @@ dependencies {
     compileOnly("org.lwjgl:lwjgl-nanovg:3.3.1")
     compileOnly(files("${project.rootDir}/libraries/oneconfig-internal.jar"))
     compileOnly(files("${project.rootDir}/libraries/optifine-compatibility.jar"))
+    shade("net.yqloss:uktil:0.4.0")
 }
 
 tasks {

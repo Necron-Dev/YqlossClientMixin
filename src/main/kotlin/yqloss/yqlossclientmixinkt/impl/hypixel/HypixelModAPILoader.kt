@@ -19,7 +19,7 @@
 package yqloss.yqlossclientmixinkt.impl.hypixel
 
 import net.hypixel.modapi.HypixelModAPI
-import yqloss.yqlossclientmixinkt.util.scope.noThrow
+import net.yqloss.uktil.scope.noThrow
 import yqloss.yqlossclientmixinkt.ycLogger
 
 private val logger = ycLogger("Hypixel Mod API Wrapper Loader")

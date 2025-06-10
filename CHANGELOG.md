@@ -89,3 +89,5 @@
 
 * feat(Repository): request cooldown
 * feat(Cursor): add Hide When Not Moving
+
+## 0.12.0 ()

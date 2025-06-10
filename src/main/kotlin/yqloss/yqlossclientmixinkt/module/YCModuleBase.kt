@@ -18,18 +18,21 @@
 
 package yqloss.yqlossclientmixinkt.module
 
-import yqloss.yqlossclientmixinkt.event.YCEventRegistration
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
+import net.yqloss.uktil.event.EventRegistration
+import net.yqloss.uktil.event.registerEventEntries
+import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.ycLogger
 
 abstract class YCModuleBase<T : YCModuleOptions>(
     moduleInfo: YCModule<T>,
 ) : YCModule<T> by moduleInfo,
-    YCEventRegistration {
+    EventRegistration {
     val logger = ycLogger(moduleInfo.name)
-
-    override val eventEntries = buildRegisterEventEntries { registerEvents(this) }
-
-    protected abstract fun registerEvents(registry: YCEventRegistry)
 }
+
+val YCModuleBase<*>.register: Unit
+    get() {
+        logger.info("registering module id: $id, name: $name")
+        registerEventEntries(YC.eventRegistry)
+    }

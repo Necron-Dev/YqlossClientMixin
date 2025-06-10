@@ -18,12 +18,12 @@
 
 package yqloss.yqlossclientmixinkt.event.minecraft
 
-import yqloss.yqlossclientmixinkt.event.YCEvent
+import net.yqloss.uktil.event.Event
+import net.yqloss.uktil.math.Vec2I
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.math.Vec2I
 import org.lwjgl.input.Mouse as lwjglMouse
 
-sealed interface YCInputEvent : YCEvent {
+sealed interface YCInputEvent : Event {
     sealed interface Mouse : YCInputEvent {
         data class Click(
             val screen: Boolean,

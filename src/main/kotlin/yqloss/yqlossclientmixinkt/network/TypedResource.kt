@@ -18,17 +18,17 @@
 
 package yqloss.yqlossclientmixinkt.network
 
-import yqloss.yqlossclientmixinkt.util.accessor.Out
-import yqloss.yqlossclientmixinkt.util.accessor.outs.Box
-import yqloss.yqlossclientmixinkt.util.accessor.value
-import yqloss.yqlossclientmixinkt.util.extension.notNull
+import net.yqloss.uktil.accessor.Out
+import net.yqloss.uktil.accessor.outs.Box
+import net.yqloss.uktil.accessor.value
+import net.yqloss.uktil.extension.notNull
 
 interface TypedResource<T> :
     Resource,
     Out<T> {
     val data: Box<T>?
 
-    override val available get() = data.notNull
+    override val available get() = data.notNull()
 
     override fun get() = content
 

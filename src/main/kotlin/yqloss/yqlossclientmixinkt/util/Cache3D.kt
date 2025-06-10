@@ -18,9 +18,9 @@
 
 package yqloss.yqlossclientmixinkt.util
 
-import yqloss.yqlossclientmixinkt.util.math.Vec2I
-import yqloss.yqlossclientmixinkt.util.math.Vec3I
-import yqloss.yqlossclientmixinkt.util.math.contains
+import net.yqloss.uktil.math.Vec2I
+import net.yqloss.uktil.math.Vec3I
+import net.yqloss.uktil.math.contains
 
 private const val NEAR_RANGE = 16
 private val NEAR_OFFSET = Vec2I(-NEAR_RANGE / 2, -NEAR_RANGE / 2)
@@ -36,8 +36,7 @@ class Cache3D<T> {
     }
 
     private fun transformPos(pos: Vec3I): Pair<Vec2I, Int> {
-        return Vec2I(pos.x shr 4, pos.z shr 4) to
-            ((pos.x and 15) or (pos.z and 15 shl 4) or (pos.y shl 8))
+        return Vec2I(pos.x shr 4, pos.z shr 4) to ((pos.x and 15) or (pos.z and 15 shl 4) or (pos.y shl 8))
     }
 
     private fun getNearIndex(chunk: Vec2I): Int? {
@@ -62,7 +61,7 @@ class Cache3D<T> {
     }
 
     operator fun get(index: Vec3I): T? {
-        if (index.y !in 0..255) return null
+        index.y in 0..255 || return null
         return transformPos(index).let { (chunk, pos) ->
             getChunk(chunk)?.let { chunkData ->
                 chunkData[pos]
@@ -74,7 +73,7 @@ class Cache3D<T> {
         index: Vec3I,
         value: T,
     ) {
-        if (index.y !in 0..255) return
+        index.y in 0..255 || return
         transformPos(index).let { (chunk, pos) ->
             getChunkOrCreate(chunk).let { chunkData ->
                 chunkData[pos] = value

@@ -20,7 +20,7 @@ package yqloss.yqlossclientmixinkt.impl.option.impl
 
 import cc.polyfrost.oneconfig.config.annotations.Number
 import cc.polyfrost.oneconfig.config.annotations.Switch
-import yqloss.yqlossclientmixinkt.util.extension.double
+import net.yqloss.uktil.extension.double
 
 class ScreenScaleOption {
     @Switch(

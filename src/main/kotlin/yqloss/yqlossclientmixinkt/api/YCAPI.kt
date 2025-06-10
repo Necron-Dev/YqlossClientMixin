@@ -21,6 +21,7 @@ package yqloss.yqlossclientmixinkt.api
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.inventory.GuiChest
 import net.minecraft.inventory.IInventory
+import yqloss.yqlossclientmixinkt.YC
 
 @Suppress("ktlint:standard:function-naming")
 interface YCAPI {
@@ -36,9 +37,14 @@ interface YCAPI {
     fun get_GuiChest_lowerChestInventory(instance: GuiChest): IInventory
 }
 
+fun GuiScreen.internalKeyTyped(
+    typedChar: Char,
+    keyCode: Int,
+) = YC.api.call_GuiScreen_keyTyped(this, typedChar, keyCode)
+
+val GuiChest.internalLowerChestInventory get() = YC.api.get_GuiChest_lowerChestInventory(this)
+
 inline fun YCAPI.format(
     template: String,
     placeholder: YCTemplate.() -> Unit,
-): String {
-    return templateProvider(template).also(placeholder).format()
-}
+) = templateProvider(template).also(placeholder).format()

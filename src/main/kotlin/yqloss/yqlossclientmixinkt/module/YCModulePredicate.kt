@@ -20,106 +20,36 @@ package yqloss.yqlossclientmixinkt.module
 
 import net.minecraft.client.gui.inventory.GuiChest
 import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.event.YCCancelableEvent
-import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
+import yqloss.yqlossclientmixinkt.api.internalLowerChestInventory
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.scope.Scope
-import yqloss.yqlossclientmixinkt.util.scope.longReturn
 import yqloss.yqlossclientmixinkt.util.trimStyle
 
-inline fun ensure(
-    frame: Scope = Scope.LAST,
-    predicate: () -> Boolean,
-) {
-    if (!predicate()) longReturn(frame) {}
-}
+val inWorld get() = MC.theWorld !== null
 
-fun YCModule<*>.ensureEnabled(frame: Scope = Scope.LAST) = ensure(frame) { options.enabled }
+val inGUI get() = MC.currentScreen !== null
 
-inline fun <T : YCModuleOptions> YCModule<T>.ensureEnabled(
-    frame: Scope = Scope.LAST,
-    option: T.() -> Boolean,
-) = ensure(frame) { options.enabled && option(options) }
+val inSkyBlock get() = MC.theWorld !== null && YC.api.hypixelLocation?.serverType?.name == "SkyBlock"
 
-fun ensureNotCanceled(
-    event: YCCancelableEvent,
-    frame: Scope = Scope.LAST,
-) = ensure(frame) { !event.canceled }
+fun inSkyblockMode(mode: String) = inSkyBlock && YC.api.hypixelLocation?.mode == mode
 
-fun ensureInWorld(frame: Scope = Scope.LAST) = ensure(frame) { MC.theWorld !== null }
+fun inSkyblockMode(modes: Collection<String>) = inSkyBlock && YC.api.hypixelLocation?.mode in modes
 
-fun ensureInGUI(frame: Scope = Scope.LAST) = ensure(frame) { MC.currentScreen !== null }
-
-fun ensureNotInGUI(frame: Scope = Scope.LAST) = ensure(frame) { MC.currentScreen === null }
-
-fun ensureSkyBlock(frame: Scope = Scope.LAST) {
-    ensure(frame) {
-        MC.theWorld !== null &&
-            YC.api.hypixelLocation
-                ?.serverType
-                ?.name == "SkyBlock"
-    }
-}
-
-fun ensureSkyBlockMode(
-    mode: String,
-    frame: Scope = Scope.LAST,
-) {
-    ensure(frame) {
-        MC.theWorld !== null &&
-            (
-                YC.api.hypixelLocation?.run {
-                    serverType?.name == "SkyBlock" && this.mode == mode
-                } ?: false
-            )
-    }
-}
-
-fun ensureSkyBlockModes(
-    modes: Set<String>,
-    frame: Scope = Scope.LAST,
-) {
-    ensure(frame) {
-        MC.theWorld !== null &&
-            (
-                YC.api.hypixelLocation?.run {
-                    serverType?.name == "SkyBlock" && mode in modes
-                } ?: false
-            )
-    }
-}
-
-fun ensureWindowTitle(
+fun isWindowTitled(
     chest: GuiChest,
     title: String,
-    frame: Scope = Scope.LAST,
-) {
-    ensure(frame) {
-        YC.api
-            .get_GuiChest_lowerChestInventory(chest)
-            .name.trimStyle == title
-    }
-}
+) = chest.internalLowerChestInventory.name.trimStyle == title
 
-fun ensureWindowTitles(
+fun isWindowTitled(
     chest: GuiChest,
     titles: Collection<String>,
-    frame: Scope = Scope.LAST,
-) {
-    ensure(frame) {
-        YC.api
-            .get_GuiChest_lowerChestInventory(chest)
-            .name.trimStyle in titles
-    }
-}
+) = chest.internalLowerChestInventory.name.trimStyle in titles
 
-val SKYBLOCK_MINING_ISLANDS =
-    setOf(
-        "mining_1",
-        "mining_2",
-        "mining_3",
-        "crystal_hollows",
-        "mineshaft",
-        "combat_3",
-        "crimson_isle",
-    )
+val SKYBLOCK_MINING_ISLANDS = setOf(
+    "mining_1",
+    "mining_2",
+    "mining_3",
+    "crystal_hollows",
+    "mineshaft",
+    "combat_3",
+    "crimson_isle",
+)

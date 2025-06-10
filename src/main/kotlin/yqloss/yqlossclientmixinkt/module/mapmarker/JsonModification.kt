@@ -23,10 +23,10 @@ import kotlinx.serialization.encodeToString
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.world.IBlockAccess
+import net.yqloss.uktil.math.*
+import net.yqloss.uktil.scope.noExcept
 import yqloss.yqlossclientmixinkt.YCJson
 import yqloss.yqlossclientmixinkt.util.*
-import yqloss.yqlossclientmixinkt.util.math.*
-import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import java.io.File
 
 class JsonModification(
@@ -115,19 +115,18 @@ class JsonModification(
         val split = arg.split(",")
         val relativeOrigin = MC.thePlayer.renderPos.asFloorVec3I
         val aimingOrigin = MC.objectMouseOver?.blockPos?.asVec3I
-        val aimingDirection =
-            MC.objectMouseOver
-                ?.sideHit
-                ?.directionVec
-                ?.asVec3I
-                ?: Vec3I(0, 0, 0)
+        val aimingDirection = MC.objectMouseOver
+            ?.sideHit
+            ?.directionVec
+            ?.asVec3I
+            ?: Vec3I(0, 0, 0)
 
         fun parse(
             num: String,
             relative: Int,
             aiming: Int?,
         ): Int {
-            if (num.isEmpty()) return aiming ?: relative
+            num.isEmpty() && return aiming ?: relative
             return when (num[0]) {
                 '~' -> (num.substring(1).toIntOrNull() ?: 0) + relative
                 '`' -> (num.substring(1).toIntOrNull() ?: 0) + aiming!!
@@ -216,7 +215,7 @@ class JsonModification(
         blockState: IBlockState,
         blockAccess: IBlockAccess,
     ): IBlockState? {
-        if (blockPos !in area) return null
+        blockPos in area || return null
         return (areaCache + (blockCache[blockPos] ?: emptyList())).run {
             val blockWithMeta =
                 BlockWithMeta(

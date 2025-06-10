@@ -18,10 +18,15 @@
 
 package yqloss.yqlossclientmixinkt.impl.module.betterterminal
 
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
+import net.yqloss.uktil.extension.double
+import net.yqloss.uktil.extension.sameNotNull
+import net.yqloss.uktil.extension.type.ifTake
+import net.yqloss.uktil.math.Vec2D
+import net.yqloss.uktil.scope.longRet
 import org.lwjgl.input.Mouse
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCInputEvent
-import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.module.YCModuleScreenBase
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
@@ -35,43 +40,37 @@ import yqloss.yqlossclientmixinkt.impl.util.Colors
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
 import yqloss.yqlossclientmixinkt.module.betterterminal.SlotType
 import yqloss.yqlossclientmixinkt.module.betterterminal.terminal.*
-import yqloss.yqlossclientmixinkt.module.ensure
+import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.extension.double
-import yqloss.yqlossclientmixinkt.util.extension.sameNotNull
-import yqloss.yqlossclientmixinkt.util.extension.type.ifTake
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, BetterTerminal>(BetterTerminal) {
-    private val colorGetterMap =
-        mapOf(
-            SlotType.EMPTY to { null },
-            SlotType.ORDER_1 to { options.order1 },
-            SlotType.ORDER_2 to { options.order2 },
-            SlotType.ORDER_3 to { options.order3 },
-            SlotType.ORDER_CLICKED to { options.orderClicked },
-            SlotType.ORDER_OTHER to { options.orderOther },
-            SlotType.PANES_ON to { options.panesOn },
-            SlotType.PANES_OFF to { options.panesOff },
-            SlotType.START_CORRECT to { options.startAnswer },
-            SlotType.START_CLICKED to { options.startClicked },
-            SlotType.START_WRONG to { options.startOther },
-            SlotType.COLOR_CORRECT to { options.colorAnswer },
-            SlotType.COLOR_CLICKED to { options.colorClicked },
-            SlotType.COLOR_WRONG to { options.colorOther },
-            SlotType.RUBIX_RIGHT_2 to { options.rubixRight2 },
-            SlotType.RUBIX_RIGHT_1 to { options.rubixRight1 },
-            SlotType.RUBIX_CORRECT to { options.rubix0 },
-            SlotType.RUBIX_LEFT_1 to { options.rubixLeft1 },
-            SlotType.RUBIX_LEFT_2 to { options.rubixLeft2 },
-            SlotType.ALIGN_TARGET to { options.alignTarget },
-            SlotType.ALIGN_ACTIVE_CURRENT to { options.alignActiveCurrent },
-            SlotType.ALIGN_ACTIVE_OTHER to { options.alignActiveOther },
-            SlotType.ALIGN_INACTIVE to { options.alignInactive },
-            SlotType.ALIGN_ACTIVE_BUTTON to { options.alignActiveButton },
-            SlotType.ALIGN_INACTIVE_BUTTON to { options.alignInactiveButton },
-        )
+    private val colorGetterMap = mapOf(
+        SlotType.EMPTY to { null },
+        SlotType.ORDER_1 to { options.order1 },
+        SlotType.ORDER_2 to { options.order2 },
+        SlotType.ORDER_3 to { options.order3 },
+        SlotType.ORDER_CLICKED to { options.orderClicked },
+        SlotType.ORDER_OTHER to { options.orderOther },
+        SlotType.PANES_ON to { options.panesOn },
+        SlotType.PANES_OFF to { options.panesOff },
+        SlotType.START_CORRECT to { options.startAnswer },
+        SlotType.START_CLICKED to { options.startClicked },
+        SlotType.START_WRONG to { options.startOther },
+        SlotType.COLOR_CORRECT to { options.colorAnswer },
+        SlotType.COLOR_CLICKED to { options.colorClicked },
+        SlotType.COLOR_WRONG to { options.colorOther },
+        SlotType.RUBIX_RIGHT_2 to { options.rubixRight2 },
+        SlotType.RUBIX_RIGHT_1 to { options.rubixRight1 },
+        SlotType.RUBIX_CORRECT to { options.rubix0 },
+        SlotType.RUBIX_LEFT_1 to { options.rubixLeft1 },
+        SlotType.RUBIX_LEFT_2 to { options.rubixLeft2 },
+        SlotType.ALIGN_TARGET to { options.alignTarget },
+        SlotType.ALIGN_ACTIVE_CURRENT to { options.alignActiveCurrent },
+        SlotType.ALIGN_ACTIVE_OTHER to { options.alignActiveOther },
+        SlotType.ALIGN_INACTIVE to { options.alignInactive },
+        SlotType.ALIGN_ACTIVE_BUTTON to { options.alignActiveButton },
+        SlotType.ALIGN_INACTIVE_BUTTON to { options.alignInactiveButton },
+    )
 
     private var buttons: List<Button<Pair<Int, String?>>>? = null
 
@@ -79,39 +78,36 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
 
     private var buttonReload: TerminalButton<Int>? = null
 
-    private var fade =
-        object : TerminalFade<String>("") {
-            override fun renderSingle(
-                widgets: MutableList<Widget<*>>,
-                tr: Transformation,
-                info: String,
-                progress: Double,
-                isLast: Boolean,
-            ) {
-                widgets.add(
-                    TextWidget(
-                        info,
-                        tr pos Vec2D(0.0, 0.0),
-                        Colors.GRAY[3].rgb,
-                        tr size 8.0,
-                        fontMedium,
-                        Vec2D(0.5, 0.0),
-                    ).alphaScale(progress),
-                )
-            }
+    private var fade = object : TerminalFade<String>("") {
+        override fun renderSingle(
+            widgets: MutableList<Widget<*>>,
+            tr: Transformation,
+            info: String,
+            progress: Double,
+            isLast: Boolean,
+        ) {
+            widgets.add(
+                TextWidget(
+                    info,
+                    tr pos Vec2D(0.0, 0.0),
+                    Colors.GRAY[3].rgb,
+                    tr size 8.0,
+                    fontMedium,
+                    Vec2D(0.5, 0.0),
+                ).alphaScale(progress),
+            )
         }
+    }
 
     private val smoothGUI: Boolean
-        get() {
-            return when (module.data?.terminal) {
-                is TerminalOrder -> options.orderSmoothGUI
-                is TerminalPanes -> options.panesSmoothGUI
-                is TerminalStart -> options.startSmoothGUI
-                is TerminalColor -> options.colorSmoothGUI
-                is TerminalRubix -> options.rubixSmoothGUI
-                is TerminalAlign -> options.alignSmoothGUI
-                else -> true
-            }
+        get() = when (module.data?.terminal) {
+            is TerminalOrder -> options.orderSmoothGUI
+            is TerminalPanes -> options.panesSmoothGUI
+            is TerminalStart -> options.startSmoothGUI
+            is TerminalColor -> options.colorSmoothGUI
+            is TerminalRubix -> options.rubixSmoothGUI
+            is TerminalAlign -> options.alignSmoothGUI
+            else -> true
         }
 
     override val width = 176.0
@@ -126,9 +122,7 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
         return tr pos Vec2D(88.0, beginLine * 18.0 + 10.0 + 9.0 * (lines - beginLine))
     }
 
-    override fun ensureShow() {
-        ensure { BetterTerminal.Screen.proxiedScreen sameNotNull MC.currentScreen }
-    }
+    override val ensureShow get() = BetterTerminal.Screen.proxiedScreen sameNotNull MC.currentScreen
 
     override fun reset() {
         buttons = null
@@ -159,96 +153,91 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
             ),
         )
 
-        val buttonNonQueue =
-            buttonNonQueue ?: object : TerminalButton<Boolean>(false) {
-                override fun getColor(hovered: Boolean) = if (hovered || info) Colors.RED[6].rgb else Colors.NONE.rgb
+        val buttonNonQueue = buttonNonQueue ?: object : TerminalButton<Boolean>(false) {
+            override fun getColor(hovered: Boolean) = if (hovered || info) Colors.RED[6].rgb else Colors.NONE.rgb
 
-                override val text get() = "NQ"
+            override val text get() = "NQ"
 
-                override fun onMouseDown(button: Int) {
-                    BetterTerminal.forceNonQueue()
-                }
+            override fun onMouseDown(button: Int) {
+                BetterTerminal.forceNonQueue()
             }
+        }
 
-        val buttonReload =
-            buttonReload ?: object : TerminalButton<Int>(0) {
-                override fun getColor(hovered: Boolean) = if (hovered) Colors.YELLOW[6].rgb else Colors.NONE.rgb
+        val buttonReload = buttonReload ?: object : TerminalButton<Int>(0) {
+            override fun getColor(hovered: Boolean) = if (hovered) Colors.YELLOW[6].rgb else Colors.NONE.rgb
 
-                override val text get() = if (info > 0) "$info" else "RS"
+            override val text get() = if (info > 0) "$info" else "RS"
 
-                override fun onMouseDown(button: Int) {
-                    BetterTerminal.reloadTerminal()
-                }
+            override fun onMouseDown(button: Int) {
+                BetterTerminal.reloadTerminal()
             }
+        }
 
         this.buttonNonQueue = buttonNonQueue
         this.buttonReload = buttonReload
 
-        val title =
-            when {
-                buttonNonQueue.isHovered(ttr + Vec2D(-10.0, -2.0)) -> {
-                    if (data.enableQueue) {
-                        "[Yqloss] Switch to non-queue mode."
-                    } else {
-                        "[Yqloss] Already in non-queue mode."
-                    }
+        val title = when {
+            buttonNonQueue.isHovered(ttr + Vec2D(-10.0, -2.0)) -> {
+                if (data.enableQueue) {
+                    "[Yqloss] Switch to non-queue mode."
+                } else {
+                    "[Yqloss] Already in non-queue mode."
                 }
-
-                buttonReload.isHovered(ttr + Vec2D(170.0, -2.0)) -> "[Yqloss] Reload terminal state."
-
-                else -> "[Yqloss] ${data.terminal.title}"
             }
+
+            buttonReload.isHovered(ttr + Vec2D(170.0, -2.0)) -> "[Yqloss] Reload terminal state."
+
+            else -> "[Yqloss] ${data.terminal.title}"
+        }
 
         fade.switch(title)
         fade.render(widgets, ttr + Vec2D(88.0, 2.0))
 
         val buttonCount = data.terminal.lines * 9
 
-        val buttons =
-            buttons?.takeIf { it.size == buttonCount } ?: List(buttonCount) {
-                object : TerminalButton<Pair<Int, String?>>(0 to null) {
-                    override fun getColor(hovered: Boolean) = info.first
+        val buttons = buttons?.takeIf { it.size == buttonCount } ?: List(buttonCount) {
+            object : TerminalButton<Pair<Int, String?>>(0 to null) {
+                override fun getColor(hovered: Boolean) = info.first
 
-                    override val text get() = info.second
+                override val text get() = info.second
 
-                    private var lastHovered: Int? = null
+                private var lastHovered: Int? = null
 
-                    override fun onMouseDown(button: Int) {
-                        if (!dragClick) {
-                            BetterTerminal.onClick(it, button)
-                        }
-                    }
-
-                    override fun render(
-                        widgets: MutableList<Widget<*>>,
-                        tr: Transformation,
-                    ) {
-                        if (dragClick) {
-                            val button = holdingMouseButton
-                            if (button === null) {
-                                lastHovered = null
-                            } else {
-                                val hovered = isHovered(tr).ifTake { button }
-                                if (hovered !== null && hovered != lastHovered) {
-                                    BetterTerminal.onClick(it, hovered)
-                                }
-                                lastHovered = hovered
-                            }
-                        }
-                        super.render(widgets, tr)
+                override fun onMouseDown(button: Int) {
+                    if (!dragClick) {
+                        BetterTerminal.onClick(it, button)
                     }
                 }
+
+                override fun render(
+                    widgets: MutableList<Widget<*>>,
+                    tr: Transformation,
+                ) {
+                    if (dragClick) {
+                        val button = holdingMouseButton
+                        if (button === null) {
+                            lastHovered = null
+                        } else {
+                            val hovered = isHovered(tr).ifTake { button }
+                            if (hovered !== null && hovered != lastHovered) {
+                                BetterTerminal.onClick(it, hovered)
+                            }
+                            lastHovered = hovered
+                        }
+                    }
+                    super.render(widgets, tr)
+                }
             }
+        }
 
         this.buttons = buttons
 
         if (dragClick) {
-            holdingMouseButton =
-                when {
-                    Mouse.isButtonDown(1) -> 1
-                    Mouse.isButtonDown(0) -> 0
-                    else -> null
-                }
+            holdingMouseButton = when {
+                Mouse.isButtonDown(1) -> 1
+                Mouse.isButtonDown(0) -> 0
+                else -> null
+            }
         }
 
         data.terminal
@@ -271,34 +260,31 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
         buttonReload.render(widgets, ttr + Vec2D(170.0, -2.0))
     }
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        super.registerEvents(registry)
-        registry.run {
-            register<YCInputEvent.Mouse.Click> { event ->
-                longRun {
-                    val data = module.data ?: return@register
-                    ensure { event.screen }
-                    ensureShow()
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
 
-                    val tr = transformation
-                    buttons?.withIndex()?.firstOrNull { (i, button) ->
-                        val x = i % 9
-                        val y = i / 9
-                        if (button.isHovered(tr + Vec2D(8.0 + 18.0 * x, 18.0 + 18.0 * y))) {
-                            button.onMouseDown(event.button)
-                            true
-                        } else {
-                            false
-                        }
-                    } ?: run {
-                        val ttr = tr + Vec2D(0.0, data.terminal.beginLine * 18.0)
-                        when {
-                            buttonNonQueue?.isHovered(ttr + Vec2D(-10.0, -2.0)) == true -> buttonNonQueue
-                            buttonReload?.isHovered(ttr + Vec2D(170.0, -2.0)) == true -> buttonReload
-                            else -> null
-                        }?.onMouseDown(event.button)
-                    }
+        register<YCInputEvent.Mouse.Click> { event ->
+            val data = module.data ?: longRet
+
+            event.screen && ensureShow || longRet
+
+            val tr = transformation
+            buttons?.withIndex()?.firstOrNull { (i, button) ->
+                val x = i % 9
+                val y = i / 9
+                if (button.isHovered(tr + Vec2D(8.0 + 18.0 * x, 18.0 + 18.0 * y))) {
+                    button.onMouseDown(event.button)
+                    true
+                } else {
+                    false
                 }
+            } ?: run {
+                val ttr = tr + Vec2D(0.0, data.terminal.beginLine * 18.0)
+                when {
+                    buttonNonQueue?.isHovered(ttr + Vec2D(-10.0, -2.0)) == true -> buttonNonQueue
+                    buttonReload?.isHovered(ttr + Vec2D(170.0, -2.0)) == true -> buttonReload
+                    else -> null
+                }?.onMouseDown(event.button)
             }
         }
     }
@@ -339,5 +325,9 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
                 ),
             )
         }
+    }
+
+    init {
+        register
     }
 }

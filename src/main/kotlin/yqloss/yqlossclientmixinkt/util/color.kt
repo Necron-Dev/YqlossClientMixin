@@ -18,16 +18,13 @@
 
 package yqloss.yqlossclientmixinkt.util
 
-import java.util.*
+import net.yqloss.uktil.extension.int
+import kotlin.math.max
+import kotlin.math.min
 
-class UniqueHash<T> : (T) -> Long {
-    private var counter = 0L
-
-    private val uniqueHash = WeakHashMap<Any, Long>()
-
-    override fun invoke(obj: T): Long {
-        return obj?.let {
-            uniqueHash.getOrPut(obj) { ++counter }
-        } ?: 0L
-    }
+infix fun Int.alphaScale(scale: Double): Int {
+    val alpha = this and 0xFF000000.int ushr 24 and 0xFF
+    val color = this and 0xFFFFFF
+    val scaledAlpha = max(0, min(255, (alpha * scale).int))
+    return scaledAlpha shl 24 or color
 }

@@ -18,8 +18,8 @@
 
 package yqloss.yqlossclientmixinkt.impl.nanovgui
 
-import yqloss.yqlossclientmixinkt.util.math.ExponentialSmooth
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
+import net.yqloss.uktil.math.Vec2D
+import yqloss.yqlossclientmixinkt.util.ExponentialSmooth
 
 class WindowAnimation {
     private var lastShow = false

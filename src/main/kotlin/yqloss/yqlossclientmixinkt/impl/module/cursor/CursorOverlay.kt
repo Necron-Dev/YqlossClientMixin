@@ -18,39 +18,42 @@
 
 package yqloss.yqlossclientmixinkt.impl.module.cursor
 
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
-import yqloss.yqlossclientmixinkt.event.register
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
+import net.yqloss.uktil.scope.longRet
 import yqloss.yqlossclientmixinkt.impl.module.YCModuleImplBase
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.option.module.CursorOptionsImpl
 import yqloss.yqlossclientmixinkt.module.cursor.Cursor
-import yqloss.yqlossclientmixinkt.module.ensureEnabled
+import yqloss.yqlossclientmixinkt.module.enabled
+import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.mousePosition
-import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 object CursorOverlay : YCModuleImplBase<CursorOptionsImpl, Cursor>(Cursor) {
     private var lastTime = 0L
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        registry.run {
-            register<GUIEvent.Screen.Post>(Int.MAX_VALUE - 1000) { event ->
-                longRun {
-                    ensureEnabled()
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
 
-                    if (MC.currentScreen === null) {
-                        ContinuousTrail.clear()
-                        return@longRun
-                    }
+        register<GUIEvent.Screen.Post>(Int.MAX_VALUE - 1000) { event ->
+            enabled || longRet
 
-                    val mouse = mousePosition
-                    val time = System.nanoTime()
-
-                    ContinuousTrail.render(event, mouse, time, lastTime, options.continuousOptions)
-
-                    lastTime = time
-                }
+            if (MC.currentScreen === null) {
+                ContinuousTrail.clear()
+                longRet
             }
+
+            val mouse = mousePosition
+            val time = System.nanoTime()
+
+            ContinuousTrail.render(event, mouse, time, lastTime, options.continuousOptions)
+
+            lastTime = time
         }
+    }
+
+    init {
+        register
     }
 }

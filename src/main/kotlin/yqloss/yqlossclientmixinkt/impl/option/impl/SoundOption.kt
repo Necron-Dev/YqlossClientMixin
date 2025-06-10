@@ -21,8 +21,8 @@ package yqloss.yqlossclientmixinkt.impl.option.impl
 import cc.polyfrost.oneconfig.config.annotations.Number
 import cc.polyfrost.oneconfig.config.annotations.Switch
 import cc.polyfrost.oneconfig.config.annotations.Text
+import net.yqloss.uktil.extension.double
 import yqloss.yqlossclientmixinkt.module.option.YCSoundOption
-import yqloss.yqlossclientmixinkt.util.extension.double
 
 class SoundOption : YCSoundOption {
     @Switch(

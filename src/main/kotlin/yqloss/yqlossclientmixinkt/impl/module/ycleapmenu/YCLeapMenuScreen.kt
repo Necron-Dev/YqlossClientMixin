@@ -18,10 +18,22 @@
 
 package yqloss.yqlossclientmixinkt.impl.module.ycleapmenu
 
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
+import net.yqloss.uktil.accessor.getValue
+import net.yqloss.uktil.accessor.outs.Box
+import net.yqloss.uktil.accessor.outs.inBox
+import net.yqloss.uktil.accessor.outs.value
+import net.yqloss.uktil.accessor.refs.inMut
+import net.yqloss.uktil.accessor.refs.trigger
+import net.yqloss.uktil.accessor.refs.value
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
+import net.yqloss.uktil.extension.sameNotNull
+import net.yqloss.uktil.math.Vec2D
+import net.yqloss.uktil.math.blendColor
+import net.yqloss.uktil.math.unitVec
+import net.yqloss.uktil.scope.longRet
 import yqloss.yqlossclientmixinkt.event.minecraft.YCInputEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
-import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.module.YCModuleScreenBase
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
@@ -37,21 +49,9 @@ import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.fontMedium
 import yqloss.yqlossclientmixinkt.impl.option.handle
 import yqloss.yqlossclientmixinkt.impl.option.module.YCLeapMenuOptionsImpl
 import yqloss.yqlossclientmixinkt.impl.util.Colors
-import yqloss.yqlossclientmixinkt.module.ensure
+import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenu
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.accessor.getValue
-import yqloss.yqlossclientmixinkt.util.accessor.outs.Box
-import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
-import yqloss.yqlossclientmixinkt.util.accessor.outs.value
-import yqloss.yqlossclientmixinkt.util.accessor.refs.inMut
-import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
-import yqloss.yqlossclientmixinkt.util.accessor.refs.value
-import yqloss.yqlossclientmixinkt.util.extension.sameNotNull
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.blendColor
-import yqloss.yqlossclientmixinkt.util.math.unitVec
-import yqloss.yqlossclientmixinkt.util.scope.longRun
 import kotlin.math.PI
 import kotlin.math.sin
 import kotlin.math.tan
@@ -75,10 +75,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
 
     private val hidden by trigger({ MC.currentScreen }) { false.inMut }
 
-    override fun ensureShow() {
-        ensure { YCLeapMenu.Screen.proxiedScreen sameNotNull MC.currentScreen }
-        ensure { !hidden.value }
-    }
+    override val ensureShow get() = YCLeapMenu.Screen.proxiedScreen sameNotNull MC.currentScreen && !hidden.value
 
     override fun reset() {
         classButtons = null
@@ -136,36 +133,32 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
         classButtons?.get(index)?.onMouseDown(0)
     }
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        super.registerEvents(registry)
-        registry.run {
-            register<YCInputEvent.Mouse.Click> { event ->
-                longRun {
-                    ensure { event.screen }
-                    ensureShow()
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
 
-                    val tr = transformation
+        register<YCInputEvent.Mouse.Click> { event ->
+            event.screen && ensureShow || longRet
 
-                    classButtons?.withIndex()?.firstOrNull { (i, button) ->
-                        val offsetRadian = (i * 0.4 - 0.7) * PI
-                        val offset = unitVec(offsetRadian) * PADDING_ARC / sin(0.2 * PI)
-                        if (button.isHovered(tr + offset)) {
-                            button.onMouseDown(event.button)
-                            true
-                        } else {
-                            false
-                        }
-                    } ?: run {
-                        if (preferredButton?.isHovered(tr + OFFSET_PREFERRED) == true) {
-                            preferredButton?.onMouseDown(event.button)
-                        }
-                    }
+            val tr = transformation
+
+            classButtons?.withIndex()?.firstOrNull { (i, button) ->
+                val offsetRadian = (i * 0.4 - 0.7) * PI
+                val offset = unitVec(offsetRadian) * PADDING_ARC / sin(0.2 * PI)
+                if (button.isHovered(tr + offset)) {
+                    button.onMouseDown(event.button)
+                    true
+                } else {
+                    false
+                }
+            } ?: run {
+                if (preferredButton?.isHovered(tr + OFFSET_PREFERRED) == true) {
+                    preferredButton?.onMouseDown(event.button)
                 }
             }
+        }
 
-            register<YCMinecraftEvent.Loop.Pre> { event ->
-                options.keyBinds.forEach { it.handle() }
-            }
+        register<YCMinecraftEvent.Loop.Pre> { event ->
+            options.keyBinds.forEach { it.handle() }
         }
     }
 
@@ -205,9 +198,9 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
             tr: Transformation,
             hovered: Boolean,
         ) {
-            val info = info
+            val player = info
             val padding = getArcPadding(hovered)
-            if (info === null) {
+            if (player === null) {
                 widgets.add(
                     RingArcWidget(
                         tr pos Vec2D(0.0, 0.0),
@@ -222,7 +215,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
                 )
             } else {
                 super.renderBackground(widgets, tr, hovered)
-                if (info.dead) {
+                if (player.dead) {
                     widgets.add(
                         RingArcWidget(
                             tr pos Vec2D(0.0, 0.0),
@@ -305,7 +298,8 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
             isLast: Boolean,
         ) {
             info ?: return
-            if (info.content === null) {
+            val info = info.value
+            if (info === null) {
                 widgets.add(
                     TextWidget(
                         "No Target!",
@@ -320,7 +314,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
                 widgets.add(
                     RoundedPlayerAvatarWidget(
                         cache,
-                        info.content.profile,
+                        info.profile,
                         tr pos Vec2D(-12.0, -12.0),
                         tr size 24.0,
                         1.0,
@@ -330,7 +324,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
 
                 widgets.add(
                     TextWidget(
-                        info.content.theClass.displayName,
+                        info.theClass.displayName,
                         tr pos Vec2D(0.0, 16.0),
                         Colors.GRAY[3].rgb,
                         tr size 12.0,
@@ -341,7 +335,7 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
 
                 widgets.add(
                     TextWidget(
-                        info.content.profile.gameProfile.name,
+                        info.profile.gameProfile.name,
                         tr pos Vec2D(0.0, -16.0),
                         Colors.GRAY[3].rgb,
                         tr size 12.0,
@@ -388,5 +382,9 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
                 hidden.value = true
             }
         }
+    }
+
+    init {
+        register
     }
 }

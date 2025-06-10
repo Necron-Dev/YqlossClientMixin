@@ -18,17 +18,16 @@
 
 package yqloss.yqlossclientmixinkt.impl.module
 
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
-import yqloss.yqlossclientmixinkt.event.register
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.YCHUD
 import yqloss.yqlossclientmixinkt.module.YCModule
-import yqloss.yqlossclientmixinkt.module.ensureEnabled
+import yqloss.yqlossclientmixinkt.module.enabled
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.scope.Scope
 
 abstract class YCModuleHUDBase<TO, TM : YCModule<in TO>>(
     module: TM,
@@ -38,11 +37,10 @@ abstract class YCModuleHUDBase<TO, TM : YCModule<in TO>>(
     protected open val example get() = hud.isExample
     override val scaledWidth get() = width * hud.scale
     override val scaledHeight get() = height * hud.scale
-    override val transformation
-        get() = Transformation().scaleMC() translate hud.renderPos scale hud.renderScale
+    override val transformation get() = Transformation().scaleMC() translate hud.renderPos scale hud.renderScale
 
     override fun onRender(eventWidgets: MutableList<Widget<*>>) {
-        val show = doesShow()
+        val show = ensureShow
         val box = size
         val tr = transformation
         if (example) {
@@ -58,16 +56,15 @@ abstract class YCModuleHUDBase<TO, TM : YCModule<in TO>>(
         }
     }
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        super.registerEvents(registry)
-        registry.run {
-            register<YCHUD.GetWidthEvent> { if (it.hud === hud) it.width = scaledWidth }
+    protected open val isHUDEnabled get() = enabled && hud.isEnabled
 
-            register<YCHUD.GetHeightEvent> { if (it.hud === hud) it.height = scaledHeight }
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
 
-            register<GUIEvent.HUD> { onRender(it.widgets) }
-        }
+        register<YCHUD.GetWidthEvent> { if (it.hud === hud) it.width = scaledWidth }
+
+        register<YCHUD.GetHeightEvent> { if (it.hud === hud) it.height = scaledHeight }
+
+        register<GUIEvent.HUD> { onRender(it.widgets) }
     }
-
-    protected open fun ensureHUDEnabled(frame: Scope = Scope.LAST) = ensureEnabled(frame) { hud.isEnabled }
 }

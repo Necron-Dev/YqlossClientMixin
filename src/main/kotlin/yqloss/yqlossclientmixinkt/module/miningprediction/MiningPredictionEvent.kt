@@ -19,10 +19,10 @@
 package yqloss.yqlossclientmixinkt.module.miningprediction
 
 import net.minecraft.client.renderer.DestroyBlockProgress
-import yqloss.yqlossclientmixinkt.event.YCEvent
-import yqloss.yqlossclientmixinkt.util.math.Vec3I
+import net.yqloss.uktil.event.Event
+import net.yqloss.uktil.math.Vec3I
 
-sealed interface MiningPredictionEvent : YCEvent {
+sealed interface MiningPredictionEvent : Event {
     data class Mining(
         val pos: Vec3I,
     ) : MiningPredictionEvent

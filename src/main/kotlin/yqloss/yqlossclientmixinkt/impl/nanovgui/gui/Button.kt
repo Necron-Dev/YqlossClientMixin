@@ -18,12 +18,13 @@
 
 package yqloss.yqlossclientmixinkt.impl.nanovgui.gui
 
+import net.yqloss.uktil.math.*
 import org.lwjgl.input.Mouse
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.nanovgui.widget.RoundedRectWidget
 import yqloss.yqlossclientmixinkt.impl.util.Colors
-import yqloss.yqlossclientmixinkt.util.math.*
+import yqloss.yqlossclientmixinkt.util.ExponentialSmooth
 import yqloss.yqlossclientmixinkt.util.mousePosition
 import kotlin.math.min
 
@@ -71,16 +72,15 @@ abstract class Button<T>(
 
     open fun getSize(hovered: Boolean) = if (hovered && isAnyDown()) 0.9 else 1.0
 
-    open fun getLightnessModifier(hovered: Boolean) =
-        if (hovered) {
-            if (isAnyDown()) {
-                0.05
-            } else {
-                0.1
-            }
+    open fun getLightnessModifier(hovered: Boolean) = if (hovered) {
+        if (isAnyDown()) {
+            0.05
         } else {
-            0.0
+            0.1
         }
+    } else {
+        0.0
+    }
 
     open fun getActualColor(hovered: Boolean): Int {
         var (r, g, b, a) = convertARGBToDoubleArray(getColor(hovered))

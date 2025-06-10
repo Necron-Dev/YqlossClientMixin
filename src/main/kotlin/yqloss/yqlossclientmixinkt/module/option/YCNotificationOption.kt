@@ -35,12 +35,11 @@ inline operator fun YCNotificationOption.invoke(
     logger: Logger,
     placeholder: YCTemplate.() -> Unit,
 ) {
-    if (enabled) {
-        log(logger, placeholder)
-        printChat(placeholder)
-        title(placeholder)
-        actionBar(placeholder)
-        sound(placeholder)
-        sendMessage(placeholder)
-    }
+    enabled || return
+    log(logger, placeholder)
+    printChat(placeholder)
+    title(placeholder)
+    actionBar(placeholder)
+    sound(placeholder)
+    sendMessage(placeholder)
 }

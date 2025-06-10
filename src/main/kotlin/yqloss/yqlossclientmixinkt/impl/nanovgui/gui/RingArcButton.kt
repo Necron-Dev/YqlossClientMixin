@@ -18,10 +18,10 @@
 
 package yqloss.yqlossclientmixinkt.impl.nanovgui.gui
 
+import net.yqloss.uktil.math.Vec2D
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.nanovgui.widget.RingArcWidget
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
 import yqloss.yqlossclientmixinkt.util.mousePosition
 import kotlin.math.PI
 import kotlin.math.atan2

@@ -25,14 +25,12 @@ open class CooldownResource(
     private var lastRequest: Long? = null
 
     override val requesting: Boolean
-        get() {
-            return parent.requesting ||
-                !available &&
-                lastRequest?.let {
-                    val time = System.currentTimeMillis()
-                    time - it < cooldown * 1000.0
-                } == true
-        }
+        get() = parent.requesting ||
+            !available &&
+            lastRequest?.let {
+                val time = System.currentTimeMillis()
+                time - it < cooldown * 1000.0
+            } == true
 
     override fun request() {
         lastRequest = System.currentTimeMillis()

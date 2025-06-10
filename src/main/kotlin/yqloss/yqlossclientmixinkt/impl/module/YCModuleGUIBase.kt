@@ -18,15 +18,14 @@
 
 package yqloss.yqlossclientmixinkt.impl.module
 
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.math.Vec2D
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.nanovgui.WindowAnimation
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 abstract class YCModuleGUIBase<TO, TM : YCModule<in TO>>(
     module: TM,
@@ -35,22 +34,13 @@ abstract class YCModuleGUIBase<TO, TM : YCModule<in TO>>(
     abstract val height: Double
     open val fadeOut = 0L
 
-    abstract fun ensureShow()
+    abstract val ensureShow: Boolean
 
     abstract fun draw(
         widgets: MutableList<Widget<*>>,
         box: Vec2D,
         tr: Transformation,
     )
-
-    open fun doesShow(): Boolean {
-        var show = false
-        longRun {
-            ensureShow()
-            show = true
-        }
-        return show
-    }
 
     open fun reset() {}
 
@@ -72,18 +62,19 @@ abstract class YCModuleGUIBase<TO, TM : YCModule<in TO>>(
     }
 
     open fun onRender(eventWidgets: MutableList<Widget<*>>) {
-        val show = doesShow()
+        val show = ensureShow
         val box = size
         val tr = transformation
         if (animation.update(show, box, tr, fadeOut)) {
             redraw(box, tr)
         }
         animation.mapWidgets(widgets, eventWidgets, getFadeOutOrigin(tr))
-        if (!doesShow()) {
+        if (!ensureShow) {
             reset()
         }
     }
 
-    override fun registerEvents(registry: YCEventRegistry) {
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
     }
 }

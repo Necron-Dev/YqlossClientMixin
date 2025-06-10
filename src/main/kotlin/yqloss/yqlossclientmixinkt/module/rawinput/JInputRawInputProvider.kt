@@ -21,10 +21,10 @@ package yqloss.yqlossclientmixinkt.module.rawinput
 import net.java.games.input.Controller
 import net.java.games.input.ControllerEnvironment
 import net.java.games.input.Mouse
+import net.yqloss.uktil.functional.intervalAction
+import net.yqloss.uktil.scope.noExcept
+import yqloss.yqlossclientmixinkt.module.enabled
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.extension.type.takeTrue
-import yqloss.yqlossclientmixinkt.util.functional.intervalAction
-import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import yqloss.yqlossclientmixinkt.ycLogger
 
 object JInputRawInputProvider : RawInputProvider {
@@ -32,31 +32,30 @@ object JInputRawInputProvider : RawInputProvider {
 
     private var savedMouse: Mouse? = null
 
-    private val findMouse =
-        intervalAction(1000000000L) {
-            logger.info("trying to find a mouse")
+    private val findMouse = intervalAction(1000000000L) {
+        logger.info("trying to find a mouse")
 
-            noExcept(logger::catching) {
-                for (controller in ControllerEnvironment.getDefaultEnvironment().controllers) {
-                    noExcept(logger::catching) {
-                        if (controller.type === Controller.Type.MOUSE) {
-                            val mouse = controller as Mouse
-                            mouse.poll()
-                            if (mouse.x.pollData !in -0.1..0.1 || mouse.y.pollData !in -0.1..0.1) {
-                                savedMouse = mouse
-                                logger.info("found mouse $mouse")
-                                return@intervalAction
-                            }
+        noExcept(logger::catching) {
+            for (controller in ControllerEnvironment.getDefaultEnvironment().controllers) {
+                noExcept(logger::catching) {
+                    if (controller.type === Controller.Type.MOUSE) {
+                        val mouse = controller as Mouse
+                        mouse.poll()
+                        if (mouse.x.pollData !in -0.1..0.1 || mouse.y.pollData !in -0.1..0.1) {
+                            savedMouse = mouse
+                            logger.info("found mouse $mouse")
+                            return@intervalAction
                         }
                     }
                 }
             }
-
-            logger.info("failed to find a mouse")
         }
 
+        logger.info("failed to find a mouse")
+    }
+
     override fun poll() {
-        RawInput.options.enabled.takeTrue ?: return
+        RawInput.enabled || return
 
         savedMouse ?: findMouse()
 

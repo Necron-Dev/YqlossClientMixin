@@ -21,21 +21,22 @@ package yqloss.yqlossclientmixinkt.impl.hypixel
 import net.hypixel.modapi.HypixelModAPI
 import net.hypixel.modapi.packet.EventPacket
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket
+import net.yqloss.uktil.accessor.getValue
+import net.yqloss.uktil.accessor.refs.trigger
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCHypixelLocation
 import yqloss.yqlossclientmixinkt.api.YCHypixelServerType
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.hypixel.YCHypixelAPIEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
-import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.YCMixin
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.module.NO_MODULE_INFO
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
+import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.accessor.getValue
-import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
 import yqloss.yqlossclientmixinkt.util.printChat
 import kotlin.jvm.optionals.getOrNull
 
@@ -49,35 +50,34 @@ class HypixelModAPIWrapper(
 
     init {
         registerPacket<ClientboundLocationPacket> { packet ->
-            val location =
-                YCHypixelLocation(
-                    packet.serverName,
-                    packet.serverType.getOrNull()?.let { YCHypixelServerType(it.name) },
-                    packet.lobbyName.getOrNull(),
-                    packet.mode.getOrNull(),
-                    packet.map.getOrNull(),
-                )
-            if (YqlossClientConfig.main.verboseHypixelModAPI) {
-                printChat("YCMixin.api.hypixelLocation = $location")
-            }
+            val location = YCHypixelLocation(
+                packet.serverName,
+                packet.serverType.getOrNull()?.let { YCHypixelServerType(it.name) },
+                packet.lobbyName.getOrNull(),
+                packet.mode.getOrNull(),
+                packet.map.getOrNull(),
+            )
+            if (YqlossClientConfig.main.verboseHypixelModAPI) printChat("YCMixin.api.hypixelLocation = $location")
             YCMixin.api.hypixelLocation = location
             YC.eventDispatcher(YCHypixelAPIEvent.Location(location))
         }
     }
 
     private val resetLocation by trigger({ MC.isIntegratedServerRunning to MC.currentServerData }) {
-        if (YqlossClientConfig.main.verboseHypixelModAPI) {
-            printChat("YCMixin.api.hypixelLocation = null")
-        }
+        if (YqlossClientConfig.main.verboseHypixelModAPI) printChat("YCMixin.api.hypixelLocation = null")
         YCMixin.api.hypixelLocation = null
         YC.eventDispatcher(YCHypixelAPIEvent.Location(null))
     }
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        registry.run {
-            register<YCMinecraftEvent.Tick.Pre> {
-                resetLocation
-            }
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
+
+        register<YCMinecraftEvent.Tick.Pre> {
+            resetLocation
         }
+    }
+
+    init {
+        register
     }
 }

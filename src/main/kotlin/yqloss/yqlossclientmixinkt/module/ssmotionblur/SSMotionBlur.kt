@@ -21,22 +21,20 @@ package yqloss.yqlossclientmixinkt.module.ssmotionblur
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import net.yqloss.uktil.accessor.refs.Mut
+import net.yqloss.uktil.accessor.refs.nullMut
+import net.yqloss.uktil.accessor.refs.value
+import net.yqloss.uktil.accessor.swap
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
+import net.yqloss.uktil.extension.double
+import net.yqloss.uktil.scope.longRet
 import org.lwjgl.opengl.GL11.*
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
-import yqloss.yqlossclientmixinkt.event.register
-import yqloss.yqlossclientmixinkt.module.YCModuleBase
-import yqloss.yqlossclientmixinkt.module.ensureEnabled
-import yqloss.yqlossclientmixinkt.module.moduleInfo
+import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.accessor.refs.Mut
-import yqloss.yqlossclientmixinkt.util.accessor.refs.nullMut
-import yqloss.yqlossclientmixinkt.util.accessor.refs.value
-import yqloss.yqlossclientmixinkt.util.accessor.swap
-import yqloss.yqlossclientmixinkt.util.extension.double
 import yqloss.yqlossclientmixinkt.util.glStateScope
 import yqloss.yqlossclientmixinkt.util.mcRenderScope
-import yqloss.yqlossclientmixinkt.util.scope.longRun
 import java.nio.ByteBuffer
 import kotlin.math.max
 
@@ -114,7 +112,7 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
         width: Int,
         height: Int,
     ) {
-        if (!options.enabled) return
+        enabled || return
 
         if (texture.value === null || lastWidth != width || lastHeight != height) {
             allocate(texture, true, width, height)
@@ -195,26 +193,28 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
         }
     }
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        registry.run {
-            register<YCRenderEvent.Render.Pre> {
-                MC.theWorld ?: run {
-                    lastNanos = System.nanoTime()
-                    glStateScope {
-                        allocate(textureLast1, false, -1, -1)
-                        allocate(textureLast2, false, -1, -1)
-                        allocate(textureAccumulation, false, -1, -1)
-                    }
-                }
-            }
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
 
-            register<SSMotionBlurEvent.Render> { event ->
-                longRun {
-                    ensureEnabled()
+        register<YCRenderEvent.Render.Pre> {
+            inWorld && longRet
 
-                    renderMotionBlur(event.screenWidth, event.screenHeight, event.scaledResolution)
-                }
+            lastNanos = System.nanoTime()
+            glStateScope {
+                allocate(textureLast1, false, -1, -1)
+                allocate(textureLast2, false, -1, -1)
+                allocate(textureAccumulation, false, -1, -1)
             }
         }
+
+        register<SSMotionBlurEvent.Render> { event ->
+            enabled || longRet
+
+            renderMotionBlur(event.screenWidth, event.screenHeight, event.scaledResolution)
+        }
+    }
+
+    init {
+        register
     }
 }

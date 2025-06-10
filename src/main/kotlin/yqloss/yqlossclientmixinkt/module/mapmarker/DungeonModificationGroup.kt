@@ -18,8 +18,8 @@
 
 package yqloss.yqlossclientmixinkt.module.mapmarker
 
+import net.yqloss.uktil.scope.noExcept
 import yqloss.yqlossclientmixinkt.util.keepASCII
-import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import yqloss.yqlossclientmixinkt.util.sideBar
 import yqloss.yqlossclientmixinkt.util.trimStyle
 import yqloss.yqlossclientmixinkt.util.updateWorldRender

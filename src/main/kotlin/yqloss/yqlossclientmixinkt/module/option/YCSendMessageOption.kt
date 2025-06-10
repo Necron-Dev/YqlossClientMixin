@@ -18,18 +18,20 @@
 
 package yqloss.yqlossclientmixinkt.module.option
 
+import net.yqloss.uktil.accessor.refs.Mut
+import net.yqloss.uktil.accessor.refs.inMut
+import net.yqloss.uktil.accessor.refs.value
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCTemplate
 import yqloss.yqlossclientmixinkt.api.format
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
-import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
+import yqloss.yqlossclientmixinkt.module.inWorld
 import yqloss.yqlossclientmixinkt.module.moduleInfo
+import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.accessor.refs.Mut
-import yqloss.yqlossclientmixinkt.util.accessor.refs.inMut
-import yqloss.yqlossclientmixinkt.util.accessor.refs.value
 
 interface YCSendMessageOption {
     val enabled: Boolean
@@ -63,47 +65,50 @@ object SendMessagePool :
         }
     }
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        registry.run {
-            register<YCMinecraftEvent.LoadWorld.Pre> {
-                synchronized(this) {
-                    poolMap.clear()
-                }
-            }
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
 
-            register<YCMinecraftEvent.Tick.Pre> {
-                synchronized(this) {
-                    poolMap.forEach { (_, list) ->
-                        while (true) {
-                            list.firstOrNull()?.let { (message, interval) ->
-                                if (interval.value == 0) {
-                                    MC.thePlayer.sendChatMessage(message)
-                                    return@let
-                                } else if (interval.value < 0) {
-                                    interval.value = -interval.value
-                                    MC.thePlayer.sendChatMessage(message)
-                                }
-                                --interval.value
-                                if (interval.value == 0) {
-                                    list.removeFirstOrNull()
-                                }
-                                return@forEach
-                            } ?: break
-                        }
+        register<YCMinecraftEvent.LoadWorld.Pre> {
+            synchronized(this) {
+                poolMap.clear()
+            }
+        }
+
+        register<YCMinecraftEvent.Tick.Pre> {
+            synchronized(this) {
+                poolMap.forEach { (_, list) ->
+                    while (true) {
+                        list.firstOrNull()?.let { (message, interval) ->
+                            if (interval.value == 0) {
+                                MC.thePlayer.sendChatMessage(message)
+                                return@let
+                            } else if (interval.value < 0) {
+                                interval.value = -interval.value
+                                MC.thePlayer.sendChatMessage(message)
+                            }
+                            --interval.value
+                            if (interval.value == 0) {
+                                list.removeFirstOrNull()
+                            }
+                            return@forEach
+                        } ?: break
                     }
                 }
             }
         }
     }
+
+    init {
+        register
+    }
 }
 
 inline operator fun YCSendMessageOption.invoke(placeholder: YCTemplate.() -> Unit) {
-    if (enabled && MC.theWorld != null) {
-        val messages = YC.api.format(text, placeholder).split("\n")
-        if (enableInterval) {
-            messages.forEach { SendMessagePool.add(intervalPool, interval, it, maxPoolSize) }
-        } else {
-            messages.forEach(MC.thePlayer::sendChatMessage)
-        }
+    enabled && inWorld || return
+    val messages = YC.api.format(text, placeholder).split("\n")
+    if (enableInterval) {
+        messages.forEach { SendMessagePool.add(intervalPool, interval, it, maxPoolSize) }
+    } else {
+        messages.forEach(MC.thePlayer::sendChatMessage)
     }
 }

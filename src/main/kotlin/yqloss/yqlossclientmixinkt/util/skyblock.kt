@@ -22,24 +22,20 @@ package yqloss.yqlossclientmixinkt.util
 
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
-import yqloss.yqlossclientmixinkt.util.scope.noExcept
+import net.yqloss.uktil.scope.noExcept
 import java.util.*
 
 inline val ItemStack?.skyBlockID: String?
-    get() {
-        return this?.run {
-            noExcept {
-                this.tagCompound.getCompoundTag("ExtraAttributes").getString("id")
-            }
+    get() = this?.run {
+        noExcept {
+            this.tagCompound.getCompoundTag("ExtraAttributes").getString("id")
         }
     }
 
 inline val ItemStack?.skyBlockUUID: UUID?
-    get() {
-        return this?.run {
-            noExcept {
-                UUID.fromString(this.tagCompound.getCompoundTag("ExtraAttributes").getString("uuid"))
-            }
+    get() = this?.run {
+        noExcept {
+            UUID.fromString(this.tagCompound.getCompoundTag("ExtraAttributes").getString("uuid"))
         }
     }
 

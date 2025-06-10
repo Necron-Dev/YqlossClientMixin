@@ -18,10 +18,10 @@
 
 package yqloss.yqlossclientmixinkt.module.rawinput
 
-import yqloss.yqlossclientmixinkt.event.YCCancelableEvent
-import yqloss.yqlossclientmixinkt.event.YCEvent
+import net.yqloss.uktil.event.CancelableEvent
+import net.yqloss.uktil.event.Event
 
-interface RawInputEvent : YCEvent {
+interface RawInputEvent : Event {
     data class ModifyDeltaEvent(
         val deltaX: Int,
         val deltaY: Int,
@@ -29,5 +29,5 @@ interface RawInputEvent : YCEvent {
         var mutableDeltaY: Int = deltaY,
         override var canceled: Boolean = false,
     ) : RawInputEvent,
-        YCCancelableEvent
+        CancelableEvent
 }

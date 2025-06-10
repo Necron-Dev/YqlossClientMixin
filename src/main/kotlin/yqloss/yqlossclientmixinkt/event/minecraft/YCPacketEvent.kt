@@ -22,12 +22,12 @@ import net.minecraft.network.Packet
 import net.minecraft.network.play.INetHandlerPlayClient
 import net.minecraft.network.play.server.S02PacketChat
 import net.minecraft.util.IChatComponent
-import yqloss.yqlossclientmixinkt.event.YCCancelableEvent
-import yqloss.yqlossclientmixinkt.event.YCEvent
+import net.yqloss.uktil.event.CancelableEvent
+import net.yqloss.uktil.event.Event
 import yqloss.yqlossclientmixinkt.util.removeStyle
 import yqloss.yqlossclientmixinkt.util.trimStyle
 
-sealed interface YCPacketEvent<TPacket : Packet<INetHandlerPlayClient>> : YCEvent {
+sealed interface YCPacketEvent<TPacket : Packet<INetHandlerPlayClient>> : Event {
     val packet: TPacket
 
     sealed interface S02 : YCPacketEvent<S02PacketChat> {
@@ -43,7 +43,7 @@ sealed interface YCPacketEvent<TPacket : Packet<INetHandlerPlayClient>> : YCEven
                 var mutableComponent: IChatComponent = packet.chatComponent,
                 override var canceled: Boolean = false,
             ) : Chat,
-                YCCancelableEvent
+                CancelableEvent
 
             data class Post(
                 override val packet: S02PacketChat,

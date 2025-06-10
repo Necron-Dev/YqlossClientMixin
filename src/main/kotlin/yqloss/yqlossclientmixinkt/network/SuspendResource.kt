@@ -32,14 +32,12 @@ open class SuspendResource(
 
     override fun request() {
         synchronized(this) {
-            if (requesting) return
+            requesting && return
             requesting = true
         }
         CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
             try {
-                if (NETWORK_ALWAYS_FAIL_REQUEST) {
-                    throw Exception("NETWORK_ALWAYS_FAIL_REQUEST")
-                }
+                NETWORK_ALWAYS_FAIL_REQUEST && throw Exception("NETWORK_ALWAYS_FAIL_REQUEST")
                 function()
                 onAvailable?.invoke()
                 available = true

@@ -22,6 +22,8 @@ import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.multiplayer.WorldClient
 import net.minecraft.util.BlockPos
+import net.yqloss.uktil.extension.double
+import net.yqloss.uktil.math.Vec2D
 import org.lwjgl.input.Keyboard
 import org.lwjgl.input.Mouse
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
@@ -32,8 +34,6 @@ import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPredictionEvent
 import yqloss.yqlossclientmixinkt.module.tweaks.TweaksEvent
 import yqloss.yqlossclientmixinkt.module.windowproperties.WindowPropertiesEvent
 import yqloss.yqlossclientmixinkt.util.*
-import yqloss.yqlossclientmixinkt.util.extension.double
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
 
 object CallbackMinecraft {
     object YqlossClient {
@@ -43,11 +43,10 @@ object CallbackMinecraft {
 
         fun runGameLoopPre() {
             ++frameCounter
-            mousePosition =
-                Vec2D(
-                    Mouse.getX().double,
-                    MC.displayHeight - Mouse.getY() - 1.0,
-                )
+            mousePosition = Vec2D(
+                Mouse.getX().double,
+                MC.displayHeight - Mouse.getY() - 1.0,
+            )
             windowSize = Vec2D(MC.displayWidth.double, MC.displayHeight.double)
             guiScale = ScaledResolution(MC).scaleFactor.double
             YC.eventDispatcher(YCMinecraftEvent.Loop.Pre)
@@ -88,23 +87,21 @@ object CallbackMinecraft {
         }
 
         fun runTickHandleKeyboardInput(screen: GuiScreen) {
-            (
-                YCRenderEvent.Screen
-                    .Proxy(screen)
-                    .also(YC.eventDispatcher)
-                    .mutableScreen
-                    ?: screen
-            ).handleKeyboardInput()
+            val proxiedScreen = YCRenderEvent.Screen
+                .Proxy(screen)
+                .also(YC.eventDispatcher)
+                .mutableScreen
+                ?: screen
+            proxiedScreen.handleKeyboardInput()
         }
 
         fun runTickHandleMouseInput(screen: GuiScreen) {
-            (
-                YCRenderEvent.Screen
-                    .Proxy(screen)
-                    .also(YC.eventDispatcher)
-                    .mutableScreen
-                    ?: screen
-            ).handleMouseInput()
+            val proxiedScreen = YCRenderEvent.Screen
+                .Proxy(screen)
+                .also(YC.eventDispatcher)
+                .mutableScreen
+                ?: screen
+            proxiedScreen.handleMouseInput()
         }
     }
 
@@ -112,12 +109,10 @@ object CallbackMinecraft {
         fun rightClickMouseClickBlockPre(
             world: WorldClient,
             blockPos: BlockPos,
-        ): Boolean {
-            return TweaksEvent
-                .RightClickBlockPre(world, blockPos.asVec3I)
-                .also(YC.eventDispatcher)
-                .canceled
-        }
+        ) = TweaksEvent
+            .RightClickBlockPre(world, blockPos.asVec3I)
+            .also(YC.eventDispatcher)
+            .canceled
     }
 
     object MiningPrediction {

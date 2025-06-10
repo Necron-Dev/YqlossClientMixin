@@ -20,12 +20,12 @@
 
 package yqloss.yqlossclientmixinkt.nativeapi
 
+import net.yqloss.uktil.extension.double
+import net.yqloss.uktil.extension.type.undashedLowerString
+import net.yqloss.uktil.scope.noThrow
+import net.yqloss.uktil.scope.usingScope
 import yqloss.yqlossclientmixinkt.YqlossClient
 import yqloss.yqlossclientmixinkt.module.rawinput.NativeRawInputProvider
-import yqloss.yqlossclientmixinkt.util.extension.double
-import yqloss.yqlossclientmixinkt.util.extension.type.undashedLowerString
-import yqloss.yqlossclientmixinkt.util.scope.noThrow
-import yqloss.yqlossclientmixinkt.util.scope.usingScope
 import yqloss.yqlossclientmixinkt.ycLogger
 import java.io.File
 import java.util.*
@@ -55,16 +55,12 @@ fun handleWindowMessage(
             if (data[0] == 0L) {
                 NativeRawInputProvider.handleMouseMove(data[21].double, data[22].double)
                 synchronized(NativeRawInputProvider.lockClipCursor) {
-                    if (NativeRawInputProvider.rawInputMode) {
-                        clipCursorAtCenter(hwnd)
-                    }
+                    if (NativeRawInputProvider.rawInputMode) clipCursorAtCenter(hwnd)
                 }
             }
         }
 
-        512 -> {
-            if (NativeRawInputProvider.enabledAndGrabbed) return 0
-        }
+        512 -> NativeRawInputProvider.enabledAndGrabbed && return 0
     }
     return null
 }
@@ -75,11 +71,7 @@ fun loadWindowsX64NativeAPI() {
     noThrow(logger::catching) {
         nativeFolder.mkdirs()
         nativeFolder.listFiles().forEach {
-            if (it.name.startsWith("client-")) {
-                noThrow {
-                    it.delete()
-                }
-            }
+            if (it.name.startsWith("client-")) noThrow(it::delete)
         }
         val extractedFile = File(nativeFolder, "client-${UUID.randomUUID().undashedLowerString}.exe")
         usingScope {

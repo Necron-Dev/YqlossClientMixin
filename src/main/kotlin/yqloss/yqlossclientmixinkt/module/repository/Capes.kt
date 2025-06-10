@@ -20,9 +20,10 @@ package yqloss.yqlossclientmixinkt.module.repository
 
 import kotlinx.serialization.Serializable
 import net.minecraft.util.ResourceLocation
+import net.yqloss.uktil.accessor.outs.value
+import net.yqloss.uktil.extension.type.ifTake
+import net.yqloss.uktil.extension.type.undashedLowerString
 import yqloss.yqlossclientmixinkt.network.*
-import yqloss.yqlossclientmixinkt.util.extension.type.ifTake
-import yqloss.yqlossclientmixinkt.util.extension.type.undashedLowerString
 import yqloss.yqlossclientmixinkt.util.relativeURL
 import java.awt.image.BufferedImage
 import java.util.*
@@ -52,7 +53,7 @@ class Capes : TypedResource<CapesData> by CooldownTypedResource(JsonResource(URL
 
     fun getImageCache(url: String): BufferedImage? {
         synchronized(imageCache) {
-            return imageCache[url]?.data?.content
+            return imageCache[url]?.data?.value
         }
     }
 

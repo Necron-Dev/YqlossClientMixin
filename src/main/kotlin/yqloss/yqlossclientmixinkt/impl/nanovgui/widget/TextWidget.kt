@@ -20,13 +20,13 @@ package yqloss.yqlossclientmixinkt.impl.nanovgui.widget
 
 import cc.polyfrost.oneconfig.renderer.font.Font
 import cc.polyfrost.oneconfig.renderer.font.Fonts
+import net.yqloss.uktil.extension.double
+import net.yqloss.uktil.extension.float
+import net.yqloss.uktil.math.Vec2D
+import net.yqloss.uktil.math.lerp
 import yqloss.yqlossclientmixinkt.impl.nanovgui.NanoVGUIContext
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
-import yqloss.yqlossclientmixinkt.impl.util.alphaScale
-import yqloss.yqlossclientmixinkt.util.extension.double
-import yqloss.yqlossclientmixinkt.util.extension.float
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.lerp
+import yqloss.yqlossclientmixinkt.util.alphaScale
 
 data class TextWidget(
     private val text: String,
@@ -45,21 +45,20 @@ data class TextWidget(
             var textToRender = text
             if (widthLimit !== null && width >= widthLimit) {
                 width = helper.getTextWidth(vg, ellipsis, size.float, font).double
-                textToRender =
-                    StringBuilder()
-                        .apply {
-                            text.firstOrNull {
-                                val newWidth = width + helper.getTextWidth(vg, it.toString(), size.float, font).double
-                                if (newWidth < widthLimit) {
-                                    width = newWidth
-                                    append(it)
-                                    false
-                                } else {
-                                    true
-                                }
+                textToRender = StringBuilder()
+                    .apply {
+                        text.firstOrNull {
+                            val newWidth = width + helper.getTextWidth(vg, it.toString(), size.float, font).double
+                            if (newWidth < widthLimit) {
+                                width = newWidth
+                                append(it)
+                                false
+                            } else {
+                                true
                             }
-                        }.append(ellipsis)
-                        .toString()
+                        }
+                    }.append(ellipsis)
+                    .toString()
             }
             val x = pos.x - width * anchor.x
             val y = pos.y - size * anchor.y + size / 2.0

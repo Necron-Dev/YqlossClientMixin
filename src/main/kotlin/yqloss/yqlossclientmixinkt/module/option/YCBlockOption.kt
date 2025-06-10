@@ -21,7 +21,7 @@ package yqloss.yqlossclientmixinkt.module.option
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.init.Blocks
-import yqloss.yqlossclientmixinkt.util.scope.noExcept
+import net.yqloss.uktil.scope.noExcept
 
 interface YCBlockOption {
     val id: String

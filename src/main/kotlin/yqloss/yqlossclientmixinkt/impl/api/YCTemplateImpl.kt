@@ -18,31 +18,29 @@
 
 package yqloss.yqlossclientmixinkt.impl.api
 
+import net.yqloss.uktil.scope.noExcept
 import org.stringtemplate.v4.*
 import yqloss.yqlossclientmixinkt.api.YCTemplate
-import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import java.util.*
 
 private val cache = WeakHashMap<String, ST>()
 
-private val group =
-    STGroup('<', '>').apply {
-        registerRenderer(Number::class.java, NumberRenderer())
-        registerRenderer(String::class.java, StringRenderer())
-        registerRenderer(Date::class.java, DateRenderer())
-    }
+private val group = STGroup('<', '>').apply {
+    registerRenderer(Number::class.java, NumberRenderer())
+    registerRenderer(String::class.java, StringRenderer())
+    registerRenderer(Date::class.java, DateRenderer())
+}
 
 class YCTemplateImpl(
     private val template: String,
 ) : YCTemplate {
-    private val st =
-        noExcept {
-            ST(
-                cache.getOrPut(template) {
-                    ST(group, template)
-                },
-            )
-        }
+    private val st = noExcept {
+        ST(
+            cache.getOrPut(template) {
+                ST(group, template)
+            },
+        )
+    }
 
     override fun set(
         key: String,

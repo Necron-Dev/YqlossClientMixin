@@ -20,14 +20,14 @@ package yqloss.yqlossclientmixinkt.impl.nanovgui
 
 import cc.polyfrost.oneconfig.renderer.NanoVGHelper
 import net.minecraft.client.renderer.GlStateManager
+import net.yqloss.uktil.event.Event
 import org.lwjgl.opengl.GL11.*
 import org.lwjgl.opengl.GL14.glBlendFuncSeparate
-import yqloss.yqlossclientmixinkt.event.YCEvent
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.loadFonts
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
 import yqloss.yqlossclientmixinkt.util.glStateScope
 
-sealed interface GUIEvent : YCEvent {
+sealed interface GUIEvent : Event {
     val widgets: MutableList<Widget<*>>
 
     fun render() {

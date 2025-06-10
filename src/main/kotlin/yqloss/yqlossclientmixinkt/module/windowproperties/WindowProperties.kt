@@ -18,35 +18,34 @@
 
 package yqloss.yqlossclientmixinkt.module.windowproperties
 
+import net.yqloss.uktil.accessor.getValue
+import net.yqloss.uktil.accessor.outs.inBox
+import net.yqloss.uktil.accessor.refs.trigger
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
+import net.yqloss.uktil.scope.longRet
 import org.lwjgl.input.Mouse
 import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.DisplayMode
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
-import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
-import yqloss.yqlossclientmixinkt.module.ensureEnabled
+import yqloss.yqlossclientmixinkt.module.enabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
+import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.accessor.getValue
-import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
-import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
-import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 val INFO_WINDOW_PROPERTIES = moduleInfo<WindowPropertiesOptions>("window_properties", "Window Properties")
 
 object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROPERTIES) {
     private val onWindowTitleChange: Unit by trigger(Display::getTitle) {
         val title = Display.getTitle()
-        if (title != options.customTitle) {
-            originalWindowTitle = title
-        }
+        if (title != options.customTitle) originalWindowTitle = title
     }
 
     private val onWindowTitleOptionChange: Unit by trigger({
-        (options.customTitle.takeIf { options.enabled && options.enableCustomTitle }).inBox
+        (options.customTitle.takeIf { enabled && options.enableCustomTitle }).inBox
     }) {
-        if (options.enabled && options.enableCustomTitle) {
+        if (enabled && options.enableCustomTitle) {
             Display.setTitle(options.customTitle)
         } else {
             Display.setTitle(originalWindowTitle)
@@ -65,9 +64,9 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
 
     private var fullscreenMode = false
 
-    private val windowedFullscreen get() = options.enabled && options.windowedFullscreen && fullscreenMode
+    private val windowedFullscreen get() = enabled && options.windowedFullscreen && fullscreenMode
 
-    private val borderless get() = options.enabled && (options.borderlessWindow || windowedFullscreen)
+    private val borderless get() = enabled && (options.borderlessWindow || windowedFullscreen)
 
     private val getInitialWindowSize by lazy {
         originalWindowWidth = Display.getWidth()
@@ -126,45 +125,46 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
         MC.updateDisplay()
     }
 
-    private val onEnabledChange by trigger(Unit, false, { options.enabled }) {
+    private val onEnabledChange by trigger(Unit, false, { enabled }) {
         fullscreenMode = false
         onWindowTitleOptionChange
         onBorderlessStateChange
         onFullscreenStateChange
     }
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        registry.apply {
-            register<YCMinecraftEvent.Loop.Pre> {
-                longRun {
-                    onEnabledChange
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
 
-                    ensureEnabled()
+        register<YCMinecraftEvent.Loop.Pre> {
+            onEnabledChange
 
-                    if (!windowedFullscreen && fullscreenMode) {
-                        fullscreenMode = false
-                    }
-                    onWindowTitleOptionChange
-                    onWindowTitleChange
-                    val title = Display.getTitle()
-                    if (options.enabled && options.enableCustomTitle && title != options.customTitle) {
-                        Display.setTitle(options.customTitle)
-                    }
-                    onBorderlessStateChange
-                    onFullscreenStateChange
-                }
+            enabled || longRet
+
+            if (!windowedFullscreen && fullscreenMode) fullscreenMode = false
+
+            onWindowTitleOptionChange
+            onWindowTitleChange
+
+            if (enabled && options.enableCustomTitle && Display.getTitle() != options.customTitle) {
+                Display.setTitle(options.customTitle)
             }
 
-            register<WindowPropertiesEvent.Fullscreen> { event ->
-                longRun {
-                    ensureEnabled { fullscreenMode || options.windowedFullscreen }
-
-                    event.canceled = true
-                    fullscreenMode = !fullscreenMode
-                    onBorderlessStateChange
-                    onFullscreenStateChange
-                }
-            }
+            onBorderlessStateChange
+            onFullscreenStateChange
         }
+
+        register<WindowPropertiesEvent.Fullscreen> { event ->
+            enabled && (fullscreenMode || options.windowedFullscreen) || longRet
+
+            event.canceled = true
+            fullscreenMode = !fullscreenMode
+
+            onBorderlessStateChange
+            onFullscreenStateChange
+        }
+    }
+
+    init {
+        register
     }
 }

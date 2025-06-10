@@ -34,17 +34,16 @@ inline operator fun YCLogOption.invoke(
     logger: Logger,
     placeholder: YCTemplate.() -> Unit,
 ) {
-    if (enabled) {
-        logger.log(
-            when (level) {
-                0 -> Level.FATAL
-                1 -> Level.ERROR
-                2 -> Level.WARN
-                3 -> Level.INFO
-                4 -> Level.DEBUG
-                else -> Level.TRACE
-            },
-            YC.api.format(text, placeholder),
-        )
-    }
+    enabled || return
+    logger.log(
+        when (level) {
+            0 -> Level.FATAL
+            1 -> Level.ERROR
+            2 -> Level.WARN
+            3 -> Level.INFO
+            4 -> Level.DEBUG
+            else -> Level.TRACE
+        },
+        YC.api.format(text, placeholder),
+    )
 }

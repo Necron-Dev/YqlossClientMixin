@@ -16,7 +16,7 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.util.math
+package yqloss.yqlossclientmixinkt.util
 
 import kotlin.math.pow
 
@@ -45,9 +45,11 @@ class ExponentialSmooth(
     ): Double {
         val time = System.nanoTime()
         val diff = time - (last ?: time)
-        last?.let {
-            value = target - (target - value) * (1.0 - speed).pow(diff / 50000000.0)
-        } ?: run { value = target }
+        value = if (last === null) {
+            target
+        } else {
+            target - (target - value) * (1.0 - speed).pow(diff / 50000000.0)
+        }
         last = time
         return value
     }

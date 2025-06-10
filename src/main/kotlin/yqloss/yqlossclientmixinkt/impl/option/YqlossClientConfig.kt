@@ -22,12 +22,12 @@ import cc.polyfrost.oneconfig.config.Config
 import cc.polyfrost.oneconfig.config.annotations.SubConfig
 import cc.polyfrost.oneconfig.config.data.Mod
 import cc.polyfrost.oneconfig.config.data.ModType
+import net.yqloss.uktil.accessor.outs.cast
+import net.yqloss.uktil.accessor.outs.inBox
 import yqloss.yqlossclientmixinkt.impl.MOD_VERSION
 import yqloss.yqlossclientmixinkt.impl.YCMixin
 import yqloss.yqlossclientmixinkt.impl.option.module.*
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.accessor.outs.cast
-import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
 import yqloss.yqlossclientmixinkt.ycLogger
 import kotlin.reflect.KClass
 import kotlin.reflect.full.allSuperclasses

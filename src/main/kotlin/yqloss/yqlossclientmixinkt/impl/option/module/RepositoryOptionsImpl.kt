@@ -22,6 +22,7 @@ import cc.polyfrost.oneconfig.config.annotations.Button
 import cc.polyfrost.oneconfig.config.annotations.Header
 import cc.polyfrost.oneconfig.config.annotations.Number
 import cc.polyfrost.oneconfig.config.annotations.Switch
+import net.yqloss.uktil.extension.double
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
@@ -29,7 +30,6 @@ import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerLegit
 import yqloss.yqlossclientmixinkt.module.repository.INFO_REPOSITORY
 import yqloss.yqlossclientmixinkt.module.repository.Repository
 import yqloss.yqlossclientmixinkt.module.repository.RepositoryOptions
-import yqloss.yqlossclientmixinkt.util.extension.double
 
 class RepositoryOptionsImpl :
     OptionsImpl(INFO_REPOSITORY, true),

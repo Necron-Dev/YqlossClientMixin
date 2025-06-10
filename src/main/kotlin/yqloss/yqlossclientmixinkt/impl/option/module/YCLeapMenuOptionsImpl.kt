@@ -100,7 +100,7 @@ class YCLeapMenuOptionsImpl :
     override fun onInitializationPost() {
         keyBinds.forEachIndexed { i, keyBind ->
             keyBind.setRunnable {
-                if (YCLeapMenuScreen.doesShow()) {
+                if (YCLeapMenuScreen.ensureShow) {
                     YCLeapMenuScreen.clickButton(i)
                 }
             }

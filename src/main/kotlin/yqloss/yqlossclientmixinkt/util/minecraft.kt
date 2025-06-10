@@ -33,12 +33,12 @@ import net.minecraft.item.Item
 import net.minecraft.scoreboard.ScoreObjective
 import net.minecraft.scoreboard.ScorePlayerTeam
 import net.minecraft.util.*
-import yqloss.yqlossclientmixinkt.YC
+import net.yqloss.uktil.extension.float
+import net.yqloss.uktil.extension.type.stackTraceMessage
+import net.yqloss.uktil.math.*
+import yqloss.yqlossclientmixinkt.api.internalLowerChestInventory
+import yqloss.yqlossclientmixinkt.module.inWorld
 import yqloss.yqlossclientmixinkt.module.option.YCColor
-import yqloss.yqlossclientmixinkt.util.SideBar.Entry
-import yqloss.yqlossclientmixinkt.util.extension.float
-import yqloss.yqlossclientmixinkt.util.extension.type.stackTraceMessage
-import yqloss.yqlossclientmixinkt.util.math.*
 import yqloss.yqlossclientmixinkt.ycLogger
 
 val mcUtilLogger = ycLogger("Minecraft Util")
@@ -100,27 +100,25 @@ inline fun WorldRenderer.color(color: YCColor): WorldRenderer = color(color.r.fl
 
 inline fun printChat(message: String = "") {
     mcUtilLogger.info("[PRINT CHAT] $message")
-    MC.theWorld?.let {
-        MC.ingameGUI.chatGUI.printChatMessage(ChatComponentText(message))
-    }
+    MC.theWorld ?: return
+    MC.ingameGUI.chatGUI.printChatMessage(ChatComponentText(message))
 }
 
 inline fun printURL(url: String = "") {
-    mcUtilLogger.info("[PRINT CHAT] [URL] $url")
-    MC.theWorld?.let {
-        MC.ingameGUI.chatGUI.printChatMessage(
-            ChatComponentText("\u00A7e\u00A7n$url").apply {
-                chatStyle =
-                    ChatStyle().apply {
-                        chatClickEvent =
-                            ClickEvent(
-                                ClickEvent.Action.OPEN_URL,
-                                url,
-                            )
-                    }
-            },
-        )
-    }
+    mcUtilLogger.info("[PRINT URL] $url")
+    MC.theWorld ?: return
+    MC.ingameGUI.chatGUI.printChatMessage(
+        ChatComponentText("\u00A7e\u00A7n$url").apply {
+            chatStyle =
+                ChatStyle().apply {
+                    chatClickEvent =
+                        ClickEvent(
+                            ClickEvent.Action.OPEN_URL,
+                            url,
+                        )
+                }
+        },
+    )
 }
 
 inline fun printChat(throwable: Throwable) = printChat(throwable.stackTraceMessage)
@@ -212,7 +210,7 @@ inline val sideBar: SideBar?
                 .filter { s -> s.playerName !== null && !s.playerName.startsWith("#") }
                 .take(15)
                 .map {
-                    Entry(
+                    SideBar.Entry(
                         ScorePlayerTeam.formatPlayerName(
                             scoreboard.getPlayersTeam(it.playerName),
                             it.playerName,
@@ -223,8 +221,16 @@ inline val sideBar: SideBar?
         )
     }
 
-inline val GuiChest.title: String
-    get() =
-        YC.api
-            .get_GuiChest_lowerChestInventory(this)
-            .displayName.formattedText
+inline val GuiChest.title: String get() = internalLowerChestInventory.displayName.formattedText
+
+fun clickChest(slotId: Int, button: Int, mode: Int) {
+    inWorld || return
+    val chest = MC.currentScreen as? GuiChest ?: return
+    MC.playerController.windowClick(chest.inventorySlots.windowId, slotId, button, mode, MC.thePlayer)
+}
+
+fun leftClickChest(slotId: Int) = clickChest(slotId, 0, 0)
+
+fun rightClickChest(slotId: Int) = clickChest(slotId, 1, 0)
+
+fun middleClickChest(slotId: Int) = clickChest(slotId, 2, 3)

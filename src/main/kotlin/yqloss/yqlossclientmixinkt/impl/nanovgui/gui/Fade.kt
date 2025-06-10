@@ -20,7 +20,7 @@ package yqloss.yqlossclientmixinkt.impl.nanovgui.gui
 
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
-import yqloss.yqlossclientmixinkt.util.math.ExponentialSmooth
+import yqloss.yqlossclientmixinkt.util.ExponentialSmooth
 
 abstract class Fade<T>(
     private val initial: T,

@@ -21,6 +21,7 @@ package yqloss.yqlossclientmixinkt.module.option
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCTemplate
 import yqloss.yqlossclientmixinkt.api.format
+import yqloss.yqlossclientmixinkt.module.inWorld
 import yqloss.yqlossclientmixinkt.util.MC
 
 interface YCActionBarOption {
@@ -30,10 +31,9 @@ interface YCActionBarOption {
 }
 
 inline operator fun YCActionBarOption.invoke(placeholder: YCTemplate.() -> Unit) {
-    if (enabled && MC.theWorld !== null) {
-        MC.ingameGUI.setRecordPlaying(
-            YC.api.format(text, placeholder),
-            chroma,
-        )
-    }
+    enabled && inWorld || return
+    MC.ingameGUI.setRecordPlaying(
+        YC.api.format(text, placeholder),
+        chroma,
+    )
 }

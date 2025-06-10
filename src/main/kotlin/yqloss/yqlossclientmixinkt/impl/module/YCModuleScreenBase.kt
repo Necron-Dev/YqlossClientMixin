@@ -19,15 +19,15 @@
 package yqloss.yqlossclientmixinkt.impl.module
 
 import net.minecraft.client.gui.ScaledResolution
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
-import yqloss.yqlossclientmixinkt.event.register
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
+import net.yqloss.uktil.math.Vec2D
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
 
 abstract class YCModuleScreenBase<TO, TM : YCModule<in TO>>(
     module: TM,
@@ -44,10 +44,9 @@ abstract class YCModuleScreenBase<TO, TM : YCModule<in TO>>(
             }
         }
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        super.registerEvents(registry)
-        registry.run {
-            register<GUIEvent.Screen> { onRender(it.widgets) }
-        }
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
+
+        register<GUIEvent.Screen> { onRender(it.widgets) }
     }
 }

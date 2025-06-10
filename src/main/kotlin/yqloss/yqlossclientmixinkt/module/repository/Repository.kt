@@ -18,18 +18,19 @@
 
 package yqloss.yqlossclientmixinkt.module.repository
 
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
+import net.yqloss.uktil.accessor.getValue
+import net.yqloss.uktil.accessor.refs.lazyVarOf
+import net.yqloss.uktil.accessor.setValue
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
+import net.yqloss.uktil.scope.longRet
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
-import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
-import yqloss.yqlossclientmixinkt.module.ensureEnabled
+import yqloss.yqlossclientmixinkt.module.enabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
+import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.network.Resource
 import yqloss.yqlossclientmixinkt.network.requestAll
-import yqloss.yqlossclientmixinkt.util.accessor.getValue
-import yqloss.yqlossclientmixinkt.util.accessor.refs.lazyVarOf
-import yqloss.yqlossclientmixinkt.util.accessor.setValue
-import yqloss.yqlossclientmixinkt.util.scope.longRun
 
 val INFO_REPOSITORY = moduleInfo<RepositoryOptions>("repository", "Repository")
 
@@ -46,33 +47,31 @@ object Repository : YCModuleBase<RepositoryOptions>(INFO_REPOSITORY) {
     }
 
     val repositoryData: List<Resource>
-        get() {
-            return listOfNotNull(
-                version.takeIf { options.versionEnabled },
-                capes.takeIf { options.capeEnabled },
-            )
+        get() = listOfNotNull(
+            version.takeIf { options.versionEnabled },
+            capes.takeIf { options.capeEnabled },
+        )
+
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
+
+        register<YCMinecraftEvent.Tick.Pre> {
+            enabled || longRet
+
+            repositoryData.requestAll()
+
+            version.onTickPre()
+            capes.onTickPre()
         }
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        registry.run {
-            register<YCMinecraftEvent.Tick.Pre> {
-                longRun {
-                    ensureEnabled()
+        register<RepositoryEvent.LoadCape> { event ->
+            enabled || longRet
 
-                    repositoryData.requestAll()
-
-                    version.onTickPre()
-                    capes.onTickPre()
-                }
-            }
-
-            register<RepositoryEvent.LoadCape> { event ->
-                longRun {
-                    ensureEnabled()
-
-                    event.mutableLocation = capes.onLoadCape(event.uuid)
-                }
-            }
+            event.mutableLocation = capes.onLoadCape(event.uuid)
         }
+    }
+
+    init {
+        register
     }
 }

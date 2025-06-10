@@ -18,13 +18,14 @@
 
 package yqloss.yqlossclientmixinkt.module.cursor
 
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.moduleInfo
+import yqloss.yqlossclientmixinkt.module.register
 
 val INFO_CURSOR = moduleInfo<CursorOptions>("cursor", "Cursor")
 
 object Cursor : YCModuleBase<CursorOptions>(INFO_CURSOR) {
-    override fun registerEvents(registry: YCEventRegistry) {
+    init {
+        register
     }
 }

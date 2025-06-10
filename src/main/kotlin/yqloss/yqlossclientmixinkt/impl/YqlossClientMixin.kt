@@ -21,13 +21,17 @@ package yqloss.yqlossclientmixinkt.impl
 import cc.polyfrost.oneconfig.gui.OneConfigGui
 import cc.polyfrost.oneconfig.gui.pages.SubModsPage
 import cc.polyfrost.oneconfig.utils.gui.GuiUtils
+import net.yqloss.uktil.accessor.getValue
+import net.yqloss.uktil.accessor.refs.lateVal
+import net.yqloss.uktil.accessor.setValue
+import net.yqloss.uktil.event.LongExecutionPolicy
+import net.yqloss.uktil.event.ManagerEventManager
+import net.yqloss.uktil.event.SubEventRegistry
+import net.yqloss.uktil.event.register
 import yqloss.yqlossclientmixinkt.YC_LOGGER
 import yqloss.yqlossclientmixinkt.YqlossClient
-import yqloss.yqlossclientmixinkt.event.impl.ManagerEventManager
-import yqloss.yqlossclientmixinkt.event.impl.SubEventRegistry
 import yqloss.yqlossclientmixinkt.event.minecraft.YCCommandEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
-import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.api.YCAPIImpl
 import yqloss.yqlossclientmixinkt.impl.hypixel.loadHypixelModAPI
 import yqloss.yqlossclientmixinkt.impl.module.betterterminal.BetterTerminalScreen
@@ -50,9 +54,6 @@ import yqloss.yqlossclientmixinkt.module.windowproperties.WindowProperties
 import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenu
 import yqloss.yqlossclientmixinkt.nativeapi.loadWindowsX64NativeAPI
 import yqloss.yqlossclientmixinkt.theYC
-import yqloss.yqlossclientmixinkt.util.accessor.getValue
-import yqloss.yqlossclientmixinkt.util.accessor.refs.lateVal
-import yqloss.yqlossclientmixinkt.util.accessor.setValue
 import kotlin.reflect.KClass
 
 const val MOD_ID = "@ID@"
@@ -82,7 +83,7 @@ class YqlossClientMixin : YqlossClient {
 
     override val api = YCAPIImpl()
 
-    override val managerEventManager = ManagerEventManager<Any?>()
+    override val managerEventManager = ManagerEventManager<Any?>(LongExecutionPolicy())
     override val eventRegistry = SubEventRegistry(managerEventManager, null)
     override val eventDispatcher = managerEventManager
 

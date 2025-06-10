@@ -18,12 +18,12 @@
 
 package yqloss.yqlossclientmixinkt.impl.nanovgui.widget
 
+import net.yqloss.uktil.math.Vec2D
+import net.yqloss.uktil.math.lerp
 import yqloss.yqlossclientmixinkt.impl.nanovgui.NanoVGUIContext
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
-import yqloss.yqlossclientmixinkt.impl.util.alphaScale
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.lerp
+import yqloss.yqlossclientmixinkt.util.alphaScale
 
 data class RingArcWidget(
     private val center: Vec2D,

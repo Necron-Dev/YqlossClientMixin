@@ -22,28 +22,28 @@ fun relativeURL(
     base: String,
     path: String,
 ): String {
-    when {
+    return when {
         path.startsWith('/') -> {
             val indexProtocol = base.indexOf("://")
-            if (indexProtocol == -1) return path
+            indexProtocol != -1 || return path
             var indexRoot = base.indexOf('/', indexProtocol + 3)
             if (indexRoot == -1) indexRoot = base.length
-            return base.substring(0..<indexRoot) + path
+            base.substring(0..<indexRoot) + path
         }
 
         path.startsWith('.') -> {
             val dotRemoved = path.trimStart('.')
-            if (!dotRemoved.startsWith('/')) return path
+            dotRemoved.startsWith('/') || return path
             val dotCount = path.length - dotRemoved.length
             var cursor = base.length
             repeat(dotCount - 1) {
                 val indexSlash = base.lastIndexOf('/', cursor - 1)
-                if (indexSlash == -1) return path
+                indexSlash != -1 || return path
                 cursor = indexSlash
             }
-            return base.substring(0..<cursor) + dotRemoved
+            base.substring(0..<cursor) + dotRemoved
         }
 
-        else -> return path
+        else -> path
     }
 }

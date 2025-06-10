@@ -85,12 +85,10 @@ fun rectSlots(
     y1: Int,
     x2: Int,
     y2: Int,
-): List<Int> {
-    return buildList {
-        (y1..y2).forEach { y ->
-            (x1..x2).forEach { x ->
-                add(x + y * 9)
-            }
+) = buildList {
+    (y1..y2).forEach { y ->
+        (x1..x2).forEach { x ->
+            add(x + y * 9)
         }
     }
 }

@@ -19,9 +19,9 @@
 package yqloss.yqlossclientmixinkt.event.minecraft
 
 import net.minecraft.client.multiplayer.WorldClient
-import yqloss.yqlossclientmixinkt.event.YCEvent
+import net.yqloss.uktil.event.Event
 
-sealed interface YCMinecraftEvent : YCEvent {
+sealed interface YCMinecraftEvent : Event {
     sealed interface Load : YCMinecraftEvent {
         data object Post : Load
     }

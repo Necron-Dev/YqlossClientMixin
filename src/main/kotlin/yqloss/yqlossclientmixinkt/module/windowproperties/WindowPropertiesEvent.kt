@@ -18,12 +18,12 @@
 
 package yqloss.yqlossclientmixinkt.module.windowproperties
 
-import yqloss.yqlossclientmixinkt.event.YCCancelableEvent
-import yqloss.yqlossclientmixinkt.event.YCEvent
+import net.yqloss.uktil.event.CancelableEvent
+import net.yqloss.uktil.event.Event
 
-sealed interface WindowPropertiesEvent : YCEvent {
+sealed interface WindowPropertiesEvent : Event {
     data class Fullscreen(
         override var canceled: Boolean = false,
     ) : WindowPropertiesEvent,
-        YCCancelableEvent
+        CancelableEvent
 }

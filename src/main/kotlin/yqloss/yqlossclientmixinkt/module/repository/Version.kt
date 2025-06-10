@@ -19,11 +19,11 @@
 package yqloss.yqlossclientmixinkt.module.repository
 
 import yqloss.yqlossclientmixinkt.YC
+import yqloss.yqlossclientmixinkt.module.inWorld
 import yqloss.yqlossclientmixinkt.network.CooldownTypedResource
 import yqloss.yqlossclientmixinkt.network.JsonResource
 import yqloss.yqlossclientmixinkt.network.TypedResource
 import yqloss.yqlossclientmixinkt.network.content
-import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.printChat
 import yqloss.yqlossclientmixinkt.util.printError
 import yqloss.yqlossclientmixinkt.util.printURL
@@ -46,8 +46,7 @@ class Version : TypedResource<VersionData> by CooldownTypedResource(JsonResource
     }
 
     fun onTickPre() {
-        if (!Repository.options.notifyNewVersion || !available) return
-        MC.theWorld ?: return
+        Repository.options.notifyNewVersion && available && inWorld || return
         notifyNewVersion
     }
 }

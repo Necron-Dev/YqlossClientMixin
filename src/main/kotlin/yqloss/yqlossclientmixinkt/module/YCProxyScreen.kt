@@ -20,11 +20,12 @@ package yqloss.yqlossclientmixinkt.module
 
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
+import net.yqloss.uktil.accessor.getValue
+import net.yqloss.uktil.accessor.refs.trigger
 import yqloss.yqlossclientmixinkt.YC
+import yqloss.yqlossclientmixinkt.api.internalKeyTyped
 import yqloss.yqlossclientmixinkt.event.minecraft.YCInputEvent
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.accessor.getValue
-import yqloss.yqlossclientmixinkt.util.accessor.refs.trigger
 
 abstract class YCProxyScreen<T : GuiScreen> : GuiScreen() {
     var proxiedScreen: T? = null
@@ -44,10 +45,7 @@ abstract class YCProxyScreen<T : GuiScreen> : GuiScreen() {
 
     fun setScreen(screen: T) {
         proxiedScreen = screen
-        screenVersion = screen to
-            ScaledResolution(MC).run {
-                scaledWidth to scaledHeight to scaleFactor
-            }
+        screenVersion = screen to ScaledResolution(MC).run { scaledWidth to scaledHeight to scaleFactor }
         setupScreen
     }
 
@@ -65,13 +63,13 @@ abstract class YCProxyScreen<T : GuiScreen> : GuiScreen() {
     ) {
         val proxiedScreen = proxiedScreen
         if (proxiedScreen !== null && (keyCode == 1 || keyCode == MC.gameSettings.keyBindInventory.keyCode)) {
-            YC.api.call_GuiScreen_keyTyped(proxiedScreen, typedChar, keyCode)
+            proxiedScreen.internalKeyTyped(typedChar, keyCode)
         } else {
             super.keyTyped(typedChar, keyCode)
         }
     }
 
     override fun handleInput() {
-        onHandleInput.also { onHandleInput = null }?.invoke()
+        onHandleInput?.also { onHandleInput = null }?.invoke()
     }
 }

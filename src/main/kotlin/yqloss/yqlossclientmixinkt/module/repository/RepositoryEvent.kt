@@ -19,10 +19,10 @@
 package yqloss.yqlossclientmixinkt.module.repository
 
 import net.minecraft.util.ResourceLocation
-import yqloss.yqlossclientmixinkt.event.YCEvent
+import net.yqloss.uktil.event.Event
 import java.util.*
 
-interface RepositoryEvent : YCEvent {
+interface RepositoryEvent : Event {
     data class LoadCape(
         val uuid: UUID,
         var mutableLocation: ResourceLocation? = null,

@@ -23,19 +23,19 @@ import net.minecraft.client.renderer.texture.AbstractTexture
 import net.minecraft.client.renderer.texture.TextureUtil
 import net.minecraft.client.resources.IResourceManager
 import net.minecraft.util.ResourceLocation
+import net.yqloss.uktil.accessor.getValue
+import net.yqloss.uktil.accessor.refs.lateVar
+import net.yqloss.uktil.accessor.setValue
+import net.yqloss.uktil.controlflow.loop
+import net.yqloss.uktil.extension.long
+import net.yqloss.uktil.extension.type.undashedLowerString
+import net.yqloss.uktil.functional.plus
 import yqloss.yqlossclientmixinkt.network.CooldownTypedResource
 import yqloss.yqlossclientmixinkt.network.JsonResource
 import yqloss.yqlossclientmixinkt.network.TypedResource
 import yqloss.yqlossclientmixinkt.network.content
 import yqloss.yqlossclientmixinkt.util.CAPE_SWITCH_MAX_DEPTH
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.accessor.getValue
-import yqloss.yqlossclientmixinkt.util.accessor.refs.lateVar
-import yqloss.yqlossclientmixinkt.util.accessor.setValue
-import yqloss.yqlossclientmixinkt.util.extension.long
-import yqloss.yqlossclientmixinkt.util.extension.type.undashedLowerString
-import yqloss.yqlossclientmixinkt.util.functional.loop
-import yqloss.yqlossclientmixinkt.util.functional.plus
 import yqloss.yqlossclientmixinkt.util.relativeURL
 import java.awt.image.BufferedImage
 import java.util.*
@@ -118,15 +118,12 @@ class CapeMeta(
 
     val resourceLocationCache = mutableMapOf<String, ResourceLocation>()
 
-    private val Data.begin: CurrentNode
-        get() {
-            val node = this.graph["begin"]!!
-            return CurrentNode(
-                null,
-                null,
-                node.next,
-            )
-        }
+    private val Data.begin
+        get() = CurrentNode(
+            null,
+            null,
+            this.graph["begin"]!!.next,
+        )
 
     private fun switch(content: Data) {
         val node = currentNode
@@ -136,31 +133,28 @@ class CapeMeta(
             return
         }
         var r = Random.nextInt(node.next.values.sumOf { it.weight })
-        val next =
-            node.next.entries.first {
-                r -= it.value.weight
-                r < 0
-            }
+        val next = node.next.entries.first {
+            r -= it.value.weight
+            r < 0
+        }
         val nextNode = content.graph[next.key]!!
         val durationMin = next.value.durationMin ?: nextNode.durationMin
         val durationMax = next.value.durationMax ?: nextNode.durationMax
         val texture = next.value.texture ?: nextNode.texture
-        val duration =
-            if (durationMin !== null && durationMax !== null) {
-                if (durationMin >= durationMax) {
-                    durationMin
-                } else {
-                    Random.nextDouble(durationMin, durationMax)
-                }
+        val duration = if (durationMin !== null && durationMax !== null) {
+            if (durationMin >= durationMax) {
+                durationMin
             } else {
-                null
+                Random.nextDouble(durationMin, durationMax)
             }
-        currentNode =
-            CurrentNode(
-                texture,
-                duration,
-                next.value.next ?: nextNode.next,
-            )
+        } else {
+            null
+        }
+        currentNode = CurrentNode(
+            texture,
+            duration,
+            next.value.next ?: nextNode.next,
+        )
         lastSwitchNanos = System.nanoTime()
         if (texture === null || duration === null) switch(content)
     }
@@ -170,13 +164,13 @@ class CapeMeta(
         var counter = CAPE_SWITCH_MAX_DEPTH
         loop {
             val duration = currentNode.duration!!
-            if (duration < 0.0) return
+            duration >= 0.0 || return
             if (counter-- == 0) {
                 lastSwitchNanos = time
                 return
             }
             val incrementNanos = (duration * 1e9).long
-            if (time - lastSwitchNanos < incrementNanos) return
+            time - lastSwitchNanos < incrementNanos && return
             switch(content)
             lastSwitchNanos += incrementNanos
         }
@@ -187,20 +181,17 @@ class CapeMeta(
             switchToPresent()
             val texture = currentNode.texture ?: return null
             val resourceLocation = resourceLocationCache[texture]
-            if (MC.textureManager.getTexture(resourceLocation) is BufferedImageTexture) {
-                return resourceLocation
+            MC.textureManager.getTexture(resourceLocation) is BufferedImageTexture && return resourceLocation
+            val image = imageCache[texture] ?: run {
+                val imageURL = urlCache[texture] ?: return null
+                val fullImage = capes.getImageCache(imageURL) ?: return null
+                val textureMeta = content.textures[texture] ?: return null
+                val blockW = fullImage.width / textureMeta.xCount
+                val blockH = fullImage.height / textureMeta.yCount
+                val subImage = fullImage.getSubimage(textureMeta.x * blockW, textureMeta.y * blockH, blockW, blockH)
+                imageCache[texture] = subImage
+                subImage
             }
-            val image =
-                imageCache[texture] ?: run {
-                    val imageURL = urlCache[texture] ?: return null
-                    val fullImage = capes.getImageCache(imageURL) ?: return null
-                    val textureMeta = content.textures[texture] ?: return null
-                    val blockW = fullImage.width / textureMeta.xCount
-                    val blockH = fullImage.height / textureMeta.yCount
-                    val subImage = fullImage.getSubimage(textureMeta.x * blockW, textureMeta.y * blockH, blockW, blockH)
-                    imageCache[texture] = subImage
-                    subImage
-                }
             val newLocation = ResourceLocation("yqlossclientmixin/capes/${UUID.randomUUID().undashedLowerString}")
             MC.textureManager.loadTexture(newLocation, BufferedImageTexture(image))
             resourceLocationCache[texture] = newLocation

@@ -18,13 +18,13 @@
 
 package yqloss.yqlossclientmixinkt.impl.module.cursor
 
+import net.yqloss.uktil.extension.double
+import net.yqloss.uktil.extension.long
+import net.yqloss.uktil.extension.type.prepend
+import net.yqloss.uktil.math.Vec2D
+import net.yqloss.uktil.math.lerp
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.option.module.CursorOptionsImpl
-import yqloss.yqlossclientmixinkt.util.extension.double
-import yqloss.yqlossclientmixinkt.util.extension.long
-import yqloss.yqlossclientmixinkt.util.extension.type.prepend
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.lerp
 
 object ContinuousTrail : Trail<CursorOptionsImpl.Continuous> {
     data class SamplePoint(

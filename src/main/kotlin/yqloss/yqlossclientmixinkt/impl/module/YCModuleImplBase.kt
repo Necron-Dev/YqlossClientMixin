@@ -18,11 +18,11 @@
 
 package yqloss.yqlossclientmixinkt.impl.module
 
+import net.yqloss.uktil.generic.castTo
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.extension.castTo
 
 abstract class YCModuleImplBase<TO, TM : YCModule<in TO>>(
     val module: TM,

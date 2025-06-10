@@ -18,12 +18,14 @@
 
 package yqloss.yqlossclientmixinkt.module.rawinput
 
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
+import net.yqloss.uktil.extension.int
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
-import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
+import yqloss.yqlossclientmixinkt.module.enabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
-import yqloss.yqlossclientmixinkt.util.extension.int
+import yqloss.yqlossclientmixinkt.module.register
 
 val INFO_RAW_INPUT = moduleInfo<RawInputOptions>("raw_input", "Raw Input")
 
@@ -33,28 +35,32 @@ object RawInput : YCModuleBase<RawInputOptions>(INFO_RAW_INPUT) {
 
     val provider get() = if (options.nativeRawInput) NativeRawInputProvider else JInputRawInputProvider
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        registry.run {
-            register<YCMinecraftEvent.Loop.Pre> {
-                NativeRawInputProvider.update()
-                JInputRawInputProvider.update()
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
 
-                provider.poll()
-            }
+        register<YCMinecraftEvent.Loop.Pre> {
+            NativeRawInputProvider.update()
+            JInputRawInputProvider.update()
 
-            register<RawInputEvent.ModifyDeltaEvent> { event ->
-                if (options.enabled) {
-                    val xInt = x.int
-                    val yInt = y.int
-                    event.mutableDeltaX = xInt
-                    event.mutableDeltaY = -yInt
-                    x -= xInt
-                    y -= yInt
-                } else {
-                    x = 0.0
-                    y = 0.0
-                }
+            provider.poll()
+        }
+
+        register<RawInputEvent.ModifyDeltaEvent> { event ->
+            if (enabled) {
+                val xInt = x.int
+                val yInt = y.int
+                event.mutableDeltaX = xInt
+                event.mutableDeltaY = -yInt
+                x -= xInt
+                y -= yInt
+            } else {
+                x = 0.0
+                y = 0.0
             }
         }
+    }
+
+    init {
+        register
     }
 }

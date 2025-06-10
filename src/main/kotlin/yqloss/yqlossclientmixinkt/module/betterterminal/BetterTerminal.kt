@@ -21,23 +21,23 @@ package yqloss.yqlossclientmixinkt.module.betterterminal
 import net.minecraft.client.gui.inventory.GuiChest
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
+import net.yqloss.uktil.accessor.getValue
+import net.yqloss.uktil.accessor.refs.triggerOnceUnary
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
+import net.yqloss.uktil.extension.floorInt
+import net.yqloss.uktil.extension.type.equalTo
+import net.yqloss.uktil.extension.type.notEqualTo
+import net.yqloss.uktil.functional.plus
+import net.yqloss.uktil.scope.longRet
 import org.lwjgl.opengl.GL11.glScaled
-import yqloss.yqlossclientmixinkt.YC
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
+import yqloss.yqlossclientmixinkt.api.internalLowerChestInventory
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
-import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.module.betterterminal.terminal.*
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.*
-import yqloss.yqlossclientmixinkt.util.accessor.getValue
-import yqloss.yqlossclientmixinkt.util.accessor.refs.triggerOnceUnary
-import yqloss.yqlossclientmixinkt.util.extension.floorInt
-import yqloss.yqlossclientmixinkt.util.extension.type.equalTo
-import yqloss.yqlossclientmixinkt.util.extension.type.notEqualTo
-import yqloss.yqlossclientmixinkt.util.functional.plus
-import yqloss.yqlossclientmixinkt.util.scope.longRun
 import kotlin.random.Random
 
 val INFO_BETTER_TERMINAL = moduleInfo<BetterTerminalOptions>("better_terminal", "Better Terminal")
@@ -125,7 +125,7 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
             val chest = MC.currentScreen as? GuiChest ?: return null
             val title = chest.title.trimStyle
             val terminal = TERMINAL_FACTORIES.firstNotNullOfOrNull { it.createIfMatch(title) } ?: return null
-            val inventory = YC.api.get_GuiChest_lowerChestInventory(chest)
+            val inventory = chest.internalLowerChestInventory
             val items = (0..<inventory.sizeInventory).map(inventory::getStackInSlot)
             return ParsedState(
                 chest,
@@ -149,39 +149,36 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
         windowID: Int,
         state: List<Int>,
     ) {
-        this@BetterTerminal.data =
-            TerminalData(
-                terminal,
-                options.enableQueue && terminal.enableQueue,
-                windowID,
-                state,
-                -1,
-            )
+        this@BetterTerminal.data = TerminalData(
+            terminal,
+            options.enableQueue && terminal.enableQueue,
+            windowID,
+            state,
+            -1,
+        )
     }
 
     fun switchToNonQueue(
         terminal: Terminal,
         state: List<Int>,
     ) {
-        this@BetterTerminal.data =
-            TerminalData(
-                terminal,
-                false,
-                -1,
-                state,
-                -1,
-            )
+        this@BetterTerminal.data = TerminalData(
+            terminal,
+            false,
+            -1,
+            state,
+            -1,
+        )
     }
 
     fun switchLoading(terminal: Terminal) {
-        this@BetterTerminal.data =
-            TerminalData(
-                TerminalLoading(terminal.lines, terminal.beginLine, terminal.chestLines, terminal.title),
-                options.enableQueue && terminal.enableQueue,
-                -1,
-                listOf(),
-                1,
-            )
+        this@BetterTerminal.data = TerminalData(
+            TerminalLoading(terminal.lines, terminal.beginLine, terminal.chestLines, terminal.title),
+            options.enableQueue && terminal.enableQueue,
+            -1,
+            listOf(),
+            1,
+        )
     }
 
     fun forceNonQueue() {
@@ -401,44 +398,34 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
         }
     }
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        registry.run {
-            register<YCRenderEvent.Screen.Proxy> { event ->
-                longRun {
-                    val data = data
-                    Screen.proxiedScreen = null
-                    this@BetterTerminal.data = null
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
 
-                    ensureEnabled()
-                    if (!options.forceEnabled) {
-                        ensureSkyBlock()
-                    }
+        register<YCRenderEvent.Screen.Proxy> { event ->
+            val data = data
+            Screen.proxiedScreen = null
+            this@BetterTerminal.data = null
 
-                    updateChest(event.screen as? GuiChest ?: return@register, data)
-                    this@BetterTerminal.data ?: return@register
-                    event.mutableScreen = Screen
-                }
-            }
+            enabled || longRet
+            options.forceEnabled || inSkyBlock || longRet
 
-            register<BetterTerminalEvent.DrawDefaultBackground> { event ->
-                longRun {
-                    ensureNotCanceled(event)
-                    ensureEnabled()
-                    event.canceled = event.screen === Screen.proxiedScreen
-                }
-            }
+            updateChest(event.screen as? GuiChest ?: longRet, data)
+            this@BetterTerminal.data ?: longRet
+            event.mutableScreen = Screen
+        }
 
-            register<BetterTerminalEvent.RenderTooltip> { event ->
-                longRun {
-                    ensureNotCanceled(event)
-                    ensureEnabled()
-                    event.canceled = event.screen === Screen.proxiedScreen
-                }
-            }
+        register<BetterTerminalEvent.DrawDefaultBackground> { event ->
+            !event.canceled && enabled || longRet
+            event.canceled = event.screen === Screen.proxiedScreen
+        }
 
-            register<YCMinecraftEvent.Tick.Post> {
-                Screen.onHandleInput = null
-            }
+        register<BetterTerminalEvent.RenderTooltip> { event ->
+            !event.canceled && enabled || longRet
+            event.canceled = event.screen === Screen.proxiedScreen
+        }
+
+        register<YCMinecraftEvent.Tick.Post> {
+            Screen.onHandleInput = null
         }
     }
 
@@ -448,11 +435,10 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
             mouseY: Int,
             partialTicks: Float,
         ) {
-            if (options.showChest) {
-                glMatrixScope {
-                    glScaled(options.chestScale, options.chestScale, 1.0)
-                    proxiedScreen?.drawScreen(mouseX, mouseY, partialTicks)
-                }
+            options.showChest || return
+            glMatrixScope {
+                glScaled(options.chestScale, options.chestScale, 1.0)
+                proxiedScreen?.drawScreen(mouseX, mouseY, partialTicks)
             }
         }
 
@@ -463,5 +449,9 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
             updateChest(MC.currentScreen as? GuiChest ?: return, data)
             super.handleInput()
         }
+    }
+
+    init {
+        register
     }
 }

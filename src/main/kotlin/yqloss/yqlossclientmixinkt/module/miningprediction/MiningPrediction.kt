@@ -19,23 +19,23 @@
 package yqloss.yqlossclientmixinkt.module.miningprediction
 
 import net.minecraft.client.renderer.DestroyBlockProgress
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
+import net.yqloss.uktil.extension.int
+import net.yqloss.uktil.functional.plus
+import net.yqloss.uktil.math.*
+import net.yqloss.uktil.scope.longRet
+import net.yqloss.uktil.scope.noExcept
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.YCTemplate
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
+import yqloss.yqlossclientmixinkt.api.setDefault
 import yqloss.yqlossclientmixinkt.event.hypixel.YCHypixelEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
-import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.module.option.blockState
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.*
-import yqloss.yqlossclientmixinkt.util.extension.int
-import yqloss.yqlossclientmixinkt.util.functional.plus
-import yqloss.yqlossclientmixinkt.util.math.*
-import yqloss.yqlossclientmixinkt.util.scope.longReturn
-import yqloss.yqlossclientmixinkt.util.scope.longRun
-import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import kotlin.math.max
 import kotlin.math.min
 
@@ -62,7 +62,7 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
         private set
 
     fun getTicks(): Int {
-        if (!isAvailable) return 0
+        isAvailable || return 0
         val block = breakingBlock ?: return 0
         val modifiedMiningSpeed = block.type.modifyMiningSpeed(miningSpeed)
         return max(0, block.getTicksActual(modifiedMiningSpeed) + options.durationOffset)
@@ -74,7 +74,8 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
     }
 
     fun setPlaceholders(template: YCTemplate) {
-        if (!isAvailable) return
+        template.setDefault()
+        isAvailable || return
         val block = breakingBlock ?: return
         val modifiedMiningSpeed = block.type.modifyMiningSpeed(miningSpeed)
         val ticks = max(0, block.getTicksActual(modifiedMiningSpeed) + options.durationOffset)
@@ -121,12 +122,6 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
         resetBreaking()
     }
 
-    private fun ensureAvailable() {
-        if (!isAvailable) {
-            longReturn {}
-        }
-    }
-
     private fun check(accumulateProgress: Boolean) {
         val block = breakingBlock ?: return
         val modifiedMiningSpeed = block.type.modifyMiningSpeed(miningSpeed)
@@ -156,122 +151,103 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
         printChat("Tab Mining Speed: $miningSpeed")
     }
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        registry.run {
-            register<YCMinecraftEvent.LoadWorld.Pre> {
-                reset()
-            }
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
 
-            register<YCMinecraftEvent.Tick.Pre> {
-                longRun {
-                    isAvailable = false
-                    miningSpeed = 0
+        register<YCMinecraftEvent.LoadWorld.Pre> {
+            reset()
+        }
 
-                    ensureEnabled()
-                    ensureInWorld()
+        register<YCMinecraftEvent.Tick.Pre> {
+            isAvailable = false
+            miningSpeed = 0
 
-                    if (!options.forceEnabled) {
-                        ensureSkyBlockModes(SKYBLOCK_MINING_ISLANDS)
-                    }
+            enabled && inWorld || longRet
+            options.forceEnabled || inSkyblockMode(SKYBLOCK_MINING_ISLANDS) || longRet
 
-                    MC.thePlayer.sendQueue.playerInfoMap.firstOrNull {
-                        noExcept(logger::catching) {
-                            val rawName = MC.ingameGUI.tabList.getPlayerName(it)
-                            if ("Mining Speed" in rawName) {
-                                miningSpeed =
-                                    rawName.trimStyle
-                                        .filter { it.isDigit() }
-                                        .toInt()
-                                return@firstOrNull true
-                            }
-                        }
-                        false
-                    }
-
-                    ensure { miningSpeed > 0 }
-
-                    isAvailable = true
-
-                    check(options.useClientTick)
-                    removeOutdatedBlocks()
-                }
-            }
-
-            register<YCHypixelEvent.ServerTick> {
-                longRun {
-                    ensureEnabled { !options.useClientTick }
-                    ensureInWorld()
-                    ensure { isAvailable }
-
-                    check(!options.useClientTick)
-                    removeOutdatedBlocks()
-                }
-            }
-
-            register<MiningPredictionEvent.Mining> { event ->
-                longRun {
-                    ensureEnabled()
-                    ensureAvailable()
-
-                    if (MC.thePlayer.heldItem?.item !in SKYBLOCK_MINING_TOOLS) {
-                        resetBreaking()
-                    } else {
-                        val ore = getOre(event.pos)
-                        if (ore !== breakingBlock) {
-                            resetBreaking()
-                            breakingPos = event.pos
-                            if (event.pos !in destroyedBlocks) {
-                                breakingBlock = ore
-                                check(false)
-                                removeOutdatedBlocks()
-                            }
-                        }
+            MC.thePlayer.sendQueue.playerInfoMap.firstOrNull {
+                noExcept(logger::catching) {
+                    val rawName = MC.ingameGUI.tabList.getPlayerName(it)
+                    if ("Mining Speed" in rawName) {
+                        miningSpeed = rawName.trimStyle.filter { c -> c.isDigit() }.toInt()
+                        return@firstOrNull true
                     }
                 }
+                false
             }
 
-            register<MiningPredictionEvent.NotMining> {
+            miningSpeed > 0 || longRet
+
+            isAvailable = true
+
+            check(options.useClientTick)
+            removeOutdatedBlocks()
+        }
+
+        register<YCHypixelEvent.ServerTick> {
+            enabled && !options.useClientTick && inWorld && isAvailable || longRet
+
+            check(!options.useClientTick)
+            removeOutdatedBlocks()
+        }
+
+        register<MiningPredictionEvent.Mining> { event ->
+            enabled && isAvailable || longRet
+
+            if (MC.thePlayer.heldItem?.item !in SKYBLOCK_MINING_TOOLS) {
                 resetBreaking()
-            }
-
-            register<MiningPredictionEvent.RenderBlockDamage> { event ->
-                longRun {
-                    ensureEnabled()
-                    ensureAvailable()
-
-                    removeOutdatedBlocks()
-
-                    breakingBlock?.let {
-                        event.mutableDamages.entries.removeIf { (_, damage) ->
-                            damage.position.asVec3I == breakingPos
-                        }
-
-                        event.mutableDamages[MC.thePlayer.entityId] =
-                            DestroyBlockProgress(
-                                0,
-                                breakingPos.asBlockPos,
-                            ).apply { partialBlockDamage = max(0, min(10, (10.0 * breakingProgress.double).int)) }
-                    }
-                }
-            }
-
-            register<YCRenderEvent.Block.ProcessAreaBlockState> { event ->
-                longRun {
-                    ensureEnabled()
-                    ensureAvailable()
-
-                    if (destroyedBlocks.keys.any { it in event.area }) {
-                        event.mutableProcessor += { args ->
-                            destroyedBlocks[args.position]?.let { info ->
-                                if (getOre(info.blockPos) === info.block) {
-                                    args.mutableBlockState = options.destroyedBlock.blockState
-                                }
-                            }
-                            Unit
-                        }
+            } else {
+                val ore = getOre(event.pos)
+                if (ore !== breakingBlock) {
+                    resetBreaking()
+                    breakingPos = event.pos
+                    if (event.pos !in destroyedBlocks) {
+                        breakingBlock = ore
+                        check(false)
+                        removeOutdatedBlocks()
                     }
                 }
             }
         }
+
+        register<MiningPredictionEvent.NotMining> {
+            resetBreaking()
+        }
+
+        register<MiningPredictionEvent.RenderBlockDamage> { event ->
+            enabled && isAvailable || longRet
+
+            removeOutdatedBlocks()
+
+            breakingBlock?.let {
+                event.mutableDamages.entries.removeIf { (_, damage) ->
+                    damage.position.asVec3I == breakingPos
+                }
+
+                event.mutableDamages[MC.thePlayer.entityId] = DestroyBlockProgress(
+                    0,
+                    breakingPos.asBlockPos,
+                ).apply { partialBlockDamage = max(0, min(10, (10.0 * breakingProgress.double).int)) }
+            }
+        }
+
+        register<YCRenderEvent.Block.ProcessAreaBlockState> { event ->
+            enabled && isAvailable || longRet
+
+            if (destroyedBlocks.keys.any { it in event.area }) {
+                event.mutableProcessor += { args ->
+                    destroyedBlocks[args.position]?.let { info ->
+                        if (getOre(info.blockPos) === info.block) {
+                            args.mutableBlockState = options.destroyedBlock.blockState
+                        }
+                    }
+                    Unit
+                }
+            }
+        }
+    }
+
+    init {
+        register
     }
 }

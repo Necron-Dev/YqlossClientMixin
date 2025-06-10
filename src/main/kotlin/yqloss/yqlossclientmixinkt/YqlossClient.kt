@@ -19,17 +19,17 @@
 package yqloss.yqlossclientmixinkt
 
 import kotlinx.serialization.json.Json
+import net.yqloss.uktil.accessor.getValue
+import net.yqloss.uktil.accessor.refs.lateVal
+import net.yqloss.uktil.accessor.setValue
+import net.yqloss.uktil.event.EventDispatcher
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.ManagerEventManager
 import okhttp3.OkHttpClient
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import yqloss.yqlossclientmixinkt.api.YCAPI
-import yqloss.yqlossclientmixinkt.event.YCEventDispatcher
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
-import yqloss.yqlossclientmixinkt.event.YCManagerEventRegistry
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.util.accessor.getValue
-import yqloss.yqlossclientmixinkt.util.accessor.refs.lateVal
-import yqloss.yqlossclientmixinkt.util.accessor.setValue
 import java.io.File
 import java.net.URI
 import java.net.URL
@@ -48,13 +48,11 @@ val CLASS_ROOT: URL by lazy {
     if (uri.scheme == "jar") {
         URI(uri.toASCIIString().replace(Regex("^jar:(file:.*[.]jar)!/.*")) { it.groupValues[1] }).toURL()
     } else {
-        uri.let {
-            if (it.path.endsWith("/java/main/mixins.yqlossclientmixin.json")) {
-                File(File(it).parentFile.parentFile.parentFile, "/kotlin/main/").toURI()
-            } else {
-                it
-            }.toURL()
-        }
+        if (uri.path.endsWith("/java/main/mixins.yqlossclientmixin.json")) {
+            File(File(uri).parentFile.parentFile.parentFile, "/kotlin/main/").toURI()
+        } else {
+            uri
+        }.toURL()
     }
 }
 
@@ -75,9 +73,9 @@ interface YqlossClient {
     val workingDirectory: String
 
     val api: YCAPI
-    val managerEventManager: YCManagerEventRegistry<Any?>
-    val eventRegistry: YCEventRegistry
-    val eventDispatcher: YCEventDispatcher
+    val managerEventManager: ManagerEventManager<Any?>
+    val eventRegistry: EventRegistry
+    val eventDispatcher: EventDispatcher
 
     val configVersion: Int
 

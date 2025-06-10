@@ -19,19 +19,19 @@
 package yqloss.yqlossclientmixinkt.module.betterterminal
 
 import net.minecraft.client.gui.GuiScreen
-import yqloss.yqlossclientmixinkt.event.YCCancelableEvent
-import yqloss.yqlossclientmixinkt.event.YCEvent
+import net.yqloss.uktil.event.CancelableEvent
+import net.yqloss.uktil.event.Event
 
-sealed interface BetterTerminalEvent : YCEvent {
+sealed interface BetterTerminalEvent : Event {
     data class DrawDefaultBackground(
         val screen: GuiScreen,
         override var canceled: Boolean = false,
     ) : BetterTerminalEvent,
-        YCCancelableEvent
+        CancelableEvent
 
     data class RenderTooltip(
         val screen: GuiScreen,
         override var canceled: Boolean = false,
     ) : BetterTerminalEvent,
-        YCCancelableEvent
+        CancelableEvent
 }

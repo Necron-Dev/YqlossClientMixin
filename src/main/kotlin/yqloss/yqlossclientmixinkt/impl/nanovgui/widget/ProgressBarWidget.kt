@@ -18,8 +18,8 @@
 
 package yqloss.yqlossclientmixinkt.impl.nanovgui.widget
 
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.lerp
+import net.yqloss.uktil.math.Vec2D
+import net.yqloss.uktil.math.lerp
 
 fun progressBarWidget(
     progress: Double,
@@ -27,19 +27,17 @@ fun progressBarWidget(
     pos2: Vec2D,
     colorProgress: Int,
     colorBackground: Int,
-): ListWidget {
-    return ListWidget(
-        RoundedRectWidget(
-            pos1,
-            pos2,
-            colorBackground,
-            (pos2 - pos1).y / 2.0,
-        ),
-        RoundedRectWidget(
-            pos1,
-            pos2.copy(x = lerp(pos1.x + (pos2 - pos1).y, pos2.x, progress)),
-            colorProgress,
-            (pos2 - pos1).y / 2.0,
-        ),
-    )
-}
+) = ListWidget(
+    RoundedRectWidget(
+        pos1,
+        pos2,
+        colorBackground,
+        (pos2 - pos1).y / 2.0,
+    ),
+    RoundedRectWidget(
+        pos1,
+        pos2.copy(x = lerp(pos1.x + (pos2 - pos1).y, pos2.x, progress)),
+        colorProgress,
+        (pos2 - pos1).y / 2.0,
+    ),
+)

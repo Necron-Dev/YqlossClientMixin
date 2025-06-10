@@ -20,6 +20,7 @@ package yqloss.yqlossclientmixinkt.impl.option.module
 
 import cc.polyfrost.oneconfig.config.annotations.*
 import cc.polyfrost.oneconfig.config.annotations.Number
+import net.yqloss.uktil.extension.double
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.impl.option.disclaimer.DisclaimerAtOwnRisk
@@ -31,7 +32,6 @@ import yqloss.yqlossclientmixinkt.impl.option.impl.ScreenScaleOption
 import yqloss.yqlossclientmixinkt.impl.util.Colors
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminalOptions
 import yqloss.yqlossclientmixinkt.module.betterterminal.INFO_BETTER_TERMINAL
-import yqloss.yqlossclientmixinkt.util.extension.double
 
 class BetterTerminalOptionsImpl :
     OptionsImpl(INFO_BETTER_TERMINAL),

@@ -34,16 +34,14 @@ data class TerminalRubix(
     override val chestLines = 5
     override val title = "Change all to same color!"
 
-    override fun parse(items: List<ItemStack?>): List<Int>? {
-        return mapSlots(items, SLOTS, true) {
-            when (it.metadata) {
-                14 -> 0
-                1 -> 1
-                4 -> 2
-                13 -> 3
-                11 -> 4
-                else -> 0
-            }
+    override fun parse(items: List<ItemStack?>) = mapSlots(items, SLOTS, true) {
+        when (it.metadata) {
+            14 -> 0
+            1 -> 1
+            4 -> 2
+            13 -> 3
+            11 -> 4
+            else -> 0
         }
     }
 
@@ -77,23 +75,19 @@ data class TerminalRubix(
             2 -> Terminal.SlotRenderInfo(SlotType.RUBIX_LEFT_2, "2")
             else -> Terminal.SlotRenderInfo(SlotType.RUBIX_CORRECT, null)
         }.apply {
-            if (!BetterTerminal.options.rubixShowNumber) {
-                return copy(text = null)
-            }
+            BetterTerminal.options.rubixShowNumber || return copy(text = null)
         }
     }
 
-    override fun draw(state: List<Int>): List<Terminal.SlotRenderInfo> {
-        return buildList {
-            val solution = solve(state)
-            repeat(12) { add(SlotType.EMPTY) }
-            (0..2).forEach { add(getSlot(state[it], solution)) }
-            repeat(6) { add(SlotType.EMPTY) }
-            (3..5).forEach { add(getSlot(state[it], solution)) }
-            repeat(6) { add(SlotType.EMPTY) }
-            (6..8).forEach { add(getSlot(state[it], solution)) }
-            repeat(3) { add(SlotType.EMPTY) }
-        }
+    override fun draw(state: List<Int>): List<Terminal.SlotRenderInfo> = buildList {
+        val solution = solve(state)
+        repeat(12) { add(SlotType.EMPTY) }
+        (0..2).forEach { add(getSlot(state[it], solution)) }
+        repeat(6) { add(SlotType.EMPTY) }
+        (3..5).forEach { add(getSlot(state[it], solution)) }
+        repeat(6) { add(SlotType.EMPTY) }
+        (6..8).forEach { add(getSlot(state[it], solution)) }
+        repeat(3) { add(SlotType.EMPTY) }
     }
 
     override fun predict(
@@ -101,13 +95,12 @@ data class TerminalRubix(
         slotID: Int,
         button: Int,
     ): Terminal.Prediction {
-        val pos =
-            when (slotID) {
-                in 12..14 -> slotID - 12
-                in 21..23 -> slotID - 18
-                in 30..32 -> slotID - 24
-                else -> return Terminal.Prediction(state, ClickType.NONE, button)
-            }
+        val pos = when (slotID) {
+            in 12..14 -> slotID - 12
+            in 21..23 -> slotID - 18
+            in 30..32 -> slotID - 24
+            else -> return Terminal.Prediction(state, ClickType.NONE, button)
+        }
         var offset = if (button == 1) -1 else 1
         var actualButton = button
         val clicksToSolution = clicksTo(state[pos], solve(state))
@@ -127,8 +120,8 @@ data class TerminalRubix(
 
     companion object : TerminalFactory<TerminalRubix> {
         override fun createIfMatch(title: String): TerminalRubix? {
-            if (!BetterTerminal.options.rubixEnabled) return null
-            return if (title == "Change all to same color!") TerminalRubix() else null
+            BetterTerminal.options.rubixEnabled && title == "Change all to same color!" || return null
+            return TerminalRubix()
         }
     }
 }

@@ -19,9 +19,9 @@
 package yqloss.yqlossclientmixinkt.module.ssmotionblur
 
 import net.minecraft.client.gui.ScaledResolution
-import yqloss.yqlossclientmixinkt.event.YCEvent
+import net.yqloss.uktil.event.Event
 
-sealed interface SSMotionBlurEvent : YCEvent {
+sealed interface SSMotionBlurEvent : Event {
     data class Render(
         val screenWidth: Int,
         val screenHeight: Int,

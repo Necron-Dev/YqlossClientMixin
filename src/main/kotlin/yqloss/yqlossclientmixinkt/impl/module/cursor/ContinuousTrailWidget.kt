@@ -18,13 +18,13 @@
 
 package yqloss.yqlossclientmixinkt.impl.module.cursor
 
+import net.yqloss.uktil.extension.long
+import net.yqloss.uktil.math.Vec2D
+import net.yqloss.uktil.math.lerp
 import yqloss.yqlossclientmixinkt.impl.nanovgui.NanoVGUIContext
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
-import yqloss.yqlossclientmixinkt.impl.util.alphaScale
-import yqloss.yqlossclientmixinkt.util.extension.long
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.lerp
+import yqloss.yqlossclientmixinkt.util.alphaScale
 
 data class ContinuousTrailWidget(
     private val samplePoints: List<ContinuousTrail.SamplePoint>,
@@ -47,7 +47,7 @@ data class ContinuousTrailWidget(
         val time = System.nanoTime()
         val s = timeSamples * radiusSamples
 
-        nvg.runInNoAAContext { vgNoAA ->
+        nvg.runInAAContext { vgNoAA ->
             repeat(timeSamples) { t ->
                 repeat(radiusSamples) { r ->
                     val trailA = alpha * s / ((s - alpha * (r + 1) * t) * (s - alpha * (t + 1) * r))

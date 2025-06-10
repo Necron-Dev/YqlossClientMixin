@@ -26,19 +26,19 @@ import net.minecraft.init.Blocks
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.BlockPos
 import net.minecraft.world.IBlockAccess
+import net.yqloss.uktil.accessor.getValue
+import net.yqloss.uktil.accessor.outs.Box
+import net.yqloss.uktil.accessor.outs.inBox
+import net.yqloss.uktil.accessor.outs.value
+import net.yqloss.uktil.accessor.refs.threadLocal
+import net.yqloss.uktil.accessor.setValue
+import net.yqloss.uktil.generic.castTo
+import net.yqloss.uktil.math.Vec3I
+import net.yqloss.uktil.math.contains
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
-import yqloss.yqlossclientmixinkt.util.accessor.getValue
-import yqloss.yqlossclientmixinkt.util.accessor.outs.Box
-import yqloss.yqlossclientmixinkt.util.accessor.outs.inBox
-import yqloss.yqlossclientmixinkt.util.accessor.outs.value
-import yqloss.yqlossclientmixinkt.util.accessor.refs.threadLocal
-import yqloss.yqlossclientmixinkt.util.accessor.setValue
 import yqloss.yqlossclientmixinkt.util.asVec3I
-import yqloss.yqlossclientmixinkt.util.extension.castTo
-import yqloss.yqlossclientmixinkt.util.math.Vec3I
-import yqloss.yqlossclientmixinkt.util.math.contains
 import yqloss.yqlossclientmixinkt.util.printError
 import java.lang.ref.WeakReference
 
@@ -65,9 +65,7 @@ object CallbackRenderChunk {
                 function: (Vec3I) -> T,
             ): T {
                 val diff = vec - origin
-                if (diff !in (Vec3I(-1, -1, z - 1) areaTo Vec3I(17, 17, z + 2))) {
-                    return function(vec)
-                }
+                diff in (Vec3I(-1, -1, z - 1) areaTo Vec3I(17, 17, z + 2)) || return function(vec)
                 val version = diff.z
                 val index = getIndex(diff, (version % 3 + 3) % 3)
                 if (cacheVersion[index] != version) {
@@ -99,11 +97,10 @@ object CallbackRenderChunk {
             }
 
             override fun getBlockState(pos: BlockPos): IBlockState {
-                val state =
-                    blockAccess.getBlockState(pos) ?: run {
-                        printError("${this::class} getBlockState null at $pos")
-                        Blocks.air.defaultState
-                    }
+                val state = blockAccess.getBlockState(pos) ?: run {
+                    printError("${this::class} getBlockState null at $pos")
+                    Blocks.air.defaultState
+                }
                 return cacheBlockState
                     .getOrSet(pos.asVec3I) {
                         YCRenderEvent.Block.ProcessAreaBlockState

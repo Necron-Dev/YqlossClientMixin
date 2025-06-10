@@ -20,63 +20,53 @@ package yqloss.yqlossclientmixinkt.module.tweaks
 
 import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.init.Items
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
-import yqloss.yqlossclientmixinkt.event.register
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
+import net.yqloss.uktil.extension.equalsNotNull
+import net.yqloss.uktil.scope.longRet
 import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.SKYBLOCK_MINING_TOOLS
-import yqloss.yqlossclientmixinkt.util.scope.longRun
 import yqloss.yqlossclientmixinkt.util.skyBlockUUID
 
 val INFO_TWEAKS = moduleInfo<TweaksOptions>("tweaks", "Tweaks")
 
 object Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS) {
-    override fun registerEvents(registry: YCEventRegistry) {
-        registry.run {
-            register<TweaksEvent.SetAnglesPost> { event ->
-                longRun {
-                    ensureEnabled { enableInstantAim }
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
 
-                    if (event.entity !is EntityPlayerSP) return@longRun
+        register<TweaksEvent.SetAnglesPost> { (entity) ->
+            enabled && options.enableInstantAim || longRet
 
-                    event.entity.prevRotationYawHead = event.entity.prevRotationYaw
-                    event.entity.rotationYawHead = event.entity.rotationYaw
-                }
-            }
-
-            register<TweaksEvent.RightClickBlockPre> { event ->
-                longRun {
-                    ensureNotCanceled(event)
-                    ensureEnabled { disablePearlClickBlock }
-                    ensureInWorld()
-
-                    if (MC.thePlayer.inventory
-                            .getCurrentItem()
-                            ?.item === Items.ender_pearl
-                    ) {
-                        event.canceled = true
-                    }
-                }
-            }
-
-            register<TweaksEvent.IsHittingPositionCheck> { event ->
-                longRun {
-                    ensureNotCanceled(event)
-                    ensureEnabled { disableSkyBlockToolsNBTUpdateResetDigging }
-
-                    val heldItemStack = MC.thePlayer.heldItem
-                    if (event.currentItemHittingBlock !== null &&
-                        heldItemStack !== null &&
-                        heldItemStack.item in SKYBLOCK_MINING_TOOLS &&
-                        heldItemStack.item === event.currentItemHittingBlock.item &&
-                        heldItemStack.skyBlockUUID !== null &&
-                        heldItemStack.skyBlockUUID == event.currentItemHittingBlock.skyBlockUUID
-                    ) {
-                        event.canceled = true
-                        event.returnValue = event.pos !== null && event.pos == event.currentBlock
-                    }
-                }
+            if (entity is EntityPlayerSP) {
+                entity.prevRotationYawHead = entity.prevRotationYaw
+                entity.rotationYawHead = entity.rotationYaw
             }
         }
+
+        register<TweaksEvent.RightClickBlockPre> { event ->
+            !event.canceled && enabled && options.disablePearlClickBlock && inWorld || longRet
+
+            if (MC.thePlayer.inventory.getCurrentItem()?.item === Items.ender_pearl) event.canceled = true
+        }
+
+        register<TweaksEvent.IsHittingPositionCheck> { event ->
+            !event.canceled && enabled && options.disableSkyBlockToolsNBTUpdateResetDigging && inWorld || longRet
+
+            val heldItemStack = MC.thePlayer.heldItem
+            if (event.currentItemHittingBlock !== null &&
+                heldItemStack !== null &&
+                heldItemStack.item in SKYBLOCK_MINING_TOOLS &&
+                heldItemStack.item === event.currentItemHittingBlock.item &&
+                heldItemStack.skyBlockUUID equalsNotNull event.currentItemHittingBlock.skyBlockUUID
+            ) {
+                event.canceled = true
+                event.returnValue = event.pos !== null && event.pos == event.currentBlock
+            }
+        }
+    }
+
+    init {
+        register
     }
 }

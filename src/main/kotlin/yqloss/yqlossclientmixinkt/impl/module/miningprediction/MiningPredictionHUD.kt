@@ -18,11 +18,15 @@
 
 package yqloss.yqlossclientmixinkt.impl.module.miningprediction
 
+import net.yqloss.uktil.event.EventRegistry
+import net.yqloss.uktil.event.register
+import net.yqloss.uktil.extension.double
+import net.yqloss.uktil.math.Fraction
+import net.yqloss.uktil.math.Vec2D
+import net.yqloss.uktil.scope.longRet
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.api.format
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.event.hypixel.hypixelPartialServerTicks
-import yqloss.yqlossclientmixinkt.event.register
 import yqloss.yqlossclientmixinkt.impl.module.YCModuleHUDBase
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
@@ -30,14 +34,10 @@ import yqloss.yqlossclientmixinkt.impl.nanovgui.widget.TextWidget
 import yqloss.yqlossclientmixinkt.impl.nanovgui.widget.progressBarWidget
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.fontSemiBold
 import yqloss.yqlossclientmixinkt.impl.option.module.MiningPredictionOptionsImpl
-import yqloss.yqlossclientmixinkt.module.ensure
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPrediction
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPredictionEvent
-import yqloss.yqlossclientmixinkt.util.extension.double
-import yqloss.yqlossclientmixinkt.util.math.Fraction
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
+import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.util.partialTicks
-import yqloss.yqlossclientmixinkt.util.scope.longRun
 import kotlin.math.min
 
 object MiningPredictionHUD :
@@ -50,13 +50,7 @@ object MiningPredictionHUD :
 
     override val example get() = super.example || options.forceExample
 
-    override fun ensureShow() {
-        ensureHUDEnabled()
-
-        if (!example) {
-            ensure { module.isAvailable && module.breakingBlock !== null }
-        }
-    }
+    override val ensureShow get() = isHUDEnabled && (example || module.isAvailable && module.breakingBlock !== null)
 
     override fun draw(
         widgets: MutableList<Widget<*>>,
@@ -129,19 +123,20 @@ object MiningPredictionHUD :
         )
     }
 
-    override fun registerEvents(registry: YCEventRegistry) {
-        super.registerEvents(registry)
-        registry.run {
-            register<MiningPredictionEvent.BreakBlock> {
-                longRun {
-                    ensureHUDEnabled()
+    override val registerEvents: EventRegistry.() -> Unit = {
+        super.registerEvents(this)
 
-                    val box = size
-                    val tr = transformation
-                    animation.update(true, box, tr, fadeOut)
-                    redraw(box, tr)
-                }
-            }
+        register<MiningPredictionEvent.BreakBlock> {
+            isHUDEnabled || longRet
+
+            val box = size
+            val tr = transformation
+            animation.update(true, box, tr, fadeOut)
+            redraw(box, tr)
         }
+    }
+
+    init {
+        register
     }
 }

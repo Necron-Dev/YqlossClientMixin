@@ -18,15 +18,15 @@
 
 package yqloss.yqlossclientmixinkt.event.minecraft
 
-import yqloss.yqlossclientmixinkt.event.YCCancelableEvent
-import yqloss.yqlossclientmixinkt.event.YCEvent
+import net.yqloss.uktil.event.CancelableEvent
+import net.yqloss.uktil.event.Event
+import net.yqloss.uktil.scope.noExcept
 import yqloss.yqlossclientmixinkt.util.LOG_COMMAND_ARGUMENT_PARSING
-import yqloss.yqlossclientmixinkt.util.scope.noExcept
 import yqloss.yqlossclientmixinkt.ycLogger
 
 private val logger = ycLogger("Command")
 
-sealed interface YCCommandEvent : YCEvent {
+sealed interface YCCommandEvent : Event {
     fun processArguments(command: String): List<String> {
         return noExcept {
             val trim = command.trim()
@@ -98,7 +98,7 @@ sealed interface YCCommandEvent : YCEvent {
         val disableClientCommand: Boolean,
         override var canceled: Boolean = false,
     ) : YCCommandEvent,
-        YCCancelableEvent {
+        CancelableEvent {
         val args by lazy {
             processArguments(command).also {
                 if (LOG_COMMAND_ARGUMENT_PARSING) {

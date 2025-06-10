@@ -19,13 +19,13 @@
 package yqloss.yqlossclientmixinkt.impl.nanovgui.widget
 
 import net.minecraft.client.network.NetworkPlayerInfo
+import net.yqloss.uktil.math.Vec2D
+import net.yqloss.uktil.math.lerp
 import yqloss.yqlossclientmixinkt.impl.nanovgui.NanoVGUIContext
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.NanoVGImageCache
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
 import yqloss.yqlossclientmixinkt.util.MC
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
-import yqloss.yqlossclientmixinkt.util.math.lerp
 
 data class RoundedPlayerAvatarWidget(
     private val cache: NanoVGImageCache,

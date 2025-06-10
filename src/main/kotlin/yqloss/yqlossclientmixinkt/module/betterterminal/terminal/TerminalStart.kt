@@ -38,10 +38,7 @@ data class TerminalStart(
 
     override fun parse(items: List<ItemStack?>): List<Int>? {
         return mapSlots(items, SLOTS, false) {
-            if (it.displayName.trimStyle
-                    .uppercase()
-                    .startsWith(letter)
-            ) {
+            if (it.displayName.trimStyle.uppercase().startsWith(letter)) {
                 if (it.isItemEnchanted) -1 else 1
             } else {
                 0

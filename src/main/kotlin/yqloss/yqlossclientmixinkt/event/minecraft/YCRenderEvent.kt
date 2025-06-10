@@ -22,11 +22,11 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.IBlockAccess
-import yqloss.yqlossclientmixinkt.event.YCEvent
-import yqloss.yqlossclientmixinkt.util.math.Area3I
-import yqloss.yqlossclientmixinkt.util.math.Vec3I
+import net.yqloss.uktil.event.Event
+import net.yqloss.uktil.math.Area3I
+import net.yqloss.uktil.math.Vec3I
 
-sealed interface YCRenderEvent : YCEvent {
+sealed interface YCRenderEvent : Event {
     sealed interface Render : YCRenderEvent {
         data object Pre : Render
     }

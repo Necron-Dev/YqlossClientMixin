@@ -18,9 +18,9 @@
 
 package yqloss.yqlossclientmixinkt.impl.nanovgui.widget
 
+import net.yqloss.uktil.math.Vec2D
 import yqloss.yqlossclientmixinkt.impl.nanovgui.NanoVGUIContext
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
 
 class ListWidget(
     private val list: MutableList<Widget<*>> = mutableListOf(),

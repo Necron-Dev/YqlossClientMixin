@@ -18,8 +18,8 @@
 
 package yqloss.yqlossclientmixinkt.impl.module.cursor
 
+import net.yqloss.uktil.math.Vec2D
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
-import yqloss.yqlossclientmixinkt.util.math.Vec2D
 
 interface Trail<T> {
     fun clear()

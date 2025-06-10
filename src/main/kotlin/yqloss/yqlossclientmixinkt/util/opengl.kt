@@ -20,9 +20,18 @@
 
 package yqloss.yqlossclientmixinkt.util
 
+import net.yqloss.uktil.math.Vec3D
 import org.lwjgl.opengl.GL11.*
 import yqloss.yqlossclientmixinkt.module.option.YCColor
-import yqloss.yqlossclientmixinkt.util.math.Vec3D
+import java.lang.AutoCloseable
+
+val glMatrixElement: AutoCloseable
+    get() {
+        glPushMatrix()
+        return AutoCloseable {
+            glPopMatrix()
+        }
+    }
 
 inline fun <R> glMatrixScope(function: () -> R) {
     glPushMatrix()
@@ -32,6 +41,16 @@ inline fun <R> glMatrixScope(function: () -> R) {
         glPopMatrix()
     }
 }
+
+val glAttribElement: AutoCloseable
+    get() {
+        glPushAttrib(GL_ALL_ATTRIB_BITS)
+        glPushClientAttrib(GL_ALL_CLIENT_ATTRIB_BITS)
+        return AutoCloseable {
+            glPopClientAttrib()
+            glPopAttrib()
+        }
+    }
 
 inline fun <R> glAttribScope(function: () -> R) {
     glPushAttrib(GL_ALL_ATTRIB_BITS)
@@ -43,6 +62,18 @@ inline fun <R> glAttribScope(function: () -> R) {
         glPopAttrib()
     }
 }
+
+val glStateElement: AutoCloseable
+    get() {
+        glPushAttrib(GL_ALL_ATTRIB_BITS)
+        glPushClientAttrib(GL_ALL_CLIENT_ATTRIB_BITS)
+        glPushMatrix()
+        return AutoCloseable {
+            glPopMatrix()
+            glPopClientAttrib()
+            glPopAttrib()
+        }
+    }
 
 inline fun <R> glStateScope(function: () -> R) {
     glPushAttrib(GL_ALL_ATTRIB_BITS)

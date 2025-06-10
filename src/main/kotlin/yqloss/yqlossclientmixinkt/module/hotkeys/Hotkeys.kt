@@ -18,13 +18,14 @@
 
 package yqloss.yqlossclientmixinkt.module.hotkeys
 
-import yqloss.yqlossclientmixinkt.event.YCEventRegistry
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.moduleInfo
+import yqloss.yqlossclientmixinkt.module.register
 
 val INFO_HOTKEYS = moduleInfo<HotkeysOptions>("hotkeys", "Hotkeys")
 
 object Hotkeys : YCModuleBase<HotkeysOptions>(INFO_HOTKEYS) {
-    override fun registerEvents(registry: YCEventRegistry) {
+    init {
+        register
     }
 }

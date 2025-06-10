@@ -46,7 +46,7 @@ data class TerminalAlign(
                         false
                     }
                 }
-            }.takeIf { it.size == 3 && it.all { v -> v >= 0 } }
+            }.takeIf { l -> l.size == 3 && l.all { v -> v >= 0 } }
         }
     }
 
@@ -88,8 +88,8 @@ data class TerminalAlign(
 
     companion object : TerminalFactory<TerminalAlign> {
         override fun createIfMatch(title: String): TerminalAlign? {
-            if (!BetterTerminal.options.alignEnabled) return null
-            return if (title == "Click the button on time!") TerminalAlign() else null
+            BetterTerminal.options.alignEnabled && title == "Click the button on time!" || return null
+            return TerminalAlign()
         }
     }
 }
