@@ -47,7 +47,7 @@ data class ContinuousTrailWidget(
         val time = System.nanoTime()
         val s = timeSamples * radiusSamples
 
-        nvg.runInAAContext { vgNoAA ->
+        nvg.runInNoAAContext { vgNoAA ->
             repeat(timeSamples) { t ->
                 repeat(radiusSamples) { r ->
                     val trailA = alpha * s / ((s - alpha * (r + 1) * t) * (s - alpha * (t + 1) * r))

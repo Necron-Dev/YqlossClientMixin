@@ -35,15 +35,9 @@ import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.NanoVGAccessor
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.NanoVGImageCacheEntry
 import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.nvg
 import yqloss.yqlossclientmixinkt.util.windowSize
-import java.awt.geom.Arc2D
-import java.awt.geom.Area
-import java.awt.geom.Path2D
-import java.awt.geom.PathIterator
 import java.nio.ByteBuffer
 import java.util.*
-import kotlin.math.PI
-import kotlin.math.asin
-import kotlin.math.atan2
+import kotlin.math.*
 
 private fun NVGColor.fill(argb: Int): NVGColor {
     val (rv, gv, bv, av) = convertARGBToDoubleArray(argb)
@@ -241,105 +235,6 @@ object NanoVGAccessorImpl : NanoVGAccessor {
         }
     }
 
-    private fun cross(x0: Float, y0: Float, x1: Float, y1: Float) = x0 * y1 - x1 * y0
-
-    private fun crossLine(x: Float, y: Float, p: FloatArray) = cross(x, y, p[0], p[1])
-
-    private fun crossQuad(x: Float, y: Float, p: FloatArray): Float {
-        return crossLine(x, y, p) + cross(p[0], p[1], p[2], p[3])
-    }
-
-    private fun crossCubic(x: Float, y: Float, p: FloatArray): Float {
-        return crossQuad(x, y, p) + cross(p[2], p[3], p[4], p[5])
-    }
-
-    private fun PathIterator.nvgDraw(vg: Long) {
-        val p = FloatArray(6)
-        var x0 = 0F
-        var y0 = 0F
-        var x = 0F
-        var y = 0F
-        var area = 0F
-
-        while (!isDone) {
-            when (currentSegment(p)) {
-                PathIterator.SEG_MOVETO -> {
-                    nvgMoveTo(vg, p[0], p[1])
-                    x = p[0]
-                    y = p[1]
-                    x0 = x
-                    y0 = y
-                }
-
-                PathIterator.SEG_LINETO -> {
-                    area += crossLine(x, y, p)
-                    nvgLineTo(vg, p[0], p[1])
-                    x = p[0]
-                    y = p[1]
-                }
-
-                PathIterator.SEG_QUADTO -> {
-                    area += crossQuad(x, y, p)
-                    nvgQuadTo(vg, p[0], p[1], p[2], p[3])
-                    x = p[2]
-                    y = p[3]
-                }
-
-                PathIterator.SEG_CUBICTO -> {
-                    area += crossCubic(x, y, p)
-                    nvgBezierTo(vg, p[0], p[1], p[2], p[3], p[4], p[5])
-                    x = p[4]
-                    y = p[5]
-                }
-
-                PathIterator.SEG_CLOSE -> {
-                    area += cross(x, y, x0, y0)
-                    nvgClosePath(vg)
-                    nvgPathWinding(vg, if (area < 0F) NVG_SOLID else NVG_HOLE)
-                    area = 0F
-                }
-            }
-            next()
-        }
-    }
-
-    private fun Path2D.Double.arc(
-        cx: Double,
-        cy: Double,
-        r: Double,
-        a0: Double,
-        a1: Double,
-        dir: Int,
-    ) {
-        val startAngleDeg = -a0 * 180.0 / PI
-
-        val diffRad = a0 - a1
-        val pi2 = PI * 2.0
-
-        val extentRad = when (dir) {
-            NVG_CCW -> (diffRad % pi2 + pi2) % pi2
-
-            NVG_CW -> (diffRad % pi2 + pi2) % pi2 - pi2
-
-            else -> throw IllegalArgumentException("dir: $dir")
-        }
-
-        val extentDeg = extentRad * 180.0 / PI
-
-        append(
-            Arc2D.Double(
-                cx - r,
-                cy - r,
-                r * 2.0,
-                r * 2.0,
-                startAngleDeg,
-                extentDeg,
-                Arc2D.OPEN,
-            ),
-            true,
-        )
-    }
-
     override fun drawLines(
         vg: Long,
         points: Iterator<Pair<Double, Double>>,
@@ -356,35 +251,39 @@ object NanoVGAccessorImpl : NanoVGAccessor {
                 .a(alpha.float)
             var point = points.next()
             if (points.hasNext()) {
-                val area = Area()
-                run {
-                    points.forEach {
-                        val path = Path2D.Double().apply {
-                            val a = atan2(it.second - point.second, it.first - point.first)
-                            arc(
-                                point.first,
-                                point.second,
-                                radius,
-                                a + PI * 0.5,
-                                a + PI * 1.5,
-                                NVG_CW,
-                            )
-                            arc(
-                                it.first,
-                                it.second,
-                                radius,
-                                a - PI * 0.5,
-                                a + PI * 0.5,
-                                NVG_CW,
-                            )
-                            closePath()
-                        }
-                        area.add(Area(path))
-                        point = it
-                    }
-                }
                 nvgBeginPath(vg)
-                area.getPathIterator(null).nvgDraw(vg)
+                points.forEach {
+                    val a = atan2(it.second - point.second, it.first - point.first)
+                    nvgMoveTo(
+                        vg,
+                        (point.first - radius * sin(a)).float,
+                        (point.second + radius * cos(a)).float,
+                    )
+                    nvgArc(
+                        vg,
+                        point.first.float,
+                        point.second.float,
+                        radius.float,
+                        (a + PI * 0.5).float,
+                        (a + PI * 1.5).float,
+                        NVG_CW,
+                    )
+                    nvgArc(
+                        vg,
+                        it.first.float,
+                        it.second.float,
+                        radius.float,
+                        (a - PI * 0.5).float,
+                        (a + PI * 0.5).float,
+                        NVG_CW,
+                    )
+                    nvgLineTo(
+                        vg,
+                        (point.first - radius * sin(a)).float,
+                        (point.second + radius * cos(a)).float,
+                    )
+                    point = it
+                }
                 nvgFillColor(vg, nvgColor)
                 nvgFill(vg)
             } else {
