@@ -24,7 +24,10 @@ import net.yqloss.uktil.event.EventRegistry
 import net.yqloss.uktil.event.register
 import net.yqloss.uktil.extension.equalsNotNull
 import net.yqloss.uktil.scope.longRet
-import yqloss.yqlossclientmixinkt.module.*
+import yqloss.yqlossclientmixinkt.module.YCModuleBase
+import yqloss.yqlossclientmixinkt.module.enabled
+import yqloss.yqlossclientmixinkt.module.inWorld
+import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.SKYBLOCK_MINING_TOOLS
 import yqloss.yqlossclientmixinkt.util.skyBlockUUID
@@ -32,41 +35,38 @@ import yqloss.yqlossclientmixinkt.util.skyBlockUUID
 val INFO_TWEAKS = moduleInfo<TweaksOptions>("tweaks", "Tweaks")
 
 object Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS) {
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<TweaksEvent.SetAnglesPost> { (entity) ->
-            enabled && options.enableInstantAim || longRet
+            register<TweaksEvent.SetAnglesPost> { (entity) ->
+                enabled && options.enableInstantAim || longRet
 
-            if (entity is EntityPlayerSP) {
-                entity.prevRotationYawHead = entity.prevRotationYaw
-                entity.rotationYawHead = entity.rotationYaw
+                if (entity is EntityPlayerSP) {
+                    entity.prevRotationYawHead = entity.prevRotationYaw
+                    entity.rotationYawHead = entity.rotationYaw
+                }
+            }
+
+            register<TweaksEvent.RightClickBlockPre> { event ->
+                !event.canceled && enabled && options.disablePearlClickBlock && inWorld || longRet
+
+                if (MC.thePlayer.inventory.getCurrentItem()?.item === Items.ender_pearl) event.canceled = true
+            }
+
+            register<TweaksEvent.IsHittingPositionCheck> { event ->
+                !event.canceled && enabled && options.disableSkyBlockToolsNBTUpdateResetDigging && inWorld || longRet
+
+                val heldItemStack = MC.thePlayer.heldItem
+                if (event.currentItemHittingBlock !== null &&
+                    heldItemStack !== null &&
+                    heldItemStack.item in SKYBLOCK_MINING_TOOLS &&
+                    heldItemStack.item === event.currentItemHittingBlock.item &&
+                    heldItemStack.skyBlockUUID equalsNotNull event.currentItemHittingBlock.skyBlockUUID
+                ) {
+                    event.canceled = true
+                    event.returnValue = event.pos !== null && event.pos == event.currentBlock
+                }
             }
         }
-
-        register<TweaksEvent.RightClickBlockPre> { event ->
-            !event.canceled && enabled && options.disablePearlClickBlock && inWorld || longRet
-
-            if (MC.thePlayer.inventory.getCurrentItem()?.item === Items.ender_pearl) event.canceled = true
-        }
-
-        register<TweaksEvent.IsHittingPositionCheck> { event ->
-            !event.canceled && enabled && options.disableSkyBlockToolsNBTUpdateResetDigging && inWorld || longRet
-
-            val heldItemStack = MC.thePlayer.heldItem
-            if (event.currentItemHittingBlock !== null &&
-                heldItemStack !== null &&
-                heldItemStack.item in SKYBLOCK_MINING_TOOLS &&
-                heldItemStack.item === event.currentItemHittingBlock.item &&
-                heldItemStack.skyBlockUUID equalsNotNull event.currentItemHittingBlock.skyBlockUUID
-            ) {
-                event.canceled = true
-                event.returnValue = event.pos !== null && event.pos == event.currentBlock
-            }
-        }
-    }
-
-    init {
-        register
-    }
 }

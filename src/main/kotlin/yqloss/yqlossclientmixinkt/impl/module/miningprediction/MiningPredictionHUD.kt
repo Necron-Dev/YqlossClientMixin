@@ -36,7 +36,6 @@ import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.fontSemiBold
 import yqloss.yqlossclientmixinkt.impl.option.module.MiningPredictionOptionsImpl
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPrediction
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPredictionEvent
-import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.util.partialTicks
 import kotlin.math.min
 
@@ -123,20 +122,17 @@ object MiningPredictionHUD :
         )
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<MiningPredictionEvent.BreakBlock> {
-            isHUDEnabled || longRet
+            register<MiningPredictionEvent.BreakBlock> {
+                isHUDEnabled || longRet
 
-            val box = size
-            val tr = transformation
-            animation.update(true, box, tr, fadeOut)
-            redraw(box, tr)
+                val box = size
+                val tr = transformation
+                animation.update(true, box, tr, fadeOut)
+                redraw(box, tr)
+            }
         }
-    }
-
-    init {
-        register
-    }
 }

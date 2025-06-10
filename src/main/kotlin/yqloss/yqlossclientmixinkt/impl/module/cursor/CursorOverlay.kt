@@ -26,34 +26,30 @@ import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.option.module.CursorOptionsImpl
 import yqloss.yqlossclientmixinkt.module.cursor.Cursor
 import yqloss.yqlossclientmixinkt.module.enabled
-import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.mousePosition
 
 object CursorOverlay : YCModuleImplBase<CursorOptionsImpl, Cursor>(Cursor) {
     private var lastTime = 0L
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<GUIEvent.Screen.Post>(Int.MAX_VALUE - 1000) { event ->
-            enabled || longRet
+            register<GUIEvent.Screen.Post>(Int.MAX_VALUE - 1000) { event ->
+                enabled || longRet
 
-            if (MC.currentScreen === null) {
-                ContinuousTrail.clear()
-                longRet
+                if (MC.currentScreen === null) {
+                    ContinuousTrail.clear()
+                    longRet
+                }
+
+                val mouse = mousePosition
+                val time = System.nanoTime()
+
+                ContinuousTrail.render(event, mouse, time, lastTime, options.continuousOptions)
+
+                lastTime = time
             }
-
-            val mouse = mousePosition
-            val time = System.nanoTime()
-
-            ContinuousTrail.render(event, mouse, time, lastTime, options.continuousOptions)
-
-            lastTime = time
         }
-    }
-
-    init {
-        register
-    }
 }

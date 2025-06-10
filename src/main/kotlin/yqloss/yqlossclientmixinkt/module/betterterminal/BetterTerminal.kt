@@ -398,36 +398,37 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
         }
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCRenderEvent.Screen.Proxy> { event ->
-            val data = data
-            Screen.proxiedScreen = null
-            this@BetterTerminal.data = null
+            register<YCRenderEvent.Screen.Proxy> { event ->
+                val data = data
+                Screen.proxiedScreen = null
+                this@BetterTerminal.data = null
 
-            enabled || longRet
-            options.forceEnabled || inSkyBlock || longRet
+                enabled || longRet
+                options.forceEnabled || inSkyBlock || longRet
 
-            updateChest(event.screen as? GuiChest ?: longRet, data)
-            this@BetterTerminal.data ?: longRet
-            event.mutableScreen = Screen
+                updateChest(event.screen as? GuiChest ?: longRet, data)
+                this@BetterTerminal.data ?: longRet
+                event.mutableScreen = Screen
+            }
+
+            register<BetterTerminalEvent.DrawDefaultBackground> { event ->
+                !event.canceled && enabled || longRet
+                event.canceled = event.screen === Screen.proxiedScreen
+            }
+
+            register<BetterTerminalEvent.RenderTooltip> { event ->
+                !event.canceled && enabled || longRet
+                event.canceled = event.screen === Screen.proxiedScreen
+            }
+
+            register<YCMinecraftEvent.Tick.Post> {
+                Screen.onHandleInput = null
+            }
         }
-
-        register<BetterTerminalEvent.DrawDefaultBackground> { event ->
-            !event.canceled && enabled || longRet
-            event.canceled = event.screen === Screen.proxiedScreen
-        }
-
-        register<BetterTerminalEvent.RenderTooltip> { event ->
-            !event.canceled && enabled || longRet
-            event.canceled = event.screen === Screen.proxiedScreen
-        }
-
-        register<YCMinecraftEvent.Tick.Post> {
-            Screen.onHandleInput = null
-        }
-    }
 
     object Screen : YCProxyScreen<GuiChest>() {
         override fun drawScreen(
@@ -449,9 +450,5 @@ object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL
             updateChest(MC.currentScreen as? GuiChest ?: return, data)
             super.handleInput()
         }
-    }
-
-    init {
-        register
     }
 }

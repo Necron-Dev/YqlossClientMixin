@@ -20,12 +20,7 @@ package yqloss.yqlossclientmixinkt.module.hotkeys
 
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.moduleInfo
-import yqloss.yqlossclientmixinkt.module.register
 
 val INFO_HOTKEYS = moduleInfo<HotkeysOptions>("hotkeys", "Hotkeys")
 
-object Hotkeys : YCModuleBase<HotkeysOptions>(INFO_HOTKEYS) {
-    init {
-        register
-    }
-}
+object Hotkeys : YCModuleBase<HotkeysOptions>(INFO_HOTKEYS)

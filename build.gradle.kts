@@ -89,6 +89,7 @@ sourceSets {
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven("https://maven.yqloss.net")
     maven("https://repo.polyfrost.org/releases")
     maven("https://repo.hypixel.net/repository/Hypixel/")

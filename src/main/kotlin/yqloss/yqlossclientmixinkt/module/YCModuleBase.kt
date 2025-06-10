@@ -29,10 +29,9 @@ abstract class YCModuleBase<T : YCModuleOptions>(
 ) : YCModule<T> by moduleInfo,
     EventRegistration {
     val logger = ycLogger(moduleInfo.name)
-}
 
-val YCModuleBase<*>.register: Unit
-    get() {
+    init {
         logger.info("registering module id: $id, name: $name")
         registerEventEntries(YC.eventRegistry)
     }
+}

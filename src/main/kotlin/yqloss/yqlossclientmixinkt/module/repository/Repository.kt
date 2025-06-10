@@ -28,7 +28,6 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.enabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
-import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.network.Resource
 import yqloss.yqlossclientmixinkt.network.requestAll
 
@@ -52,26 +51,23 @@ object Repository : YCModuleBase<RepositoryOptions>(INFO_REPOSITORY) {
             capes.takeIf { options.capeEnabled },
         )
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCMinecraftEvent.Tick.Pre> {
-            enabled || longRet
+            register<YCMinecraftEvent.Tick.Pre> {
+                enabled || longRet
 
-            repositoryData.requestAll()
+                repositoryData.requestAll()
 
-            version.onTickPre()
-            capes.onTickPre()
+                version.onTickPre()
+                capes.onTickPre()
+            }
+
+            register<RepositoryEvent.LoadCape> { event ->
+                enabled || longRet
+
+                event.mutableLocation = capes.onLoadCape(event.uuid)
+            }
         }
-
-        register<RepositoryEvent.LoadCape> { event ->
-            enabled || longRet
-
-            event.mutableLocation = capes.onLoadCape(event.uuid)
-        }
-    }
-
-    init {
-        register
-    }
 }

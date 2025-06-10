@@ -44,9 +44,10 @@ abstract class YCModuleScreenBase<TO, TM : YCModule<in TO>>(
             }
         }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<GUIEvent.Screen> { onRender(it.widgets) }
-    }
+            register<GUIEvent.Screen> { onRender(it.widgets) }
+        }
 }

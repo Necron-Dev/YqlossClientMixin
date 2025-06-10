@@ -58,13 +58,14 @@ abstract class YCModuleHUDBase<TO, TM : YCModule<in TO>>(
 
     protected open val isHUDEnabled get() = enabled && hud.isEnabled
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCHUD.GetWidthEvent> { if (it.hud === hud) it.width = scaledWidth }
+            register<YCHUD.GetWidthEvent> { if (it.hud === hud) it.width = scaledWidth }
 
-        register<YCHUD.GetHeightEvent> { if (it.hud === hud) it.height = scaledHeight }
+            register<YCHUD.GetHeightEvent> { if (it.hud === hud) it.height = scaledHeight }
 
-        register<GUIEvent.HUD> { onRender(it.widgets) }
-    }
+            register<GUIEvent.HUD> { onRender(it.widgets) }
+        }
 }

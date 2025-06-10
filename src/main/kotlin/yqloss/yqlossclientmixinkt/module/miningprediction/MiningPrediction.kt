@@ -151,103 +151,100 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
         printChat("Tab Mining Speed: $miningSpeed")
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCMinecraftEvent.LoadWorld.Pre> {
-            reset()
-        }
-
-        register<YCMinecraftEvent.Tick.Pre> {
-            isAvailable = false
-            miningSpeed = 0
-
-            enabled && inWorld || longRet
-            options.forceEnabled || inSkyblockMode(SKYBLOCK_MINING_ISLANDS) || longRet
-
-            MC.thePlayer.sendQueue.playerInfoMap.firstOrNull {
-                noExcept(logger::catching) {
-                    val rawName = MC.ingameGUI.tabList.getPlayerName(it)
-                    if ("Mining Speed" in rawName) {
-                        miningSpeed = rawName.trimStyle.filter { c -> c.isDigit() }.toInt()
-                        return@firstOrNull true
-                    }
-                }
-                false
+            register<YCMinecraftEvent.LoadWorld.Pre> {
+                reset()
             }
 
-            miningSpeed > 0 || longRet
+            register<YCMinecraftEvent.Tick.Pre> {
+                isAvailable = false
+                miningSpeed = 0
 
-            isAvailable = true
+                enabled && inWorld || longRet
+                options.forceEnabled || inSkyblockMode(SKYBLOCK_MINING_ISLANDS) || longRet
 
-            check(options.useClientTick)
-            removeOutdatedBlocks()
-        }
-
-        register<YCHypixelEvent.ServerTick> {
-            enabled && !options.useClientTick && inWorld && isAvailable || longRet
-
-            check(!options.useClientTick)
-            removeOutdatedBlocks()
-        }
-
-        register<MiningPredictionEvent.Mining> { event ->
-            enabled && isAvailable || longRet
-
-            if (MC.thePlayer.heldItem?.item !in SKYBLOCK_MINING_TOOLS) {
-                resetBreaking()
-            } else {
-                val ore = getOre(event.pos)
-                if (ore !== breakingBlock) {
-                    resetBreaking()
-                    breakingPos = event.pos
-                    if (event.pos !in destroyedBlocks) {
-                        breakingBlock = ore
-                        check(false)
-                        removeOutdatedBlocks()
-                    }
-                }
-            }
-        }
-
-        register<MiningPredictionEvent.NotMining> {
-            resetBreaking()
-        }
-
-        register<MiningPredictionEvent.RenderBlockDamage> { event ->
-            enabled && isAvailable || longRet
-
-            removeOutdatedBlocks()
-
-            breakingBlock?.let {
-                event.mutableDamages.entries.removeIf { (_, damage) ->
-                    damage.position.asVec3I == breakingPos
-                }
-
-                event.mutableDamages[MC.thePlayer.entityId] = DestroyBlockProgress(
-                    0,
-                    breakingPos.asBlockPos,
-                ).apply { partialBlockDamage = max(0, min(10, (10.0 * breakingProgress.double).int)) }
-            }
-        }
-
-        register<YCRenderEvent.Block.ProcessAreaBlockState> { event ->
-            enabled && isAvailable || longRet
-
-            if (destroyedBlocks.keys.any { it in event.area }) {
-                event.mutableProcessor += { args ->
-                    destroyedBlocks[args.position]?.let { info ->
-                        if (getOre(info.blockPos) === info.block) {
-                            args.mutableBlockState = options.destroyedBlock.blockState
+                MC.thePlayer.sendQueue.playerInfoMap.firstOrNull {
+                    noExcept(logger::catching) {
+                        val rawName = MC.ingameGUI.tabList.getPlayerName(it)
+                        if ("Mining Speed" in rawName) {
+                            miningSpeed = rawName.trimStyle.filter { c -> c.isDigit() }.toInt()
+                            return@firstOrNull true
                         }
                     }
-                    Unit
+                    false
+                }
+
+                miningSpeed > 0 || longRet
+
+                isAvailable = true
+
+                check(options.useClientTick)
+                removeOutdatedBlocks()
+            }
+
+            register<YCHypixelEvent.ServerTick> {
+                enabled && !options.useClientTick && inWorld && isAvailable || longRet
+
+                check(!options.useClientTick)
+                removeOutdatedBlocks()
+            }
+
+            register<MiningPredictionEvent.Mining> { event ->
+                enabled && isAvailable || longRet
+
+                if (MC.thePlayer.heldItem?.item !in SKYBLOCK_MINING_TOOLS) {
+                    resetBreaking()
+                } else {
+                    val ore = getOre(event.pos)
+                    if (ore !== breakingBlock) {
+                        resetBreaking()
+                        breakingPos = event.pos
+                        if (event.pos !in destroyedBlocks) {
+                            breakingBlock = ore
+                            check(false)
+                            removeOutdatedBlocks()
+                        }
+                    }
+                }
+            }
+
+            register<MiningPredictionEvent.NotMining> {
+                resetBreaking()
+            }
+
+            register<MiningPredictionEvent.RenderBlockDamage> { event ->
+                enabled && isAvailable || longRet
+
+                removeOutdatedBlocks()
+
+                breakingBlock?.let {
+                    event.mutableDamages.entries.removeIf { (_, damage) ->
+                        damage.position.asVec3I == breakingPos
+                    }
+
+                    event.mutableDamages[MC.thePlayer.entityId] = DestroyBlockProgress(
+                        0,
+                        breakingPos.asBlockPos,
+                    ).apply { partialBlockDamage = max(0, min(10, (10.0 * breakingProgress.double).int)) }
+                }
+            }
+
+            register<YCRenderEvent.Block.ProcessAreaBlockState> { event ->
+                enabled && isAvailable || longRet
+
+                if (destroyedBlocks.keys.any { it in event.area }) {
+                    event.mutableProcessor += { args ->
+                        destroyedBlocks[args.position]?.let { info ->
+                            if (getOre(info.blockPos) === info.block) {
+                                args.mutableBlockState = options.destroyedBlock.blockState
+                            }
+                        }
+                        Unit
+                    }
                 }
             }
         }
-    }
-
-    init {
-        register
-    }
 }

@@ -25,7 +25,6 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.enabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
-import yqloss.yqlossclientmixinkt.module.register
 
 val INFO_RAW_INPUT = moduleInfo<RawInputOptions>("raw_input", "Raw Input")
 
@@ -35,32 +34,29 @@ object RawInput : YCModuleBase<RawInputOptions>(INFO_RAW_INPUT) {
 
     val provider get() = if (options.nativeRawInput) NativeRawInputProvider else JInputRawInputProvider
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCMinecraftEvent.Loop.Pre> {
-            NativeRawInputProvider.update()
-            JInputRawInputProvider.update()
+            register<YCMinecraftEvent.Loop.Pre> {
+                NativeRawInputProvider.update()
+                JInputRawInputProvider.update()
 
-            provider.poll()
-        }
+                provider.poll()
+            }
 
-        register<RawInputEvent.ModifyDeltaEvent> { event ->
-            if (enabled) {
-                val xInt = x.int
-                val yInt = y.int
-                event.mutableDeltaX = xInt
-                event.mutableDeltaY = -yInt
-                x -= xInt
-                y -= yInt
-            } else {
-                x = 0.0
-                y = 0.0
+            register<RawInputEvent.ModifyDeltaEvent> { event ->
+                if (enabled) {
+                    val xInt = x.int
+                    val yInt = y.int
+                    event.mutableDeltaX = xInt
+                    event.mutableDeltaY = -yInt
+                    x -= xInt
+                    y -= yInt
+                } else {
+                    x = 0.0
+                    y = 0.0
+                }
             }
         }
-    }
-
-    init {
-        register
-    }
 }

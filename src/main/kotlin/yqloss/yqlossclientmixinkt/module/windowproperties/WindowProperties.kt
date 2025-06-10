@@ -31,7 +31,6 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.enabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
-import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.util.MC
 
 val INFO_WINDOW_PROPERTIES = moduleInfo<WindowPropertiesOptions>("window_properties", "Window Properties")
@@ -132,39 +131,36 @@ object WindowProperties : YCModuleBase<WindowPropertiesOptions>(INFO_WINDOW_PROP
         onFullscreenStateChange
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCMinecraftEvent.Loop.Pre> {
-            onEnabledChange
+            register<YCMinecraftEvent.Loop.Pre> {
+                onEnabledChange
 
-            enabled || longRet
+                enabled || longRet
 
-            if (!windowedFullscreen && fullscreenMode) fullscreenMode = false
+                if (!windowedFullscreen && fullscreenMode) fullscreenMode = false
 
-            onWindowTitleOptionChange
-            onWindowTitleChange
+                onWindowTitleOptionChange
+                onWindowTitleChange
 
-            if (enabled && options.enableCustomTitle && Display.getTitle() != options.customTitle) {
-                Display.setTitle(options.customTitle)
+                if (enabled && options.enableCustomTitle && Display.getTitle() != options.customTitle) {
+                    Display.setTitle(options.customTitle)
+                }
+
+                onBorderlessStateChange
+                onFullscreenStateChange
             }
 
-            onBorderlessStateChange
-            onFullscreenStateChange
+            register<WindowPropertiesEvent.Fullscreen> { event ->
+                enabled && (fullscreenMode || options.windowedFullscreen) || longRet
+
+                event.canceled = true
+                fullscreenMode = !fullscreenMode
+
+                onBorderlessStateChange
+                onFullscreenStateChange
+            }
         }
-
-        register<WindowPropertiesEvent.Fullscreen> { event ->
-            enabled && (fullscreenMode || options.windowedFullscreen) || longRet
-
-            event.canceled = true
-            fullscreenMode = !fullscreenMode
-
-            onBorderlessStateChange
-            onFullscreenStateChange
-        }
-    }
-
-    init {
-        register
-    }
 }

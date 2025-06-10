@@ -40,7 +40,6 @@ import yqloss.yqlossclientmixinkt.impl.util.Colors
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
 import yqloss.yqlossclientmixinkt.module.betterterminal.SlotType
 import yqloss.yqlossclientmixinkt.module.betterterminal.terminal.*
-import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.util.MC
 
 object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, BetterTerminal>(BetterTerminal) {
@@ -260,34 +259,35 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
         buttonReload.render(widgets, ttr + Vec2D(170.0, -2.0))
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCInputEvent.Mouse.Click> { event ->
-            val data = module.data ?: longRet
+            register<YCInputEvent.Mouse.Click> { event ->
+                val data = module.data ?: longRet
 
-            event.screen && ensureShow || longRet
+                event.screen && ensureShow || longRet
 
-            val tr = transformation
-            buttons?.withIndex()?.firstOrNull { (i, button) ->
-                val x = i % 9
-                val y = i / 9
-                if (button.isHovered(tr + Vec2D(8.0 + 18.0 * x, 18.0 + 18.0 * y))) {
-                    button.onMouseDown(event.button)
-                    true
-                } else {
-                    false
+                val tr = transformation
+                buttons?.withIndex()?.firstOrNull { (i, button) ->
+                    val x = i % 9
+                    val y = i / 9
+                    if (button.isHovered(tr + Vec2D(8.0 + 18.0 * x, 18.0 + 18.0 * y))) {
+                        button.onMouseDown(event.button)
+                        true
+                    } else {
+                        false
+                    }
+                } ?: run {
+                    val ttr = tr + Vec2D(0.0, data.terminal.beginLine * 18.0)
+                    when {
+                        buttonNonQueue?.isHovered(ttr + Vec2D(-10.0, -2.0)) == true -> buttonNonQueue
+                        buttonReload?.isHovered(ttr + Vec2D(170.0, -2.0)) == true -> buttonReload
+                        else -> null
+                    }?.onMouseDown(event.button)
                 }
-            } ?: run {
-                val ttr = tr + Vec2D(0.0, data.terminal.beginLine * 18.0)
-                when {
-                    buttonNonQueue?.isHovered(ttr + Vec2D(-10.0, -2.0)) == true -> buttonNonQueue
-                    buttonReload?.isHovered(ttr + Vec2D(170.0, -2.0)) == true -> buttonReload
-                    else -> null
-                }?.onMouseDown(event.button)
             }
         }
-    }
 
     abstract class TerminalFade<T>(
         initial: T,
@@ -325,9 +325,5 @@ object BetterTerminalScreen : YCModuleScreenBase<BetterTerminalOptionsImpl, Bett
                 ),
             )
         }
-    }
-
-    init {
-        register
     }
 }

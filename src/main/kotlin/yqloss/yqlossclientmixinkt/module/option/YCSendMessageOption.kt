@@ -30,7 +30,6 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.inWorld
 import yqloss.yqlossclientmixinkt.module.moduleInfo
-import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.util.MC
 
 interface YCSendMessageOption {
@@ -65,42 +64,39 @@ object SendMessagePool :
         }
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCMinecraftEvent.LoadWorld.Pre> {
-            synchronized(this) {
-                poolMap.clear()
+            register<YCMinecraftEvent.LoadWorld.Pre> {
+                synchronized(this) {
+                    poolMap.clear()
+                }
             }
-        }
 
-        register<YCMinecraftEvent.Tick.Pre> {
-            synchronized(this) {
-                poolMap.forEach { (_, list) ->
-                    while (true) {
-                        list.firstOrNull()?.let { (message, interval) ->
-                            if (interval.value == 0) {
-                                MC.thePlayer.sendChatMessage(message)
-                                return@let
-                            } else if (interval.value < 0) {
-                                interval.value = -interval.value
-                                MC.thePlayer.sendChatMessage(message)
-                            }
-                            --interval.value
-                            if (interval.value == 0) {
-                                list.removeFirstOrNull()
-                            }
-                            return@forEach
-                        } ?: break
+            register<YCMinecraftEvent.Tick.Pre> {
+                synchronized(this) {
+                    poolMap.forEach { (_, list) ->
+                        while (true) {
+                            list.firstOrNull()?.let { (message, interval) ->
+                                if (interval.value == 0) {
+                                    MC.thePlayer.sendChatMessage(message)
+                                    return@let
+                                } else if (interval.value < 0) {
+                                    interval.value = -interval.value
+                                    MC.thePlayer.sendChatMessage(message)
+                                }
+                                --interval.value
+                                if (interval.value == 0) {
+                                    list.removeFirstOrNull()
+                                }
+                                return@forEach
+                            } ?: break
+                        }
                     }
                 }
             }
         }
-    }
-
-    init {
-        register
-    }
 }
 
 inline operator fun YCSendMessageOption.invoke(placeholder: YCTemplate.() -> Unit) {

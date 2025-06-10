@@ -49,7 +49,6 @@ import yqloss.yqlossclientmixinkt.impl.oneconfiginternal.fontMedium
 import yqloss.yqlossclientmixinkt.impl.option.handle
 import yqloss.yqlossclientmixinkt.impl.option.module.YCLeapMenuOptionsImpl
 import yqloss.yqlossclientmixinkt.impl.util.Colors
-import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenu
 import yqloss.yqlossclientmixinkt.util.MC
 import kotlin.math.PI
@@ -133,34 +132,35 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
         classButtons?.get(index)?.onMouseDown(0)
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCInputEvent.Mouse.Click> { event ->
-            event.screen && ensureShow || longRet
+            register<YCInputEvent.Mouse.Click> { event ->
+                event.screen && ensureShow || longRet
 
-            val tr = transformation
+                val tr = transformation
 
-            classButtons?.withIndex()?.firstOrNull { (i, button) ->
-                val offsetRadian = (i * 0.4 - 0.7) * PI
-                val offset = unitVec(offsetRadian) * PADDING_ARC / sin(0.2 * PI)
-                if (button.isHovered(tr + offset)) {
-                    button.onMouseDown(event.button)
-                    true
-                } else {
-                    false
-                }
-            } ?: run {
-                if (preferredButton?.isHovered(tr + OFFSET_PREFERRED) == true) {
-                    preferredButton?.onMouseDown(event.button)
+                classButtons?.withIndex()?.firstOrNull { (i, button) ->
+                    val offsetRadian = (i * 0.4 - 0.7) * PI
+                    val offset = unitVec(offsetRadian) * PADDING_ARC / sin(0.2 * PI)
+                    if (button.isHovered(tr + offset)) {
+                        button.onMouseDown(event.button)
+                        true
+                    } else {
+                        false
+                    }
+                } ?: run {
+                    if (preferredButton?.isHovered(tr + OFFSET_PREFERRED) == true) {
+                        preferredButton?.onMouseDown(event.button)
+                    }
                 }
             }
-        }
 
-        register<YCMinecraftEvent.Loop.Pre> { event ->
-            options.keyBinds.forEach { it.handle() }
+            register<YCMinecraftEvent.Loop.Pre> { event ->
+                options.keyBinds.forEach { it.handle() }
+            }
         }
-    }
 
     abstract class ClassLeapButton(
         private val index: Int,
@@ -382,9 +382,5 @@ object YCLeapMenuScreen : YCModuleScreenBase<YCLeapMenuOptionsImpl, YCLeapMenu>(
                 hidden.value = true
             }
         }
-    }
-
-    init {
-        register
     }
 }

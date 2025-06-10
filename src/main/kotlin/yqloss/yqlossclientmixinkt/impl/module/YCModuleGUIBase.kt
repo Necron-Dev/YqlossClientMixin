@@ -74,7 +74,8 @@ abstract class YCModuleGUIBase<TO, TM : YCModule<in TO>>(
         }
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
-    }
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
+        }
 }

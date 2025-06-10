@@ -29,7 +29,10 @@ import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCCommandEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
-import yqloss.yqlossclientmixinkt.module.*
+import yqloss.yqlossclientmixinkt.module.YCModuleBase
+import yqloss.yqlossclientmixinkt.module.enabled
+import yqloss.yqlossclientmixinkt.module.inWorld
+import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.printError
 import yqloss.yqlossclientmixinkt.util.updateWorldRender
 import java.io.File
@@ -66,59 +69,56 @@ object MapMarker : YCModuleBase<MapMarkerOptions>(INFO_MAP_MARKER) {
         updateWorldRender()
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCMinecraftEvent.Tick.Pre> {
-            reloadChunksOnSwitch
+            register<YCMinecraftEvent.Tick.Pre> {
+                reloadChunksOnSwitch
 
-            enabled || longRet
+                enabled || longRet
 
-            loadModificationOnLocationChange
+                loadModificationOnLocationChange
 
-            inWorld || longRet
+                inWorld || longRet
 
-            reloadChunksOnModificationChange
+                reloadChunksOnModificationChange
 
-            modificationGroup?.onTick()
-        }
+                modificationGroup?.onTick()
+            }
 
-        register<YCRenderEvent.Block.ProcessAreaBlockState> { event ->
-            enabled || longRet
+            register<YCRenderEvent.Block.ProcessAreaBlockState> { event ->
+                enabled || longRet
 
-            val modifications = modificationGroup?.listModifications() ?: longRet
+                val modifications = modificationGroup?.listModifications() ?: longRet
 
-            modifications.forEach { modification ->
-                if (modification.containsSubChunk(event.area)) {
-                    event.mutableProcessor += { args ->
-                        args.mutableBlockState =
-                            modification.invoke(args.position, args.blockState, event.blockAccess)
-                                ?: args.mutableBlockState
+                modifications.forEach { modification ->
+                    if (modification.containsSubChunk(event.area)) {
+                        event.mutableProcessor += { args ->
+                            args.mutableBlockState =
+                                modification.invoke(args.position, args.blockState, event.blockAccess)
+                                    ?: args.mutableBlockState
+                        }
+                    }
+                }
+            }
+
+            register<YCCommandEvent.Execute> { event ->
+                !event.canceled && enabled && !event.disableClientCommand || longRet
+
+                noExcept(::printError) {
+                    when (event.args.getOrNull(0)) {
+                        "/ycmmc", "/yqlossclientmapmarkercurrent" -> {
+                            event.canceled = true
+                            modificationGroup!![event.args[1]].onCommand(event.args.subList(2, event.args.size))
+                        }
+
+                        "/ycmmt", "/yqlossclientmapmarkertarget" -> {
+                            event.canceled = true
+                            loadModification(event.args[1]).onCommand(event.args.subList(2, event.args.size))
+                        }
                     }
                 }
             }
         }
-
-        register<YCCommandEvent.Execute> { event ->
-            !event.canceled && enabled && !event.disableClientCommand || longRet
-
-            noExcept(::printError) {
-                when (event.args.getOrNull(0)) {
-                    "/ycmmc", "/yqlossclientmapmarkercurrent" -> {
-                        event.canceled = true
-                        modificationGroup!![event.args[1]].onCommand(event.args.subList(2, event.args.size))
-                    }
-
-                    "/ycmmt", "/yqlossclientmapmarkertarget" -> {
-                        event.canceled = true
-                        loadModification(event.args[1]).onCommand(event.args.subList(2, event.args.size))
-                    }
-                }
-            }
-        }
-    }
-
-    init {
-        register
-    }
 }

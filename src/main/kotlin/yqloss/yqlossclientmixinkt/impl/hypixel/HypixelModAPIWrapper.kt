@@ -35,7 +35,6 @@ import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.module.NO_MODULE_INFO
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
-import yqloss.yqlossclientmixinkt.module.register
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.printChat
 import kotlin.jvm.optionals.getOrNull
@@ -69,15 +68,12 @@ class HypixelModAPIWrapper(
         YC.eventDispatcher(YCHypixelAPIEvent.Location(null))
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCMinecraftEvent.Tick.Pre> {
-            resetLocation
+            register<YCMinecraftEvent.Tick.Pre> {
+                resetLocation
+            }
         }
-    }
-
-    init {
-        register
-    }
 }

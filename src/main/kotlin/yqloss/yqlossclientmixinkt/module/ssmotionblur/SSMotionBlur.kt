@@ -31,7 +31,10 @@ import net.yqloss.uktil.extension.double
 import net.yqloss.uktil.scope.longRet
 import org.lwjgl.opengl.GL11.*
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
-import yqloss.yqlossclientmixinkt.module.*
+import yqloss.yqlossclientmixinkt.module.YCModuleBase
+import yqloss.yqlossclientmixinkt.module.enabled
+import yqloss.yqlossclientmixinkt.module.inWorld
+import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.glStateScope
 import yqloss.yqlossclientmixinkt.util.mcRenderScope
@@ -193,28 +196,25 @@ object SSMotionBlur : YCModuleBase<SSMotionBlurOptions>(INFO_SS_MOTION_BLUR) {
         }
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCRenderEvent.Render.Pre> {
-            inWorld && longRet
+            register<YCRenderEvent.Render.Pre> {
+                inWorld && longRet
 
-            lastNanos = System.nanoTime()
-            glStateScope {
-                allocate(textureLast1, false, -1, -1)
-                allocate(textureLast2, false, -1, -1)
-                allocate(textureAccumulation, false, -1, -1)
+                lastNanos = System.nanoTime()
+                glStateScope {
+                    allocate(textureLast1, false, -1, -1)
+                    allocate(textureLast2, false, -1, -1)
+                    allocate(textureAccumulation, false, -1, -1)
+                }
+            }
+
+            register<SSMotionBlurEvent.Render> { event ->
+                enabled || longRet
+
+                renderMotionBlur(event.screenWidth, event.screenHeight, event.scaledResolution)
             }
         }
-
-        register<SSMotionBlurEvent.Render> { event ->
-            enabled || longRet
-
-            renderMotionBlur(event.screenWidth, event.screenHeight, event.scaledResolution)
-        }
-    }
-
-    init {
-        register
-    }
 }

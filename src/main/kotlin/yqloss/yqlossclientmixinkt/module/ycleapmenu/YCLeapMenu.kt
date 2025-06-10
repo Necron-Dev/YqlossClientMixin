@@ -169,34 +169,31 @@ object YCLeapMenu : YCModuleBase<YCLeapMenuOptions>(INFO_YC_LEAP_MENU) {
         }
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCRenderEvent.Screen.Proxy> { event ->
-            Screen.proxiedScreen = null
+            register<YCRenderEvent.Screen.Proxy> { event ->
+                Screen.proxiedScreen = null
 
-            val chest = ensure(event.screen) ?: longRet
+                val chest = ensure(event.screen) ?: longRet
 
-            loadLeapInfo
+                loadLeapInfo
 
-            Screen.setScreen(chest)
-            event.mutableScreen = Screen
+                Screen.setScreen(chest)
+                event.mutableScreen = Screen
+            }
+
+            register<YCMinecraftEvent.LoadWorld.Pre> {
+                playerNetworkInfoMap.clear()
+                playerClassMap.clear()
+                playerDeadMap.clear()
+            }
+
+            register<YCMinecraftEvent.Tick.Post> {
+                BetterTerminal.Screen.onHandleInput = null
+            }
         }
-
-        register<YCMinecraftEvent.LoadWorld.Pre> {
-            playerNetworkInfoMap.clear()
-            playerClassMap.clear()
-            playerDeadMap.clear()
-        }
-
-        register<YCMinecraftEvent.Tick.Post> {
-            BetterTerminal.Screen.onHandleInput = null
-        }
-    }
 
     object Screen : YCProxyScreen<GuiChest>()
-
-    init {
-        register
-    }
 }

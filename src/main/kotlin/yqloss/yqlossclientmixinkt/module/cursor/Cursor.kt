@@ -20,12 +20,7 @@ package yqloss.yqlossclientmixinkt.module.cursor
 
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.moduleInfo
-import yqloss.yqlossclientmixinkt.module.register
 
 val INFO_CURSOR = moduleInfo<CursorOptions>("cursor", "Cursor")
 
-object Cursor : YCModuleBase<CursorOptions>(INFO_CURSOR) {
-    init {
-        register
-    }
-}
+object Cursor : YCModuleBase<CursorOptions>(INFO_CURSOR)

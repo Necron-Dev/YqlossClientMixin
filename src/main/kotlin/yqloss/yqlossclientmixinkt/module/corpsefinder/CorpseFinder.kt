@@ -98,43 +98,40 @@ object CorpseFinder : YCModuleBase<CorpseFinderOptions>(INFO_CORPSE_FINDER) {
         }
     }
 
-    override val registerEvents: EventRegistry.() -> Unit = {
-        super.registerEvents(this)
+    override val registerEvents: EventRegistry.() -> Unit
+        get() = {
+            super.registerEvents(this)
 
-        register<YCMinecraftEvent.Tick.Pre> {
-            scanCorpses()
-        }
+            register<YCMinecraftEvent.Tick.Pre> {
+                scanCorpses()
+            }
 
-        register<YCMinecraftEvent.LoadWorld.Pre> {
-            exit = null
-            corpses.clear()
-        }
+            register<YCMinecraftEvent.LoadWorld.Pre> {
+                exit = null
+                corpses.clear()
+            }
 
-        register<YCRenderEvent.Entity.Post> {
-            ensure || longRet
+            register<YCRenderEvent.Entity.Post> {
+                ensure || longRet
 
-            glStateScope {
-                glDisable(GL_TEXTURE_2D)
-                glEnable(GL_BLEND)
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-                glDisable(GL_DEPTH_TEST)
-                glDisable(GL_ALPHA_TEST)
-                glEnable(GL_CULL_FACE)
-                glDisable(GL_LIGHTING)
-                (-MC.renderViewEntity.renderPos).glTranslate()
+                glStateScope {
+                    glDisable(GL_TEXTURE_2D)
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+                    glDisable(GL_DEPTH_TEST)
+                    glDisable(GL_ALPHA_TEST)
+                    glEnable(GL_CULL_FACE)
+                    glDisable(GL_LIGHTING)
+                    (-MC.renderViewEntity.renderPos).glTranslate()
 
-                if (options.showExit) {
-                    exit?.let { renderBox(it, options.exitColor) }
-                }
+                    if (options.showExit) {
+                        exit?.let { renderBox(it, options.exitColor) }
+                    }
 
-                corpses.values.forEach { (pos, corpse) ->
-                    renderBox(pos + Vec3D(0.0, 0.5, 0.0), corpse.option.color)
+                    corpses.values.forEach { (pos, corpse) ->
+                        renderBox(pos + Vec3D(0.0, 0.5, 0.0), corpse.option.color)
+                    }
                 }
             }
         }
-    }
-
-    init {
-        register
-    }
 }
