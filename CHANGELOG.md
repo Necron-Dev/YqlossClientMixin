@@ -91,3 +91,5 @@
 * feat(Cursor): add Hide When Not Moving
 
 ## 0.12.0 ()
+
+* fix(Repository): fix saying "an update is available" when using a dev version; close #25
