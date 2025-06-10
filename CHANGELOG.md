@@ -90,6 +90,8 @@
 * feat(Repository): request cooldown
 * feat(Cursor): add Hide When Not Moving
 
-## 0.12.0 ()
+## 1.0.0 (UTC+8 2025/06/10 19:10)
 
 * fix(Repository): fix saying "an update is available" when using a dev version; close #25
+* BREAKING CHANGE: extract the util part to a separate library
+* and I think it's time to release 1.0.0
