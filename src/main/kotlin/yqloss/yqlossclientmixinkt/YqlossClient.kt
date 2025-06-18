@@ -43,6 +43,10 @@ var theYC: YqlossClient by lateVal()
 
 val YC by ::theYC
 
+val DEV: Boolean by lazy {
+    YqlossClient::class.java.getResource("/mixins.yqlossclientmixin.json")!!.toURI().scheme != "jar"
+}
+
 val CLASS_ROOT: URL by lazy {
     val uri = YqlossClient::class.java.getResource("/mixins.yqlossclientmixin.json")!!.toURI()
     if (uri.scheme == "jar") {
@@ -54,6 +58,11 @@ val CLASS_ROOT: URL by lazy {
             uri
         }.toURL()
     }
+}
+
+val EX: Boolean by lazy {
+    DEV && return@lazy System.getenv("YCM-DEV-EX") == "true"
+    YqlossClient::class.java.getResource("/assets/yqlossclientmixin/meow/ex") === null
 }
 
 val YCJson by lazy {

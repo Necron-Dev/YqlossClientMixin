@@ -49,6 +49,14 @@ blossom {
 version = mod_version
 group = mod_group
 
+val manifestTemplate = mapOf(
+    "ModSide" to "CLIENT",
+    "ForceLoadAsMod" to true,
+    "TweakOrder" to "0",
+    "MixinConfigs" to "mixins.${mod_id}.json",
+    "TweakClass" to "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker",
+)
+
 base {
     archivesName.set("$mod_archives_name-$platform")
 }
@@ -144,18 +152,25 @@ tasks {
     }
 
     jar {
-        if (platform.isLegacyForge) {
-            manifest.attributes +=
-                mapOf(
-                    "ModSide" to "CLIENT",
-                    "ForceLoadAsMod" to true,
-                    "TweakOrder" to "0",
-                    "MixinConfigs" to "mixins.${mod_id}.json",
-                    "TweakClass" to "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker",
-                )
-        }
+        manifest.attributes += manifestTemplate
         dependsOn(shadowJar)
         archiveClassifier.set("")
         enabled = false
+    }
+
+    create<Jar>("jarEx") {
+        dependsOn(remapJar)
+
+        archiveFileName = "${mod_archives_name}EX-$platform-$mod_version.jar"
+
+        from(zipTree(remapJar.get().archiveFile)) {
+            exclude("assets/yqlossclientmixin/meow/ex")
+        }
+
+        manifest.attributes += manifestTemplate
+    }
+
+    build {
+        dependsOn("jarEx")
     }
 }

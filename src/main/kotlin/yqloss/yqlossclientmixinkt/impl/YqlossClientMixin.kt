@@ -28,8 +28,7 @@ import net.yqloss.uktil.event.LongExecutionPolicy
 import net.yqloss.uktil.event.ManagerEventManager
 import net.yqloss.uktil.event.SubEventRegistry
 import net.yqloss.uktil.event.register
-import yqloss.yqlossclientmixinkt.YC_LOGGER
-import yqloss.yqlossclientmixinkt.YqlossClient
+import yqloss.yqlossclientmixinkt.*
 import yqloss.yqlossclientmixinkt.event.minecraft.YCCommandEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.impl.api.YCAPIImpl
@@ -53,7 +52,6 @@ import yqloss.yqlossclientmixinkt.module.tweaks.Tweaks
 import yqloss.yqlossclientmixinkt.module.windowproperties.WindowProperties
 import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenu
 import yqloss.yqlossclientmixinkt.nativeapi.loadWindowsX64NativeAPI
-import yqloss.yqlossclientmixinkt.theYC
 import kotlin.reflect.KClass
 
 const val MOD_ID = "@ID@"
@@ -62,6 +60,12 @@ const val MOD_VERSION = "@VER@"
 
 val initYqlossClientMixin by lazy {
     YC_LOGGER.info("creating YqlossClientMixin instance")
+    YC_LOGGER.info(
+        "env: " +
+            (if (DEV) "DEV " else "") +
+            (if (EX) "EX " else "") +
+            "classRoot: $CLASS_ROOT",
+    )
     YqlossClientMixin()
     YC_LOGGER.info("created YqlossClientMixin instance")
 }

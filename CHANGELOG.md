@@ -95,3 +95,8 @@
 * fix(Repository): fix saying "an update is available" when using a dev version; close #25
 * BREAKING CHANGE: extract the util part to a separate library
 * and I think it's time to release 1.0.0
+
+## 2.0.0 ()
+
+* Starting from 2.0.0 there will be 2 versions, normal and EX
+* All illegal features (including macros) will be removed in the normal version
