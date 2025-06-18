@@ -45,4 +45,6 @@ sealed interface TweaksEvent : Event {
         override var canceled: Boolean = false,
     ) : TweaksEvent,
         CancelableEvent
+
+    object RenderHUDPre : TweaksEvent
 }

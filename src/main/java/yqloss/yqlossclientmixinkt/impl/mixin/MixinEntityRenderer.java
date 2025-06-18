@@ -45,5 +45,6 @@ public abstract class MixinEntityRenderer {
     @Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;endStartSection(Ljava/lang/String;)V"))
     private void yc$ssmotionblur$updateCameraAndRenderRenderMotionBlur(float partialTicks, long nanoTime, CallbackInfo ci) {
         CallbackEntityRenderer.SSMotionBlur.INSTANCE.updateCameraAndRenderRenderMotionBlur();
+        CallbackEntityRenderer.Tweaks.INSTANCE.updateCameraAndRenderRenderMotionBlur();
     }
 }

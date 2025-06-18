@@ -60,12 +60,17 @@ class TweaksOptionsImpl :
 
     @Switch(
         name = "Disable NBT Update Reset Digging on SkyBlock Mining Islands",
-        description =
-            "This applies to all pickaxes, prismarine shards, skulls on these islands: Gold Mine, Deep Caverns, " +
-                "Dwarven Mines, Crystal Hollows, Mineshaft, The End, Crimson Isle.",
+        description = "This applies to all pickaxes, prismarine shards, skulls on these islands: Gold Mine, Deep Caverns, " +
+            "Dwarven Mines, Crystal Hollows, Mineshaft, The End, Crimson Isle.",
         size = 1,
     )
     var disableSkyBlockToolsNBTUpdateResetDiggingOption = false
+
+    @Switch(
+        name = "Enable Catacombs Boss Bar Fix",
+        size = 1,
+    )
+    var enableCatacombsBossBarFixOption = false
 
     @Transient
     @Extract
@@ -73,9 +78,8 @@ class TweaksOptionsImpl :
 
     @Switch(
         name = "Disable Pearl Click-On-Block Packet",
-        description =
-            "Cancel the first C08PacketPlayerBlockPlacement packet when throwing an ender pearl while aiming at a block. " +
-                "This fixes not being able to throw pearls while aiming at a block on public islands in Hypixel SkyBlock.",
+        description = "Cancel the first C08PacketPlayerBlockPlacement packet when throwing an ender pearl while aiming at a block. " +
+            "This fixes not being able to throw pearls while aiming at a block on public islands in Hypixel SkyBlock.",
         size = 1,
     )
     var disablePearlClickBlockOption = false
@@ -83,4 +87,5 @@ class TweaksOptionsImpl :
     override val enableInstantAim by ::enableInstantAimOption
     override val disablePearlClickBlock by ::disablePearlClickBlockOption
     override val disableSkyBlockToolsNBTUpdateResetDigging by ::disableSkyBlockToolsNBTUpdateResetDiggingOption
+    override val enableCatacombsBossBarFix by ::enableCatacombsBossBarFixOption
 }

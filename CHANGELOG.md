@@ -100,3 +100,4 @@
 
 * Starting from 2.0.0 there will be 2 versions, normal and EX
 * All illegal features (including macros) will be removed in the normal version
+* feat(Tweaks): add Catacombs boss bar fix

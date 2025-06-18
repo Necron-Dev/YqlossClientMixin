@@ -19,20 +19,34 @@
 package yqloss.yqlossclientmixinkt.module.tweaks
 
 import net.minecraft.client.entity.EntityPlayerSP
+import net.minecraft.entity.boss.BossStatus
+import net.minecraft.entity.boss.EntityWither
 import net.minecraft.init.Items
 import net.yqloss.uktil.event.EventRegistry
 import net.yqloss.uktil.event.register
 import net.yqloss.uktil.extension.equalsNotNull
 import net.yqloss.uktil.scope.longRet
-import yqloss.yqlossclientmixinkt.module.YCModuleBase
-import yqloss.yqlossclientmixinkt.module.enabled
-import yqloss.yqlossclientmixinkt.module.inWorld
-import yqloss.yqlossclientmixinkt.module.moduleInfo
+import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.SKYBLOCK_MINING_TOOLS
 import yqloss.yqlossclientmixinkt.util.skyBlockUUID
 
 val INFO_TWEAKS = moduleInfo<TweaksOptions>("tweaks", "Tweaks")
+
+val CATACOMBS_WITHER_NAMES = listOf(
+    "The Watcher",
+    "Bonzo",
+    "Scarf",
+    "The Professor",
+    "Thorn",
+    "Livid",
+    "Sadan",
+    "Maxor",
+    "Storm",
+    "Goldor",
+    "Necron",
+    "Wither King",
+)
 
 object Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS) {
     override val registerEvents: EventRegistry.() -> Unit
@@ -67,6 +81,20 @@ object Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS) {
                     event.canceled = true
                     event.returnValue = event.pos !== null && event.pos == event.currentBlock
                 }
+            }
+
+            register<TweaksEvent.RenderHUDPre> { event ->
+                enabled && options.enableCatacombsBossBarFix && inSkyblockMode("dungeon") || longRet
+
+                BossStatus.statusBarTime = 0
+
+                MC.theWorld.loadedEntityList
+                    .filterIsInstance<EntityWither>()
+                    .filter { wither ->
+                        val name = wither.displayName.formattedText
+                        CATACOMBS_WITHER_NAMES.any { it in name }
+                    }
+                    .forEach { BossStatus.setBossStatus(it, true) }
             }
         }
 }

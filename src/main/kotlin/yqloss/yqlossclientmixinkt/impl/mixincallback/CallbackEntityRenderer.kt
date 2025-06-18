@@ -23,6 +23,7 @@ import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlurEvent
+import yqloss.yqlossclientmixinkt.module.tweaks.TweaksEvent
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.partialTicks
 
@@ -52,6 +53,12 @@ object CallbackEntityRenderer {
     object SSMotionBlur {
         fun updateCameraAndRenderRenderMotionBlur() {
             YC.eventDispatcher(SSMotionBlurEvent.Render(MC.displayWidth, MC.displayHeight, ScaledResolution(MC)))
+        }
+    }
+
+    object Tweaks {
+        fun updateCameraAndRenderRenderMotionBlur() {
+            YC.eventDispatcher(TweaksEvent.RenderHUDPre)
         }
     }
 }
