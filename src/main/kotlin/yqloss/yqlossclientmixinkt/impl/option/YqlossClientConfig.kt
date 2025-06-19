@@ -26,7 +26,7 @@ import net.yqloss.uktil.accessor.outs.cast
 import net.yqloss.uktil.accessor.outs.inBox
 import yqloss.yqlossclientmixinkt.DEV
 import yqloss.yqlossclientmixinkt.RT
-import yqloss.yqlossclientmixinkt.impl.MOD_VERSION
+import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.impl.YCMixin
 import yqloss.yqlossclientmixinkt.impl.option.module.*
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
@@ -42,7 +42,7 @@ private val optionsImplMap = mutableMapOf<KClass<*>, () -> YCModuleOptions>()
 private val logger = ycLogger("Config")
 
 object YqlossClientConfig : Config(
-    Mod("Yqloss Client $MOD_VERSION ${if (DEV) "DEV " else ""}$RT", ModType.THIRD_PARTY),
+    Mod("Yqloss Client ${YC.modVersion} ${if (DEV) "DEV " else ""}$RT", ModType.THIRD_PARTY),
     "yqlossclient.json",
 ) {
     @SubConfig
@@ -83,6 +83,9 @@ object YqlossClientConfig : Config(
 
     @SubConfig
     var cursor = CursorOptionsImpl()
+
+    @SubConfig
+    var extensions = ExtensionsOptionsImpl()
 
     init {
         initialize()
