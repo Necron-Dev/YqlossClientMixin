@@ -98,6 +98,8 @@
 
 ## 2.0.0 ()
 
-* Starting from 2.0.0 there will be 2 versions, normal and EX
+* Starting from 2.0.0 there will be 3 versions, normal, PLUS and EX
 * All illegal features (including macros) will be removed in the normal version
+* Macros and features that are possible on vanilla in the server's view will be included in the PLUS version
+* The EX version contains all features
 * feat(Tweaks): add Catacombs boss bar fix

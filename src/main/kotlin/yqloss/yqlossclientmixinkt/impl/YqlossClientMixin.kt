@@ -60,12 +60,7 @@ const val MOD_VERSION = "@VER@"
 
 val initYqlossClientMixin by lazy {
     YC_LOGGER.info("creating YqlossClientMixin instance")
-    YC_LOGGER.info(
-        "env: " +
-            (if (DEV) "DEV " else "") +
-            (if (EX) "EX " else "") +
-            "classRoot: $CLASS_ROOT",
-    )
+    YC_LOGGER.info("env: ${if (DEV) "DEV " else ""}$RT classRoot: $CLASS_ROOT")
     YqlossClientMixin()
     YC_LOGGER.info("created YqlossClientMixin instance")
 }

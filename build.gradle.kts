@@ -158,6 +158,18 @@ tasks {
         enabled = false
     }
 
+    create<Jar>("jarPlus") {
+        dependsOn(remapJar)
+
+        archiveFileName = "${mod_archives_name}PLUS-$platform-$mod_version.jar"
+
+        from(zipTree(remapJar.get().archiveFile)) {
+            exclude("assets/yqlossclientmixin/meow/plus")
+        }
+
+        manifest.attributes += manifestTemplate
+    }
+
     create<Jar>("jarEx") {
         dependsOn(remapJar)
 
@@ -171,6 +183,7 @@ tasks {
     }
 
     build {
+        dependsOn("jarPlus")
         dependsOn("jarEx")
     }
 }

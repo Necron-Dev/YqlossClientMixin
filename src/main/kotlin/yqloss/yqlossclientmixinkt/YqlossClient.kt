@@ -60,9 +60,23 @@ val CLASS_ROOT: URL by lazy {
     }
 }
 
-val EX: Boolean by lazy {
-    DEV && return@lazy System.getenv("YCM-DEV-EX") == "true"
-    YqlossClient::class.java.getResource("/assets/yqlossclientmixin/meow/ex") === null
+enum class ReleaseType {
+    NORMAL,
+    PLUS,
+    EX,
+}
+
+val RT: ReleaseType by lazy {
+    if (DEV) {
+        val name = System.getenv("YCM-DEV-RELEASE-TYPE")
+        ReleaseType.entries.firstOrNull { it.name == name } ?: ReleaseType.NORMAL
+    } else {
+        when {
+            YqlossClient::class.java.getResource("/assets/yqlossclientmixin/meow/plus") === null -> ReleaseType.PLUS
+            YqlossClient::class.java.getResource("/assets/yqlossclientmixin/meow/ex") === null -> ReleaseType.EX
+            else -> ReleaseType.NORMAL
+        }
+    }
 }
 
 val YCJson by lazy {
