@@ -24,12 +24,12 @@ import yqloss.yqlossclientmixinkt.network.CooldownTypedResource
 import yqloss.yqlossclientmixinkt.network.JsonResource
 import yqloss.yqlossclientmixinkt.network.TypedResource
 import yqloss.yqlossclientmixinkt.network.content
-import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.green
-import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.openUrl
-import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.text
-import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.times
-import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.underlined
-import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.yellow
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.green
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.openUrl
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.text
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.times
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.underlined
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.yellow
 import yqloss.yqlossclientmixinkt.util.printChat
 import yqloss.yqlossclientmixinkt.util.printError
 

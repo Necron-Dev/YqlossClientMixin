@@ -87,8 +87,12 @@ data class Segment(
 @DslMarker
 private annotation class TextBuilderDslMarker
 
+typealias StyleTransformer = ((TextStyle) -> TextStyle)?
+
+typealias TextBuilder = (TextBuilderContext.() -> Unit)?
+
 @TextBuilderDslMarker
-class TextBuilder(
+class TextBuilderContext(
     val baseStyle: TextStyle = TextStyle(),
     val segments: MutableList<Segment> = mutableListOf(),
 ) {
@@ -96,28 +100,28 @@ class TextBuilder(
         if (segment.text.isNotEmpty()) segments += segment
     }
 
-    fun append(function: (TextBuilder.() -> Unit)?) {
-        function ?: return
-        val textBuilder = TextBuilder(baseStyle)
-        textBuilder.function()
-        segments += textBuilder.segments
+    fun append(textBuilder: TextBuilder) {
+        textBuilder ?: return
+        val textBuilderContext = TextBuilderContext(baseStyle)
+        textBuilderContext.textBuilder()
+        segments += textBuilderContext.segments
     }
 
-    fun appendNewLine(function: (TextBuilder.() -> Unit)?) {
-        function ?: return
-        val textBuilder = TextBuilder(baseStyle)
-        textBuilder.function()
-        segments += textBuilder.segments
-        if (textBuilder.segments.lastOrNull()?.text?.endsWith('\n') != true) {
+    fun appendNewLine(textBuilder: TextBuilder) {
+        textBuilder ?: return
+        val textBuilderContext = TextBuilderContext(baseStyle)
+        textBuilderContext.textBuilder()
+        segments += textBuilderContext.segments
+        if (textBuilderContext.segments.lastOrNull()?.text?.endsWith('\n') != true) {
             addToSegments(Segment("\n", baseStyle))
         }
     }
 
-    fun appendRemoveNewLine(function: (TextBuilder.() -> Unit)?) {
-        function ?: return
-        val textBuilder = TextBuilder(baseStyle)
-        textBuilder.function()
-        val iter = textBuilder.segments.asReversed().iterator()
+    fun appendRemoveNewLine(textBuilder: TextBuilder) {
+        textBuilder ?: return
+        val textBuilderContext = TextBuilderContext(baseStyle)
+        textBuilderContext.textBuilder()
+        val iter = textBuilderContext.segments.asReversed().iterator()
         while (iter.hasNext()) {
             val segment = iter.next()
             when {
@@ -125,21 +129,21 @@ class TextBuilder(
 
                 segment.text.endsWith("\n") -> {
                     iter.remove()
-                    textBuilder.addToSegments(segment.copy(text = segment.text.trimEnd('\n')))
+                    textBuilderContext.addToSegments(segment.copy(text = segment.text.trimEnd('\n')))
                     break
                 }
 
                 else -> break
             }
         }
-        segments += textBuilder.segments
+        segments += textBuilderContext.segments
     }
 
-    operator fun (TextBuilder.() -> Unit)?.unaryMinus() = append(this)
+    operator fun TextBuilder.unaryMinus() = append(this)
 
-    operator fun (TextBuilder.() -> Unit)?.unaryPlus() = appendNewLine(this)
+    operator fun TextBuilder.unaryPlus() = appendNewLine(this)
 
-    operator fun (TextBuilder.() -> Unit)?.not() = appendRemoveNewLine(this)
+    operator fun TextBuilder.not() = appendRemoveNewLine(this)
 
     fun append(string: String?) {
         string ?: return
@@ -166,32 +170,32 @@ class TextBuilder(
 
     operator fun String?.not() = appendRemoveNewLine(this)
 
-    fun text(string: String?): (TextBuilder.() -> Unit)? {
+    fun text(string: String?): TextBuilder {
         string ?: return null
         return {
             addToSegments(Segment(string, baseStyle))
         }
     }
 
-    infix fun ((TextStyle) -> TextStyle)?.modified(string: String?): (TextBuilder.() -> Unit)? {
+    infix fun StyleTransformer.modified(string: String?): TextBuilder {
         string ?: return null
         return {
             addToSegments(Segment(string, this@modified?.invoke(baseStyle) ?: baseStyle))
         }
     }
 
-    infix fun ((TextStyle) -> TextStyle)?.modified(function: (TextBuilder.() -> Unit)?): (TextBuilder.() -> Unit)? {
-        function ?: return null
+    infix fun StyleTransformer.modified(textBuilder: TextBuilder): TextBuilder {
+        textBuilder ?: return null
         return {
-            val textBuilder = TextBuilder(this@modified?.invoke(baseStyle) ?: baseStyle)
-            textBuilder.function()
-            segments += textBuilder.segments
+            val textBuilderContext = TextBuilderContext(this@modified?.invoke(baseStyle) ?: baseStyle)
+            textBuilderContext.textBuilder()
+            segments += textBuilderContext.segments
         }
     }
 
-    operator fun ((TextStyle) -> TextStyle)?.invoke(string: String?) = modified(string)
+    operator fun StyleTransformer.invoke(string: String?) = modified(string)
 
-    operator fun ((TextStyle) -> TextStyle)?.invoke(function: (TextBuilder.() -> Unit)?) = modified(function)
+    operator fun StyleTransformer.invoke(textBuilder: TextBuilder) = modified(textBuilder)
 
     companion object {
         private fun colorModifier(color: Int?): (TextStyle) -> TextStyle = { it.copy(color = color) }
@@ -290,29 +294,29 @@ class TextBuilder(
 
         fun hoverEvent(action: HoverEvent.Action, value: String) = hoverEvent(action, ChatComponentText(value))
 
-        fun hoverEvent(action: HoverEvent.Action, function: (TextBuilder.() -> Unit)?): (TextStyle) -> TextStyle {
-            return hoverEvent(action, buildComponent(function)!!)
+        fun hoverEvent(action: HoverEvent.Action, textBuilder: TextBuilder): (TextStyle) -> TextStyle {
+            return hoverEvent(action, buildComponent(textBuilder)!!)
         }
 
         fun showText(value: IChatComponent) = hoverEvent(HoverEvent.Action.SHOW_TEXT, value)
         fun showText(value: String) = hoverEvent(HoverEvent.Action.SHOW_TEXT, value)
-        fun showText(function: (TextBuilder.() -> Unit)?) = hoverEvent(HoverEvent.Action.SHOW_TEXT, function)
+        fun showText(textBuilder: TextBuilder) = hoverEvent(HoverEvent.Action.SHOW_TEXT, textBuilder)
         fun showAchievement(value: IChatComponent) = hoverEvent(HoverEvent.Action.SHOW_ACHIEVEMENT, value)
         fun showAchievement(value: String) = hoverEvent(HoverEvent.Action.SHOW_ACHIEVEMENT, value)
-        fun showAchievement(function: (TextBuilder.() -> Unit)?) = hoverEvent(HoverEvent.Action.SHOW_ACHIEVEMENT, function)
+        fun showAchievement(textBuilder: TextBuilder) = hoverEvent(HoverEvent.Action.SHOW_ACHIEVEMENT, textBuilder)
 
         fun showItem(value: IChatComponent) = hoverEvent(HoverEvent.Action.SHOW_ITEM, value)
         fun showItem(value: String) = hoverEvent(HoverEvent.Action.SHOW_ITEM, value)
-        fun showItem(function: (TextBuilder.() -> Unit)?) = hoverEvent(HoverEvent.Action.SHOW_ITEM, function)
+        fun showItem(textBuilder: TextBuilder) = hoverEvent(HoverEvent.Action.SHOW_ITEM, textBuilder)
         fun showEntity(value: IChatComponent) = hoverEvent(HoverEvent.Action.SHOW_ENTITY, value)
         fun showEntity(value: String) = hoverEvent(HoverEvent.Action.SHOW_ENTITY, value)
-        fun showEntity(function: (TextBuilder.() -> Unit)?) = hoverEvent(HoverEvent.Action.SHOW_ENTITY, function)
+        fun showEntity(textBuilder: TextBuilder) = hoverEvent(HoverEvent.Action.SHOW_ENTITY, textBuilder)
 
         fun insertion(string: String?): (TextStyle) -> TextStyle = { it.copy(insertion = string) }
 
-        fun text(function: (TextBuilder.() -> Unit)?) = function
+        fun text(textBuilder: TextBuilder) = textBuilder
 
-        operator fun ((TextStyle) -> TextStyle)?.times(other: ((TextStyle) -> TextStyle)?) = when {
+        operator fun StyleTransformer.times(other: StyleTransformer) = when {
             this === null && other === null -> null
             this === null -> other
             other === null -> this
@@ -324,13 +328,13 @@ class TextBuilder(
     }
 }
 
-fun buildString(function: (TextBuilder.() -> Unit)?): String? {
-    function ?: return null
-    val textBuilder = TextBuilder()
-    textBuilder.function()
+fun buildString(textBuilder: TextBuilder): String? {
+    textBuilder ?: return null
+    val textBuilderContext = TextBuilderContext()
+    textBuilderContext.textBuilder()
     val stringBuilder = StringBuilder()
     var lastStyle = TextStyle()
-    textBuilder.segments.forEach {
+    textBuilderContext.segments.forEach {
         stringBuilder.append(it.style.styleCode(lastStyle))
         stringBuilder.append(it.text)
         lastStyle = it.style
@@ -338,13 +342,13 @@ fun buildString(function: (TextBuilder.() -> Unit)?): String? {
     return stringBuilder.toString()
 }
 
-fun buildStringOrEmpty(function: (TextBuilder.() -> Unit)?): String {
-    function ?: return ""
-    val textBuilder = TextBuilder()
-    textBuilder.function()
+fun buildStringOrEmpty(textBuilder: TextBuilder): String {
+    textBuilder ?: return ""
+    val textBuilderContext = TextBuilderContext()
+    textBuilderContext.textBuilder()
     val stringBuilder = StringBuilder()
     var lastStyle = TextStyle()
-    textBuilder.segments.forEach {
+    textBuilderContext.segments.forEach {
         stringBuilder.append(it.style.styleCode(lastStyle))
         stringBuilder.append(it.text)
         lastStyle = it.style
@@ -352,12 +356,12 @@ fun buildStringOrEmpty(function: (TextBuilder.() -> Unit)?): String {
     return stringBuilder.toString()
 }
 
-fun buildComponent(function: (TextBuilder.() -> Unit)?): IChatComponent? {
-    function ?: return null
-    val textBuilder = TextBuilder()
-    textBuilder.function()
+fun buildComponent(textBuilder: TextBuilder): IChatComponent? {
+    textBuilder ?: return null
+    val textBuilderContext = TextBuilderContext()
+    textBuilderContext.textBuilder()
     val rootComponent = ChatComponentText("")
-    textBuilder.segments.forEach {
+    textBuilderContext.segments.forEach {
         rootComponent.appendSibling(
             ChatComponentText(it.text).apply {
                 chatStyle = it.style.chatStyle()
@@ -367,12 +371,12 @@ fun buildComponent(function: (TextBuilder.() -> Unit)?): IChatComponent? {
     return rootComponent
 }
 
-fun buildComponentOrEmpty(function: (TextBuilder.() -> Unit)?): IChatComponent {
-    function ?: return ChatComponentText("")
-    val textBuilder = TextBuilder()
-    textBuilder.function()
+fun buildComponentOrEmpty(textBuilder: TextBuilder): IChatComponent {
+    textBuilder ?: return ChatComponentText("")
+    val textBuilderContext = TextBuilderContext()
+    textBuilderContext.textBuilder()
     val rootComponent = ChatComponentText("")
-    textBuilder.segments.forEach {
+    textBuilderContext.segments.forEach {
         rootComponent.appendSibling(
             ChatComponentText(it.text).apply {
                 chatStyle = it.style.chatStyle()

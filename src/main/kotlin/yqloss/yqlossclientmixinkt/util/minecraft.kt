@@ -41,9 +41,9 @@ import yqloss.yqlossclientmixinkt.api.internalLowerChestInventory
 import yqloss.yqlossclientmixinkt.impl.MOD_VERSION
 import yqloss.yqlossclientmixinkt.module.inWorld
 import yqloss.yqlossclientmixinkt.module.option.YCColor
-import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.red
-import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.text
-import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.yellow
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.red
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.text
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.yellow
 import yqloss.yqlossclientmixinkt.ycLogger
 
 val mcUtilLogger = ycLogger("Minecraft Util")
@@ -111,15 +111,15 @@ inline fun printChat(component: IChatComponent) {
 
 inline fun printChat(message: String = "") = printChat(ChatComponentText(message))
 
-inline fun printChat(noinline function: (TextBuilder.() -> Unit)?) = printChat(
+inline fun printChat(noinline textBuilder: TextBuilder) = printChat(
     buildComponentOrEmpty {
-        !function
+        !textBuilder
     },
 )
 
 inline fun printChat(throwable: Throwable) = printChat(throwable.stackTraceMessage)
 
-inline fun printError(noinline function: (TextBuilder.() -> Unit)?) = printChat {
+inline fun printError(noinline textBuilder: TextBuilder) = printChat {
     +red {
         +"Yqloss Client (Mixin) has encountered some error. Please report the following messages to the developer!"
         +text {
@@ -130,7 +130,7 @@ inline fun printError(noinline function: (TextBuilder.() -> Unit)?) = printChat 
             -", Release Type: "
             -yellow("$RT")
         }
-        +function
+        +textBuilder
     }
 }
 
