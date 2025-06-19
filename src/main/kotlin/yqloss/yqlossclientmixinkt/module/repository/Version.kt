@@ -24,9 +24,14 @@ import yqloss.yqlossclientmixinkt.network.CooldownTypedResource
 import yqloss.yqlossclientmixinkt.network.JsonResource
 import yqloss.yqlossclientmixinkt.network.TypedResource
 import yqloss.yqlossclientmixinkt.network.content
+import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.green
+import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.openUrl
+import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.text
+import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.times
+import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.underlined
+import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.yellow
 import yqloss.yqlossclientmixinkt.util.printChat
 import yqloss.yqlossclientmixinkt.util.printError
-import yqloss.yqlossclientmixinkt.util.printURL
 
 const val URL_VERSION = "http://ycm.yqloss.net/version.json"
 
@@ -46,26 +51,31 @@ class Version : TypedResource<VersionData> by CooldownTypedResource(JsonResource
 
     private val notifyNewVersion by lazy {
         val latestVersionString = content[YC.modID]
-        if (latestVersionString === null) {
-            printError("version api: mod ID is not present in response")
-            return@lazy
+        if (latestVersionString === null) return@lazy printError("version api: mod ID is not present in response")
+
+        val updateModNotification = text {
+            +green("Update the mod on one of the following websites:")
+            +(yellow * underlined) {
+                // TODO: waiting for ktlint to update
+                +openUrl("https://get.yqloss.net").invoke {
+                    +"https://get.yqloss.net"
+                }
+                // TODO: waiting for ktlint to update
+                +openUrl("https://github.com/Necron-Dev/YqlossClientMixin").invoke {
+                    +"https://github.com/Necron-Dev/YqlossClientMixin"
+                }
+            }
         }
 
-        val (latestMajor, latestMinor, latestPatch) = parseVersion(latestVersionString) ?: run {
-            printError("\u00A7cversion api: failed to parse the latest version number")
-            printChat("\u00A7aUpdate the mod on one of the following websites:")
-            printURL("https://get.yqloss.net")
-            printURL("https://github.com/Necron-Dev/YqlossClientMixin")
-            return@lazy
+        val (latestMajor, latestMinor, latestPatch) = parseVersion(latestVersionString) ?: return@lazy printError {
+            +"version api: failed to parse the latest version number"
+            +updateModNotification
         }
 
-        val (currentMajor, currentMinor, currentPatch) = parseVersion(YC.modVersion) ?: run {
-            printError(
-                "version api: failed to parse the current version number\n" +
-                    "this is probably due to modifications to Yqloss Client (Mixin)\n" +
-                    "or the developers' mistakes",
-            )
-            return@lazy
+        val (currentMajor, currentMinor, currentPatch) = parseVersion(YC.modVersion) ?: return@lazy printError {
+            +"version api: failed to parse the current version number"
+            +"this is probably due to modifications to Yqloss Client (Mixin)"
+            +"or the developers' mistakes"
         }
 
         var comparison = latestMajor - currentMajor
@@ -73,17 +83,28 @@ class Version : TypedResource<VersionData> by CooldownTypedResource(JsonResource
         if (comparison == 0) comparison = latestPatch - currentPatch
 
         when {
-            comparison > 0 -> {
-                printChat("\u00A7aThere is a new update available for Yqloss Client (Mixin)!")
-                printChat("\u00A7aVersion \u00A7e${YC.modVersion} \u00A7a-> \u00A7e${content[YC.modID]}")
-                printChat("\u00A7aUpdate the mod on one of the following websites:")
-                printURL("https://get.yqloss.net")
-                printURL("https://github.com/Necron-Dev/YqlossClientMixin")
+            comparison > 0 -> printChat {
+                +green {
+                    +"There is a new update available for Yqloss Client (Mixin)!"
+                    +text {
+                        -"Version "
+                        -yellow(YC.modVersion)
+                        -" -> "
+                        -yellow(latestVersionString)
+                    }
+                }
+                +updateModNotification
             }
 
-            comparison < 0 -> {
-                printChat("\u00A7aYou are now using the \u00A7e${YC.modVersion} \u00A7adev version of Yqloss Client (Mixin).")
-                printChat("\u00A7aThis version is still under development and any changes could be made before release!")
+            comparison < 0 -> printChat {
+                +green {
+                    +text {
+                        -"You are now using the "
+                        -yellow(YC.modVersion)
+                        -" dev version of Yqloss Client (Mixin)."
+                    }
+                    +"This version is still under development and any changes could be made before release!"
+                }
             }
         }
     }

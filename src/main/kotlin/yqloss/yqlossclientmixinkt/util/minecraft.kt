@@ -28,7 +28,6 @@ import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.WorldRenderer
 import net.minecraft.client.renderer.vertex.VertexFormat
 import net.minecraft.entity.Entity
-import net.minecraft.event.ClickEvent
 import net.minecraft.item.Item
 import net.minecraft.scoreboard.ScoreObjective
 import net.minecraft.scoreboard.ScorePlayerTeam
@@ -36,9 +35,15 @@ import net.minecraft.util.*
 import net.yqloss.uktil.extension.float
 import net.yqloss.uktil.extension.type.stackTraceMessage
 import net.yqloss.uktil.math.*
+import yqloss.yqlossclientmixinkt.DEV
+import yqloss.yqlossclientmixinkt.RT
 import yqloss.yqlossclientmixinkt.api.internalLowerChestInventory
+import yqloss.yqlossclientmixinkt.impl.MOD_VERSION
 import yqloss.yqlossclientmixinkt.module.inWorld
 import yqloss.yqlossclientmixinkt.module.option.YCColor
+import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.red
+import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.text
+import yqloss.yqlossclientmixinkt.util.TextBuilder.Companion.yellow
 import yqloss.yqlossclientmixinkt.ycLogger
 
 val mcUtilLogger = ycLogger("Minecraft Util")
@@ -98,34 +103,39 @@ inline fun WorldRenderer.tex(vec: Vec2D): WorldRenderer = tex(vec.x, vec.y)
 
 inline fun WorldRenderer.color(color: YCColor): WorldRenderer = color(color.r.float, color.g.float, color.b.float, color.a.float)
 
-inline fun printChat(message: String = "") {
-    mcUtilLogger.info("[PRINT CHAT] $message")
+inline fun printChat(component: IChatComponent) {
+    mcUtilLogger.info("[PRINT CHAT] ${component.formattedText}")
     MC.theWorld ?: return
-    MC.ingameGUI.chatGUI.printChatMessage(ChatComponentText(message))
+    MC.ingameGUI.chatGUI.printChatMessage(component)
 }
 
-inline fun printURL(url: String = "") {
-    mcUtilLogger.info("[PRINT URL] $url")
-    MC.theWorld ?: return
-    MC.ingameGUI.chatGUI.printChatMessage(
-        ChatComponentText("\u00A7e\u00A7n$url").apply {
-            chatStyle =
-                ChatStyle().apply {
-                    chatClickEvent =
-                        ClickEvent(
-                            ClickEvent.Action.OPEN_URL,
-                            url,
-                        )
-                }
-        },
-    )
-}
+inline fun printChat(message: String = "") = printChat(ChatComponentText(message))
+
+inline fun printChat(noinline function: (TextBuilder.() -> Unit)?) = printChat(
+    buildComponentOrEmpty {
+        !function
+    },
+)
 
 inline fun printChat(throwable: Throwable) = printChat(throwable.stackTraceMessage)
 
-inline fun printError(message: String = "") {
-    printChat("\u00A7cYqloss Client (Mixin) has encountered some error. Please report the following message to the author!")
-    printChat("\u00A7c$message")
+inline fun printError(noinline function: (TextBuilder.() -> Unit)?) = printChat {
+    +red {
+        +"Yqloss Client (Mixin) has encountered some error. Please report the following messages to the developer!"
+        +text {
+            -"Version: "
+            -yellow(MOD_VERSION)
+            -", Dev: "
+            -yellow("$DEV")
+            -", Release Type: "
+            -yellow("$RT")
+        }
+        +function
+    }
+}
+
+inline fun printError(message: String = "") = printError {
+    +message
 }
 
 inline fun printError(throwable: Throwable) = printError(throwable.stackTraceMessage)
