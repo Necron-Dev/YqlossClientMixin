@@ -16,16 +16,12 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.impl.module
+package yqloss.yqlossclientmixinkt.module.betterterminal
 
-import net.yqloss.uktil.generic.castTo
-import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
-import yqloss.yqlossclientmixinkt.module.YCModule
-import yqloss.yqlossclientmixinkt.module.YCModuleBase
-import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
+import net.yqloss.uktil.accessor.getValue
+import yqloss.yqlossclientmixinkt.module.requirePlus
 
-abstract class YCModuleImplBase<TO, TM : YCModule<in TO>>(
-    val module: TM,
-) : YCModuleBase<TO>(module.castTo()) where TO : YCModuleOptions, TO : OptionsImpl {
-    override val options = (if (module is YCModuleBase<*>) module.moduleInfo else module).options.castTo<TO>()
+class BetterTerminalOptionsMask(private val parent: BetterTerminalOptions) : BetterTerminalOptions by parent {
+    override val enableQueue by requirePlus(parent::enableQueue)
+    override val reloadOnMismatch by requirePlus(parent::reloadOnMismatch)
 }

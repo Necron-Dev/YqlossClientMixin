@@ -48,7 +48,7 @@ val CATACOMBS_WITHER_NAMES = listOf(
     "Wither King",
 )
 
-object Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS) {
+object Tweaks : YCModuleBase<TweaksOptions>(INFO_TWEAKS, ::TweaksOptionsMask) {
     override val registerEvents: EventRegistry.() -> Unit
         get() = {
             super.registerEvents(this)

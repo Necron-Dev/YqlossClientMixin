@@ -28,6 +28,8 @@ import cc.polyfrost.oneconfig.config.elements.OptionPage
 import cc.polyfrost.oneconfig.config.elements.SubConfig
 import cc.polyfrost.oneconfig.config.migration.Migrator
 import cc.polyfrost.oneconfig.internal.config.annotations.Option
+import yqloss.yqlossclientmixinkt.RT
+import yqloss.yqlossclientmixinkt.ReleaseType
 import yqloss.yqlossclientmixinkt.module.YCModuleInfo
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import java.lang.reflect.Field
@@ -42,7 +44,25 @@ abstract class OptionsImpl(
         super.enabled = defaultEnabled
     }
 
+    val itemNames = mutableMapOf<String, List<String>>()
+
     override val enabled get() = YqlossClientConfig.enabled && super.enabled
+
+    protected fun requireReleaseType(type: ReleaseType, vararg keys: String) {
+        keys.forEach { key ->
+            if (key in itemNames) {
+                requireReleaseType(type, *itemNames[key]!!.toTypedArray())
+            } else {
+                hideIf(key) {
+                    RT < type
+                }
+            }
+        }
+    }
+
+    protected fun requirePlus(vararg keys: String) = requireReleaseType(ReleaseType.PLUS, *keys)
+
+    protected fun requireEx(vararg keys: String) = requireReleaseType(ReleaseType.EX, *keys)
 
     override fun getCustomOption(
         field: Field,
@@ -82,6 +102,8 @@ private fun addOptions(
         .takeIf { it !== Object::class.java }
         ?.let { addOptions(config, instance, it, page, mod, prefix) }
 
+    val itemNames = if (config is OptionsImpl) mutableListOf<String>() else null
+
     type.declaredFields.forEach { field ->
         field.isAccessible = true
         val optionName = "$prefix${field.name}"
@@ -89,6 +111,7 @@ private fun addOptions(
         ConfigUtils.findAnnotation(field, Option::class.java)?.also { annotation ->
             config.optionNames[optionName] =
                 internalAddOptionToPageMethod(null, page, annotation, field, instance, null) as BasicOption
+            itemNames?.add(optionName)
         } ?: ConfigUtils.findAnnotation(field, CustomOption::class.java)?.also { annotation ->
             handleExtensionOption(
                 config,
@@ -99,6 +122,7 @@ private fun addOptions(
                 "$prefix${field.name}.",
             )?.let { basicOption ->
                 config.optionNames[optionName] = basicOption
+                itemNames?.add(optionName)
             }
         }
     }
@@ -106,8 +130,14 @@ private fun addOptions(
     type.declaredMethods.forEach { method ->
         method.isAccessible = true
         ConfigUtils.findAnnotation(method, Button::class.java)?.let {
-            config.optionNames["$prefix${method.name}"] = ConfigUtils.addOptionToPage(page, method, instance)
+            val optionName = "$prefix${method.name}"
+            config.optionNames[optionName] = ConfigUtils.addOptionToPage(page, method, instance)
+            itemNames?.add(optionName)
         }
+    }
+
+    if (itemNames !== null && config is OptionsImpl) {
+        config.itemNames[prefix.removeSuffix(".")] = itemNames
     }
 }
 

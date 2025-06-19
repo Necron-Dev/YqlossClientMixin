@@ -25,10 +25,18 @@ import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.ycLogger
 
 abstract class YCModuleBase<T : YCModuleOptions>(
-    moduleInfo: YCModule<T>,
+    val moduleInfo: YCModule<T>,
+    optionsMask: ((T) -> T)? = null,
 ) : YCModule<T> by moduleInfo,
     EventRegistration {
     val logger = ycLogger(moduleInfo.name)
+
+    override val options by lazy {
+        optionsMask ?: return@lazy moduleInfo.options
+        optionsMask(moduleInfo.options).also {
+            logger.info("applying options mask on module $id: $it")
+        }
+    }
 
     init {
         logger.info("registering module id: $id, name: $name")

@@ -54,6 +54,12 @@ class TweaksOptionsImpl :
     )
     var enableInstantAimOption = false
 
+    @Switch(
+        name = "Enable Catacombs Boss Bar Fix",
+        size = 1,
+    )
+    var enableCatacombsBossBarFixOption = false
+
     @Transient
     @Extract
     val safeBlatantSkyBlock = DisclaimerSafeBlatantSkyBlock()
@@ -65,12 +71,6 @@ class TweaksOptionsImpl :
         size = 1,
     )
     var disableSkyBlockToolsNBTUpdateResetDiggingOption = false
-
-    @Switch(
-        name = "Enable Catacombs Boss Bar Fix",
-        size = 1,
-    )
-    var enableCatacombsBossBarFixOption = false
 
     @Transient
     @Extract
@@ -88,4 +88,16 @@ class TweaksOptionsImpl :
     override val disablePearlClickBlock by ::disablePearlClickBlockOption
     override val disableSkyBlockToolsNBTUpdateResetDigging by ::disableSkyBlockToolsNBTUpdateResetDiggingOption
     override val enableCatacombsBossBarFix by ::enableCatacombsBossBarFixOption
+
+    override fun onInitializationPost() {
+        requirePlus(
+            "safeBlatantSkyBlock",
+            "disableSkyBlockToolsNBTUpdateResetDiggingOption",
+        )
+
+        requireEx(
+            "unknownBlatant",
+            "disablePearlClickBlockOption",
+        )
+    }
 }

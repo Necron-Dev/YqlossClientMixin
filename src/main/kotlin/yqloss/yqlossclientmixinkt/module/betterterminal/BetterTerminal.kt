@@ -42,17 +42,16 @@ import kotlin.random.Random
 
 val INFO_BETTER_TERMINAL = moduleInfo<BetterTerminalOptions>("better_terminal", "Better Terminal")
 
-private val TERMINAL_FACTORIES =
-    listOf(
-        TerminalOrder,
-        TerminalStart,
-        TerminalColor,
-        TerminalPanes,
-        TerminalRubix,
-        TerminalAlign,
-    )
+private val TERMINAL_FACTORIES = listOf(
+    TerminalOrder,
+    TerminalStart,
+    TerminalColor,
+    TerminalPanes,
+    TerminalRubix,
+    TerminalAlign,
+)
 
-object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL) {
+object BetterTerminal : YCModuleBase<BetterTerminalOptions>(INFO_BETTER_TERMINAL, ::BetterTerminalOptionsMask) {
     data class QueueData(
         val slotID: Int,
         val button: Int,

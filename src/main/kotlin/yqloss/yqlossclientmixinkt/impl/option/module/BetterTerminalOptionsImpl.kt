@@ -513,4 +513,21 @@ class BetterTerminalOptionsImpl :
     override val showChest by ::showChestOption
     override val chestScale get() = chestScaleOption.double
     override val forceEnabled by ::forceEnabledOption
+
+    override fun onInitializationPost() {
+        requirePlus(
+            "unknownMacro",
+            "enableQueueOption",
+            "reloadOnMismatchOption",
+            "clickDelayFromOption",
+            "clickDelayUntilOption",
+            "dragClick",
+            "headerCorrect",
+            "onCorrectClickOption",
+            "headerWrong",
+            "onWrongClickOption",
+            "headerFail",
+            "onFailClickOption",
+        )
+    }
 }

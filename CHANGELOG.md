@@ -102,4 +102,6 @@
 * All illegal features (including macros) will be removed in the normal version
 * Macros and features that are possible on vanilla in the server's view will be included in the PLUS version
 * The EX version contains all features
+* Note that visual features are considered as legit
+* And we specially keep some illegal features that have been publicly verified to be safe
 * feat(Tweaks): add Catacombs boss bar fix

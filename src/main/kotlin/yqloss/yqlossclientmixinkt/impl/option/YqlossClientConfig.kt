@@ -24,6 +24,8 @@ import cc.polyfrost.oneconfig.config.data.Mod
 import cc.polyfrost.oneconfig.config.data.ModType
 import net.yqloss.uktil.accessor.outs.cast
 import net.yqloss.uktil.accessor.outs.inBox
+import yqloss.yqlossclientmixinkt.DEV
+import yqloss.yqlossclientmixinkt.RT
 import yqloss.yqlossclientmixinkt.impl.MOD_VERSION
 import yqloss.yqlossclientmixinkt.impl.YCMixin
 import yqloss.yqlossclientmixinkt.impl.option.module.*
@@ -39,7 +41,10 @@ private val optionsImplMap = mutableMapOf<KClass<*>, () -> YCModuleOptions>()
 
 private val logger = ycLogger("Config")
 
-object YqlossClientConfig : Config(Mod("# Yqloss Client $MOD_VERSION #", ModType.THIRD_PARTY), "yqlossclient.json") {
+object YqlossClientConfig : Config(
+    Mod("Yqloss Client $MOD_VERSION ${if (DEV) "DEV " else ""}$RT", ModType.THIRD_PARTY),
+    "yqlossclient.json",
+) {
     @SubConfig
     var main = MainConfig()
 
