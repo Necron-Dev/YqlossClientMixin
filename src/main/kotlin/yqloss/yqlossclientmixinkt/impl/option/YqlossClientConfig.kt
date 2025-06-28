@@ -84,8 +84,8 @@ object YqlossClientConfig : Config(
     @SubConfig
     var cursor = CursorOptionsImpl()
 
-    @SubConfig
-    var extensions = ExtensionsOptionsImpl()
+//    @SubConfig
+//    var extensions = ExtensionsOptionsImpl()
 
     init {
         initialize()

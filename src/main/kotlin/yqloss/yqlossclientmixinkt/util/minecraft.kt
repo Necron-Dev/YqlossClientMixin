@@ -41,6 +41,7 @@ import yqloss.yqlossclientmixinkt.api.internalLowerChestInventory
 import yqloss.yqlossclientmixinkt.impl.MOD_VERSION
 import yqloss.yqlossclientmixinkt.module.inWorld
 import yqloss.yqlossclientmixinkt.module.option.YCColor
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.invoke
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.red
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.text
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.yellow

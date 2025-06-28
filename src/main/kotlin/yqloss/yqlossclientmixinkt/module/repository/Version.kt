@@ -25,6 +25,7 @@ import yqloss.yqlossclientmixinkt.network.JsonResource
 import yqloss.yqlossclientmixinkt.network.TypedResource
 import yqloss.yqlossclientmixinkt.network.content
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.green
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.invoke
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.openUrl
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.text
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.times

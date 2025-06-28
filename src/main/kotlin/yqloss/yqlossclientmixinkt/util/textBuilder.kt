@@ -170,33 +170,6 @@ class TextBuilderContext(
 
     operator fun String?.not() = appendRemoveNewLine(this)
 
-    fun text(string: String?): TextBuilder {
-        string ?: return null
-        return {
-            addToSegments(Segment(string, baseStyle))
-        }
-    }
-
-    infix fun StyleTransformer.modified(string: String?): TextBuilder {
-        string ?: return null
-        return {
-            addToSegments(Segment(string, this@modified?.invoke(baseStyle) ?: baseStyle))
-        }
-    }
-
-    infix fun StyleTransformer.modified(textBuilder: TextBuilder): TextBuilder {
-        textBuilder ?: return null
-        return {
-            val textBuilderContext = TextBuilderContext(this@modified?.invoke(baseStyle) ?: baseStyle)
-            textBuilderContext.textBuilder()
-            segments += textBuilderContext.segments
-        }
-    }
-
-    operator fun StyleTransformer.invoke(string: String?) = modified(string)
-
-    operator fun StyleTransformer.invoke(textBuilder: TextBuilder) = modified(textBuilder)
-
     companion object {
         private fun colorModifier(color: Int?): (TextStyle) -> TextStyle = { it.copy(color = color) }
 
@@ -254,6 +227,7 @@ class TextBuilderContext(
         val lightBlue = c9
         val green = cA
         val lightGreen = cA
+        val lime = cA
         val aqua = cB
         val lightAqua = cB
         val cyan = cB
@@ -316,7 +290,7 @@ class TextBuilderContext(
 
         fun text(textBuilder: TextBuilder) = textBuilder
 
-        operator fun StyleTransformer.times(other: StyleTransformer) = when {
+        operator fun StyleTransformer.times(other: StyleTransformer): StyleTransformer = when {
             this === null && other === null -> null
             this === null -> other
             other === null -> this
@@ -325,6 +299,66 @@ class TextBuilderContext(
                 other(this(it))
             }
         }
+
+        operator fun TextBuilder.minus(other: TextBuilder): TextBuilder = when {
+            this === null && other === null -> null
+            this === null -> other
+            other === null -> this
+
+            else -> {
+                {
+                    this@minus()
+                    other()
+                }
+            }
+        }
+
+        operator fun String.minus(other: String) = this + other
+
+        operator fun TextBuilder.minus(other: String): TextBuilder = if (this === null) {
+            text(other)
+        } else {
+            {
+                this@minus()
+                -other
+            }
+        }
+
+        operator fun String.minus(other: TextBuilder) = if (other === null) {
+            text(this)
+        } else {
+            {
+                -this@minus
+                other()
+            }
+        }
+
+        fun text(string: String?): TextBuilder {
+            string ?: return null
+            return {
+                addToSegments(Segment(string, baseStyle))
+            }
+        }
+
+        infix fun StyleTransformer.modified(string: String?): TextBuilder {
+            string ?: return null
+            return {
+                addToSegments(Segment(string, this@modified?.invoke(baseStyle) ?: baseStyle))
+            }
+        }
+
+        infix fun StyleTransformer.modified(textBuilder: TextBuilder): TextBuilder {
+            textBuilder ?: return null
+            return {
+                val textBuilderContext = TextBuilderContext(this@modified?.invoke(baseStyle) ?: baseStyle)
+                textBuilderContext.textBuilder()
+                segments += textBuilderContext.segments
+            }
+        }
+
+        operator fun StyleTransformer.invoke(string: String?) = modified(string)
+
+        operator fun StyleTransformer.invoke(textBuilder: TextBuilder) = modified(textBuilder)
     }
 }
 

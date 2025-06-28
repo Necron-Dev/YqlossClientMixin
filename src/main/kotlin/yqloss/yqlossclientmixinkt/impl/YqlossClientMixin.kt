@@ -41,7 +41,6 @@ import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinder
 import yqloss.yqlossclientmixinkt.module.cursor.Cursor
-import yqloss.yqlossclientmixinkt.module.extensions.Extensions
 import yqloss.yqlossclientmixinkt.module.hotkeys.Hotkeys
 import yqloss.yqlossclientmixinkt.module.mapmarker.MapMarker
 import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPrediction
@@ -115,7 +114,7 @@ class YqlossClientMixin : YqlossClient {
 
         MiningPredictionHUD
 
-        Extensions
+//        Extensions
 
         eventRegistry.register<YCMinecraftEvent.Load.Post> {
             loadHypixelModAPI

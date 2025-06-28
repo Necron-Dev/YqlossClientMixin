@@ -27,7 +27,12 @@ import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.enabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
+import yqloss.yqlossclientmixinkt.util.TextBuilder
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.blue
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.gold
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.green
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.invoke
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.minus
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.strikeThrough
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.text
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.white
@@ -35,10 +40,52 @@ import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.yellow
 import yqloss.yqlossclientmixinkt.util.printChat
 import yqloss.yqlossclientmixinkt.util.printError
 
+// name regex: [A-Za-z0-9_]+
+// repository:
+//   official:
+//     https://ycext.yqloss.net
+//   official_XXX:
+//     https://ycextXXX.yqloss.net
+//   github:
+//     https://ycextAUTHOR.github.io
+//   any valid URL without trailing slash:
+//     https://somewebsite.com/somepath
+
 val INFO_EXTENSIONS = moduleInfo<ExtensionsOptions>("extensions", "Extensions")
 
+private val SPLIT_LINE = text { +blue(strikeThrough("-".repeat(32))) }
+
+interface ExtensionOperation {
+    val text: TextBuilder
+}
+
 object Extensions : YCModuleBase<ExtensionsOptions>(INFO_EXTENSIONS) {
-    private val splitLine = text { +blue(strikeThrough("-".repeat(32))) }
+    fun reloadAllExtensions(): List<ExtensionOperation> = buildList {
+    }
+
+    private fun printOperations(operationList: List<ExtensionOperation>) = printChat {
+        +SPLIT_LINE
+        operationList.forEach {
+            +it.text
+        }
+        +SPLIT_LINE
+    }
+
+    private fun processLoadCommand(args: List<String>) {
+        printOperations(reloadAllExtensions())
+    }
+
+    private fun processImportCommand(args: List<String>) {
+    }
+
+    private fun processDeleteCommand(args: List<String>) {
+    }
+
+    private fun processUpdateCommand(args: List<String>) {
+    }
+
+    private fun processUpdateAllCommand(args: List<String>) {
+    }
 
     private fun commandHelp(subCommand: String, description: String) = text {
         -yellow {
@@ -51,10 +98,53 @@ object Extensions : YCModuleBase<ExtensionsOptions>(INFO_EXTENSIONS) {
 
     private fun processCommand(args: List<String>) {
         when (args.getOrNull(1)) {
+            "load" -> processLoadCommand(args)
+
+            "import" -> processImportCommand(args)
+
+            "delete" -> processDeleteCommand(args)
+
+            "update" -> processUpdateCommand(args)
+
+            "updateall" -> processUpdateAllCommand(args)
+
             else -> printChat {
-                +splitLine
-                +commandHelp("help", "Shows the help menu.")
-                +splitLine
+                +SPLIT_LINE
+
+                +commandHelp(
+                    "load",
+                    "Unloads all loaded extensions and loads all installed extensions.",
+                )
+                +commandHelp(
+                    "import ...[author.]<name>[-branch][:version][@repository]",
+                    "Downloads and loads extensions (requires confirmation if the extension already exists).",
+                )
+                +commandHelp(
+                    "delete ...[author.]<name>[-branch][:version][@repository]",
+                    "Deletes extensions (requires confirmation).",
+                )
+                +commandHelp(
+                    "update ...[author.]<name>[-branch][:version][@repository]",
+                    "Updates extensions (requires confirmation).",
+                )
+                +commandHelp(
+                    "updateall",
+                    "Updates all installed extensions (requires confirmation).",
+                )
+                +commandHelp(
+                    "help",
+                    "Shows the help menu.",
+                )
+
+                +(gold("<>") - " Required parameter")
+                +(gold("[]") - " Optional parameter")
+                +gold("Extensions are identified by all parameters. (author, name, branch, version, repository)")
+                +(gold("author") - " defaults to " - green("official"))
+                +(gold("package") - " defaults to " - green("main"))
+                +(gold("version") - " defaults to " - green("latest"))
+                +(gold("repository") - " defaults to " - green("official"))
+
+                +SPLIT_LINE
             }
         }
     }
