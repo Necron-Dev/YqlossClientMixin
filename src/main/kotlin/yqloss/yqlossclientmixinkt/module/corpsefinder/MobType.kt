@@ -19,9 +19,14 @@
 package yqloss.yqlossclientmixinkt.module.corpsefinder
 
 import yqloss.yqlossclientmixinkt.module.option.YCColor
-import yqloss.yqlossclientmixinkt.module.option.YCNotificationOption
 
-interface CorpseOption {
-    val color: YCColor?
-    val notification: YCNotificationOption
+enum class MobType(
+    val offset: Double,
+    val height: Double,
+    val option: () -> YCColor?,
+) {
+    BOWMAN(-2.125, 2.0, { CorpseFinder.options.bowmanColor }),
+    CAVER(-2.125, 2.0, { CorpseFinder.options.caverColor }),
+    MAGE(-2.125, 2.0, { CorpseFinder.options.mageColor }),
+    MUTT(-1.125, 1.0, { CorpseFinder.options.muttColor }),
 }

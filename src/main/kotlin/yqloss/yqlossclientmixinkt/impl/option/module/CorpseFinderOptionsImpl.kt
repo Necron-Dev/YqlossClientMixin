@@ -22,6 +22,7 @@ import cc.polyfrost.oneconfig.config.annotations.Color
 import cc.polyfrost.oneconfig.config.annotations.Header
 import cc.polyfrost.oneconfig.config.annotations.Switch
 import cc.polyfrost.oneconfig.config.core.OneColor
+import net.yqloss.uktil.extension.type.ifTake
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.impl.option.adapter.asYCColor
@@ -34,8 +35,14 @@ import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseOption
 import yqloss.yqlossclientmixinkt.module.corpsefinder.INFO_CORPSE_FINDER
 
 class CorpseOptionImpl : CorpseOption {
+    @Switch(
+        name = "Show Box",
+        size = 1,
+    )
+    var show = false
+
     @Color(
-        name = "Corpse Color",
+        name = "Box Color",
         size = 1,
     )
     var colorOption = OneColor("FFFFFFFF")
@@ -43,7 +50,7 @@ class CorpseOptionImpl : CorpseOption {
     @Extract
     var notificationOption = NotificationOption()
 
-    override val color get() = colorOption.asYCColor
+    override val color get() = show.ifTake { colorOption.asYCColor }
     override val notification by ::notificationOption
 }
 
@@ -70,13 +77,13 @@ class CorpseFinderOptionsImpl :
     val headerModule = false
 
     @Switch(
-        name = "Show Exit",
+        name = "Show Exit Box",
         size = 1,
     )
-    var showExitOption = true
+    var showExitOption = false
 
     @Color(
-        name = "Exit Color",
+        name = "Exit Box Color",
         size = 1,
     )
     var exitColorOption = OneColor("00FF00FF")
@@ -135,6 +142,61 @@ class CorpseFinderOptionsImpl :
 
     @Transient
     @Header(
+        text = "Mobs",
+        size = 2,
+    )
+    val headerMobs = false
+
+    @Switch(
+        name = "Show Bowman Box",
+        size = 1,
+    )
+    var showBowman = false
+
+    @Color(
+        name = "Bowman Box Color",
+        size = 1,
+    )
+    var bowmanColorOption = OneColor("FF0000FF")
+
+    @Switch(
+        name = "Show Caver Box",
+        size = 1,
+    )
+    var showCaver = false
+
+    @Color(
+        name = "Caver Box Color",
+        size = 1,
+    )
+    var caverColorOption = OneColor("FF0000FF")
+
+    @Switch(
+        name = "Show Mage Box",
+        size = 1,
+    )
+    var showMage = false
+
+    @Color(
+        name = "Mage Box Color",
+        size = 1,
+    )
+    var mageColorOption = OneColor("FF0000FF")
+
+    @Switch(
+        name = "Show Mutt Box",
+        size = 1,
+    )
+    var showMutt = false
+
+    @Color(
+        name = "Mutt Box Color",
+        size = 1,
+    )
+    var muttColorOption = OneColor("FF0000FF")
+
+    @Transient
+    @Header(
         text = "Debug",
         size = 2,
     )
@@ -146,11 +208,14 @@ class CorpseFinderOptionsImpl :
     )
     var forceEnabledOption = false
 
-    override val showExit by ::showExitOption
-    override val exitColor get() = exitColorOption.asYCColor
+    override val exitColor get() = showExitOption.ifTake { exitColorOption.asYCColor }
     override val lapis by ::lapisOption
     override val umber by ::umberOption
     override val tungsten by ::tungstenOption
     override val vanguard by ::vanguardOption
+    override val bowmanColor get() = showBowman.ifTake { bowmanColorOption.asYCColor }
+    override val caverColor get() = showCaver.ifTake { caverColorOption.asYCColor }
+    override val mageColor get() = showMage.ifTake { mageColorOption.asYCColor }
+    override val muttColor get() = showMutt.ifTake { muttColorOption.asYCColor }
     override val forceEnabled by ::forceEnabledOption
 }

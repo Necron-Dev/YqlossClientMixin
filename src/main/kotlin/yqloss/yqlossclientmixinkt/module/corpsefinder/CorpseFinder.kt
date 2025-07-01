@@ -19,6 +19,7 @@
 package yqloss.yqlossclientmixinkt.module.corpsefinder
 
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import net.minecraft.entity.Entity
 import net.minecraft.entity.item.EntityArmorStand
 import net.yqloss.uktil.event.EventRegistry
 import net.yqloss.uktil.event.register
@@ -35,24 +36,41 @@ import yqloss.yqlossclientmixinkt.module.*
 import yqloss.yqlossclientmixinkt.module.option.YCColor
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.*
+import java.lang.ref.WeakReference
 
 val INFO_CORPSE_FINDER = moduleInfo<CorpseFinderOptions>("corpse_finder", "Corpse Finder")
 
 object CorpseFinder : YCModuleBase<CorpseFinderOptions>(INFO_CORPSE_FINDER) {
     private val corpses = mutableMapOf<Vec3I, Pair<Vec3D, CorpseType>>()
     private var exit: Vec3D? = null
+    private val mobs = mutableListOf<Pair<MobType, WeakReference<Entity>>>()
 
     private val ensure get() = enabled && inWorld && (options.forceEnabled || inSkyblockMode("mineshaft"))
 
     private val scanCorpses = intervalAction(1000000000) {
         ensure || return@intervalAction
 
+        mobs.clear()
+
         MC.theWorld.loadedEntityList
             .filterIsInstance<EntityArmorStand>()
             .apply {
-                exit ?: onEach {
-                    if (it.displayName.unformattedText.trimStyle == "Exit the Glacite Mineshaft") {
-                        exit = it.currPos
+                map { it to it.displayName.unformattedText.trimStyle }.apply {
+                    exit ?: onEach { (entity, name) ->
+                        if (name == "Exit the Glacite Mineshaft") {
+                            exit = entity.currPos
+                        }
+                    }
+
+                    onEach { (entity, name) ->
+                        if ("Glacite " in name) {
+                            when {
+                                " Bowman" in name -> mobs += MobType.BOWMAN to WeakReference(entity)
+                                " Caver" in name -> mobs += MobType.CAVER to WeakReference(entity)
+                                " Mage" in name -> mobs += MobType.MAGE to WeakReference(entity)
+                                " Mutt" in name -> mobs += MobType.MUTT to WeakReference(entity)
+                            }
+                        }
                     }
                 }
             }.filter { !it.isInvisible && it.showArms }
@@ -61,7 +79,7 @@ object CorpseFinder : YCModuleBase<CorpseFinderOptions>(INFO_CORPSE_FINDER) {
             .forEach { entity ->
                 entity.getCurrentArmor(0).skyBlockID?.let { CorpseType.getByArmor(it) }?.let { corpse ->
                     corpses[entity.currPos.asFloorVec3I] = entity.currPos to corpse
-                    corpse.option.notification(logger) {
+                    corpse.option().notification(logger) {
                         setDefault()
                         this["pos"] = entity.currPos
                     }
@@ -71,30 +89,32 @@ object CorpseFinder : YCModuleBase<CorpseFinderOptions>(INFO_CORPSE_FINDER) {
 
     private fun renderBox(
         pos: Vec3D,
+        size: Double,
+        height: Double,
         color: YCColor,
     ) {
         color.glColor()
 
         mcRenderScope(GL_QUAD_STRIP, DefaultVertexFormats.POSITION) {
-            pos(Vec3D(-0.5, 0.0, -0.5) + pos).endVertex()
-            pos(Vec3D(-0.5, 1.0, -0.5) + pos).endVertex()
-            pos(Vec3D(0.5, 0.0, -0.5) + pos).endVertex()
-            pos(Vec3D(0.5, 1.0, -0.5) + pos).endVertex()
-            pos(Vec3D(0.5, 0.0, 0.5) + pos).endVertex()
-            pos(Vec3D(0.5, 1.0, 0.5) + pos).endVertex()
-            pos(Vec3D(-0.5, 0.0, 0.5) + pos).endVertex()
-            pos(Vec3D(-0.5, 1.0, 0.5) + pos).endVertex()
+            pos(Vec3D(-size, 0.0, -size) + pos).endVertex()
+            pos(Vec3D(-size, height, -size) + pos).endVertex()
+            pos(Vec3D(size, 0.0, -size) + pos).endVertex()
+            pos(Vec3D(size, height, -size) + pos).endVertex()
+            pos(Vec3D(size, 0.0, size) + pos).endVertex()
+            pos(Vec3D(size, height, size) + pos).endVertex()
+            pos(Vec3D(-size, 0.0, size) + pos).endVertex()
+            pos(Vec3D(-size, height, size) + pos).endVertex()
         }
 
         mcRenderScope(GL_QUAD_STRIP, DefaultVertexFormats.POSITION) {
-            pos(Vec3D(0.5, 0.0, -0.5) + pos).endVertex()
-            pos(Vec3D(0.5, 0.0, 0.5) + pos).endVertex()
-            pos(Vec3D(-0.5, 0.0, -0.5) + pos).endVertex()
-            pos(Vec3D(-0.5, 0.0, 0.5) + pos).endVertex()
-            pos(Vec3D(-0.5, 1.0, -0.5) + pos).endVertex()
-            pos(Vec3D(-0.5, 1.0, 0.5) + pos).endVertex()
-            pos(Vec3D(0.5, 1.0, -0.5) + pos).endVertex()
-            pos(Vec3D(0.5, 1.0, 0.5) + pos).endVertex()
+            pos(Vec3D(size, 0.0, -size) + pos).endVertex()
+            pos(Vec3D(size, 0.0, size) + pos).endVertex()
+            pos(Vec3D(-size, 0.0, -size) + pos).endVertex()
+            pos(Vec3D(-size, 0.0, size) + pos).endVertex()
+            pos(Vec3D(-size, height, -size) + pos).endVertex()
+            pos(Vec3D(-size, height, size) + pos).endVertex()
+            pos(Vec3D(size, height, -size) + pos).endVertex()
+            pos(Vec3D(size, height, size) + pos).endVertex()
         }
     }
 
@@ -124,12 +144,25 @@ object CorpseFinder : YCModuleBase<CorpseFinderOptions>(INFO_CORPSE_FINDER) {
                     glDisable(GL_LIGHTING)
                     (-MC.renderViewEntity.renderPos).glTranslate()
 
-                    if (options.showExit) {
-                        exit?.let { renderBox(it, options.exitColor) }
+                    exit?.let {
+                        val color = options.exitColor ?: return@let
+                        renderBox(it, 0.5, 1.0, color)
+                    }
+
+                    mobs.forEach { (type, entityRef) ->
+                        val entity = entityRef.get() ?: return@forEach
+                        val color = type.option() ?: return@forEach
+                        renderBox(
+                            entity.renderPos + Vec3D(0.0, type.offset, 0.0),
+                            0.5,
+                            type.height,
+                            color,
+                        )
                     }
 
                     corpses.values.forEach { (pos, corpse) ->
-                        renderBox(pos + Vec3D(0.0, 0.5, 0.0), corpse.option.color)
+                        val color = corpse.option().color ?: return@forEach
+                        renderBox(pos + Vec3D(0.0, 0.5, 0.0), 0.5, 1.0, color)
                     }
                 }
             }

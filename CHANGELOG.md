@@ -105,3 +105,4 @@
 * Note that visual features are considered as legit
 * And we specially keep some illegal features that have been publicly verified to be safe
 * feat(Tweaks): add Catacombs boss bar fix
+* feat(CorpseFinder): add mob finder
