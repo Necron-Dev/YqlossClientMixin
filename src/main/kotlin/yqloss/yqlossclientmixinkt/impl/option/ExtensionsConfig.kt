@@ -16,14 +16,6 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.impl.option.adapter
+package yqloss.yqlossclientmixinkt.impl.option
 
-import cc.polyfrost.oneconfig.config.annotations.CustomOption
-
-@Retention(AnnotationRetention.RUNTIME)
-@Target(AnnotationTarget.FIELD)
-@CustomOption(id = "extract")
-annotation class Extract(
-    val category: String = "",
-    val subCategory: String = "",
-)
+object ExtensionsConfig

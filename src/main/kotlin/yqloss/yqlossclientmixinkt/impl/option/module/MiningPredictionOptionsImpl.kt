@@ -60,7 +60,7 @@ class MiningPredictionOptionsImpl :
     @Transient
     @Info(
         text =
-            "This applies to all pickaxes, prismarine shards, skulls on these islands:",
+        "This applies to all pickaxes, prismarine shards, skulls on these islands:",
         type = InfoType.WARNING,
         size = 2,
     )

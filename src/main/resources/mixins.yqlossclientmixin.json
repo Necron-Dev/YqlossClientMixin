@@ -23,6 +23,7 @@
         "MixinRenderGlobal"
     ],
     "mixins": [
+        "MixinBasicOption",
         "MixinChunkCacheOF",
         "MixinEntity",
         "MixinForgeHooksClient",

@@ -30,6 +30,7 @@ import cc.polyfrost.oneconfig.config.migration.Migrator
 import cc.polyfrost.oneconfig.internal.config.annotations.Option
 import yqloss.yqlossclientmixinkt.RT
 import yqloss.yqlossclientmixinkt.ReleaseType
+import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.module.YCModuleInfo
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import java.lang.reflect.Field
@@ -72,7 +73,7 @@ abstract class OptionsImpl(
         migrate: Boolean,
     ): BasicOption? {
         field.isAccessible = true
-        return handleExtensionOption(this, { field[this] }, annotation, page, mod, "${field.name}.")
+        return handleExtensionOption(this, field, { field[this] }, annotation, page, mod, "${field.name}.")
     }
 
     open fun onInitializationPost() {}
@@ -90,6 +91,9 @@ private val internalAddOptionToPageMethod: Method by lazy {
         ).apply { isAccessible = true }
 }
 
+val categoryOverride = mutableListOf<String>()
+val subCategoryOverride = mutableListOf<String>()
+
 private fun addOptions(
     config: Config,
     instance: Any,
@@ -97,10 +101,15 @@ private fun addOptions(
     page: OptionPage,
     mod: Mod,
     prefix: String,
+    category: String,
+    subCategory: String,
 ) {
+    if (category.isNotEmpty()) categoryOverride += category
+    if (subCategory.isNotEmpty()) subCategoryOverride += subCategory
+
     type.superclass
         .takeIf { it !== Object::class.java }
-        ?.let { addOptions(config, instance, it, page, mod, prefix) }
+        ?.let { addOptions(config, instance, it, page, mod, prefix, category, subCategory) }
 
     val itemNames = if (config is OptionsImpl) mutableListOf<String>() else null
 
@@ -115,6 +124,7 @@ private fun addOptions(
         } ?: ConfigUtils.findAnnotation(field, CustomOption::class.java)?.also { annotation ->
             handleExtensionOption(
                 config,
+                field,
                 { field[instance] },
                 annotation,
                 page,
@@ -139,10 +149,14 @@ private fun addOptions(
     if (itemNames !== null && config is OptionsImpl) {
         config.itemNames[prefix.removeSuffix(".")] = itemNames
     }
+
+    if (category.isNotEmpty()) categoryOverride.removeLast()
+    if (subCategory.isNotEmpty()) subCategoryOverride.removeLast()
 }
 
 private fun handleExtensionOption(
     config: Config,
+    field: Field,
     fieldGetter: () -> Any,
     annotation: CustomOption,
     page: OptionPage,
@@ -151,7 +165,13 @@ private fun handleExtensionOption(
 ): BasicOption? {
     val args = annotation.id.split(":")
     return when (args[0]) {
-        "extract" -> handleExtractOption(config, fieldGetter, page, mod, prefix)
+        "extract" -> {
+            val extract: Extract? = field.getAnnotation(Extract::class.java)
+            val category = extract?.category ?: ""
+            val subCategory = extract?.subCategory ?: ""
+            handleExtractOption(config, fieldGetter, page, mod, prefix, category, subCategory)
+        }
+
         else -> null
     }
 }
@@ -164,8 +184,10 @@ private fun handleExtractOption(
     page: OptionPage,
     mod: Mod,
     prefix: String,
+    category: String,
+    subCategory: String,
 ): BasicOption? {
     val value = fieldGetter()
-    addOptions(config, value, value::class.java, page, mod, prefix)
+    addOptions(config, value, value::class.java, page, mod, prefix, category, subCategory)
     return null
 }
