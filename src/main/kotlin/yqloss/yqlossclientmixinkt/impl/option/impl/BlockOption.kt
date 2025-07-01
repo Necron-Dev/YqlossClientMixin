@@ -24,13 +24,15 @@ import yqloss.yqlossclientmixinkt.module.option.YCBlockOption
 
 class BlockOption : YCBlockOption {
     @Text(
-        name = "Block ID",
+        name = "{config.block.option.block_id.text}",
+        description = "{config.block.option.block_id.description}",
         size = 1,
     )
     var idOption = "minecraft:air"
 
     @Number(
-        name = "Block Metadata",
+        name = "{config.block.option.block_metadata.text}",
+        description = "{config.block.option.block_metadata.description}",
         min = 0.0F,
         max = 65535.0F,
         step = 1,

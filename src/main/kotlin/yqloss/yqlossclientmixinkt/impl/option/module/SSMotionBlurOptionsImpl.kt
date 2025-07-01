@@ -42,25 +42,26 @@ class SSMotionBlurOptionsImpl :
 
     @Transient
     @Header(
-        text = "SS Motion Blur",
+        text = "{module.ss_motion_blur.config.header.module}",
         size = 2,
     )
     val headerModule = false
 
     @Slider(
-        name = "Strength",
+        name = "{module.ss_motion_blur.config.option.strength.text}",
+        description = "{module.ss_motion_blur.config.option.strength.description}",
         min = 0.0F,
         max = 100.0F,
-        description = "0 means there won't be any effect. 100 means the screen will freeze.",
     )
     var strengthOption = 50.0F
 
     @Dropdown(
-        name = "Alpha Function",
+        name = "{module.ss_motion_blur.config.option.alpha_function.text}",
+        description = "{module.ss_motion_blur.config.option.alpha_function.description}",
         options = [
-            "Instant",
-            "Instant (Balanced)",
-            "Linear (Balanced)",
+            "{module.ss_motion_blur.config.option.alpha_function.options.0}",
+            "{module.ss_motion_blur.config.option.alpha_function.options.1}",
+            "{module.ss_motion_blur.config.option.alpha_function.options.2}",
         ],
     )
     var alphaFunctionOption = 2

@@ -22,6 +22,7 @@ import net.yqloss.uktil.event.EventRegistry
 import net.yqloss.uktil.event.register
 import net.yqloss.uktil.scope.longRet
 import net.yqloss.uktil.scope.noExcept
+import yqloss.yqlossclientmixinkt.api.formatTranslated
 import yqloss.yqlossclientmixinkt.event.minecraft.YCCommandEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
@@ -29,10 +30,7 @@ import yqloss.yqlossclientmixinkt.module.enabled
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.util.TextBuilder
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.blue
-import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.gold
-import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.green
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.invoke
-import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.minus
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.strikeThrough
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.text
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.white
@@ -110,40 +108,7 @@ object Extensions : YCModuleBase<ExtensionsOptions>(INFO_EXTENSIONS) {
 
             else -> printChat {
                 +SPLIT_LINE
-
-                +commandHelp(
-                    "load",
-                    "Unloads all loaded extensions and loads all installed extensions.",
-                )
-                +commandHelp(
-                    "import ...[author.]<name>[-branch][:version][@repository]",
-                    "Downloads and loads extensions (requires confirmation if the extension already exists).",
-                )
-                +commandHelp(
-                    "delete ...[author.]<name>[-branch][:version][@repository]",
-                    "Deletes extensions (requires confirmation).",
-                )
-                +commandHelp(
-                    "update ...[author.]<name>[-branch][:version][@repository]",
-                    "Updates extensions (requires confirmation).",
-                )
-                +commandHelp(
-                    "updateall",
-                    "Updates all installed extensions (requires confirmation).",
-                )
-                +commandHelp(
-                    "help",
-                    "Shows the help menu.",
-                )
-
-                +(gold("<>") - " Required parameter")
-                +(gold("[]") - " Optional parameter")
-                +gold("Extensions are identified by all parameters. (author, name, branch, version, repository)")
-                +(gold("author") - " defaults to " - green("official"))
-                +(gold("package") - " defaults to " - green("main"))
-                +(gold("version") - " defaults to " - green("latest"))
-                +(gold("repository") - " defaults to " - green("official"))
-
+                +formatTranslated("{module.extensions.message.help}")
                 +SPLIT_LINE
             }
         }

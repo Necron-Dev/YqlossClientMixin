@@ -28,6 +28,8 @@ interface YCAPI {
     val hypixelLocation: YCHypixelLocation?
     val templateProvider: YCTemplateProvider
 
+    fun translate(string: String): String
+
     fun call_GuiScreen_keyTyped(
         instance: GuiScreen,
         typedChar: Char,
@@ -46,5 +48,18 @@ val GuiChest.internalLowerChestInventory get() = YC.api.get_GuiChest_lowerChestI
 
 inline fun YCAPI.format(
     template: String,
-    placeholder: YCTemplate.() -> Unit,
+    placeholder: YCTemplate.() -> Unit = {},
 ) = templateProvider(template).also(placeholder).format()
+
+inline fun YCAPI.formatTranslated(
+    template: String,
+    placeholder: YCTemplate.() -> Unit = {},
+) = templateProvider(translate(template)).also(placeholder).format()
+
+inline fun formatTranslated(
+    template: String,
+    placeholder: YCTemplate.() -> Unit = {},
+) = YC.api.formatTranslated(template) {
+    setDefault()
+    placeholder()
+}

@@ -25,19 +25,22 @@ import yqloss.yqlossclientmixinkt.module.option.YCActionBarOption
 
 class ActionBarOption : YCActionBarOption {
     @Switch(
-        name = "Enable Action Bar Notification",
+        name = "{config.notification.actionbar.option.enabled.text}",
+        description = "{config.notification.actionbar.option.enabled.description}",
         size = 2,
     )
     var enabledOption = false
 
     @Text(
-        name = "Action Bar Text",
+        name = "{config.notification.actionbar.option.text.text}",
+        description = "{config.notification.actionbar.option.text.description}",
         size = 1,
     )
     var textOption = ""
 
     @Checkbox(
-        name = "Chroma Action Bar",
+        name = "{config.notification.actionbar.option.chroma.text}",
+        description = "{config.notification.actionbar.option.chroma.description}",
         size = 1,
     )
     var chromaOption = false

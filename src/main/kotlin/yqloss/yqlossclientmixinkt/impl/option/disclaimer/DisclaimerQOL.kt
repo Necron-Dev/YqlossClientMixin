@@ -23,7 +23,7 @@ import cc.polyfrost.oneconfig.config.data.InfoType
 
 class DisclaimerQOL {
     @Info(
-        text = "The features below change vanilla behavior but are not detectable by servers. They are basically safe to use.",
+        text = "{config.disclaimer.qol}",
         type = InfoType.INFO,
         size = 2,
     )

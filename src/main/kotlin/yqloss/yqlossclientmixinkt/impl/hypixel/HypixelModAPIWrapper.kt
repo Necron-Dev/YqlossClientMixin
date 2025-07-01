@@ -32,8 +32,8 @@ import yqloss.yqlossclientmixinkt.event.hypixel.YCHypixelAPIEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.impl.YCMixin
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
-import yqloss.yqlossclientmixinkt.module.NO_MODULE_INFO
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
+import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.printChat
@@ -41,7 +41,7 @@ import kotlin.jvm.optionals.getOrNull
 
 class HypixelModAPIWrapper(
     private val api: HypixelModAPI,
-) : YCModuleBase<YCModuleOptions>(NO_MODULE_INFO) {
+) : YCModuleBase<YCModuleOptions>(moduleInfo("hypixel_mod_api_wrapper", "Hypixel Mod API Wrapper")) {
     private inline fun <reified T : EventPacket> registerPacket(noinline handler: (T) -> Unit) {
         api.subscribeToEventPacket(T::class.java)
         api.createHandler(T::class.java, handler)

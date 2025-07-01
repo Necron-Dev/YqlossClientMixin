@@ -19,12 +19,12 @@
 package yqloss.yqlossclientmixinkt.module.repository
 
 import yqloss.yqlossclientmixinkt.YC
+import yqloss.yqlossclientmixinkt.api.formatTranslated
 import yqloss.yqlossclientmixinkt.module.inWorld
 import yqloss.yqlossclientmixinkt.network.CooldownTypedResource
 import yqloss.yqlossclientmixinkt.network.JsonResource
 import yqloss.yqlossclientmixinkt.network.TypedResource
 import yqloss.yqlossclientmixinkt.network.content
-import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.green
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.invoke
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.openUrl
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.text
@@ -32,7 +32,9 @@ import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.times
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.underlined
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.yellow
 import yqloss.yqlossclientmixinkt.util.printChat
+import yqloss.yqlossclientmixinkt.util.printChatTranslated
 import yqloss.yqlossclientmixinkt.util.printError
+import yqloss.yqlossclientmixinkt.util.printErrorTranslated
 
 const val URL_VERSION = "http://ycm.yqloss.net/version.json"
 
@@ -52,10 +54,12 @@ class Version : TypedResource<VersionData> by CooldownTypedResource(JsonResource
 
     private val notifyNewVersion by lazy {
         val latestVersionString = content[YC.modID]
-        if (latestVersionString === null) return@lazy printError("version api: mod ID is not present in response")
+        if (latestVersionString === null) {
+            return@lazy printErrorTranslated("{module.repository.message.version.error_mod_id_not_present}")
+        }
 
         val updateModNotification = text {
-            +green("Update the mod on one of the following websites:")
+            +formatTranslated("{module.repository.message.version.update_links}")
             +(yellow * underlined) {
                 // TODO: waiting for ktlint to update
                 +openUrl("https://get.yqloss.net").invoke {
@@ -69,14 +73,12 @@ class Version : TypedResource<VersionData> by CooldownTypedResource(JsonResource
         }
 
         val (latestMajor, latestMinor, latestPatch) = parseVersion(latestVersionString) ?: return@lazy printError {
-            +"version api: failed to parse the latest version number"
+            +formatTranslated("{module.repository.message.version.error_parsing_latest}")
             +updateModNotification
         }
 
         val (currentMajor, currentMinor, currentPatch) = parseVersion(YC.modVersion) ?: return@lazy printError {
-            +"version api: failed to parse the current version number"
-            +"this is probably due to modifications to Yqloss Client (Mixin)"
-            +"or the developers' mistakes"
+            +formatTranslated("{module.repository.message.version.error_parsing_current}")
         }
 
         var comparison = latestMajor - currentMajor
@@ -85,27 +87,15 @@ class Version : TypedResource<VersionData> by CooldownTypedResource(JsonResource
 
         when {
             comparison > 0 -> printChat {
-                +green {
-                    +"There is a new update available for Yqloss Client (Mixin)!"
-                    +text {
-                        -"Version "
-                        -yellow(YC.modVersion)
-                        -" -> "
-                        -yellow(latestVersionString)
-                    }
+                +formatTranslated("{module.repository.message.version.update}") {
+                    this["current"] = YC.modVersion
+                    this["latest"] = latestVersionString
                 }
                 +updateModNotification
             }
 
-            comparison < 0 -> printChat {
-                +green {
-                    +text {
-                        -"You are now using the "
-                        -yellow(YC.modVersion)
-                        -" dev version of Yqloss Client (Mixin)."
-                    }
-                    +"This version is still under development and any changes could be made before release!"
-                }
+            comparison < 0 -> printChatTranslated("{module.repository.message.version.preview}") {
+                this["current"] = YC.modVersion
             }
         }
     }

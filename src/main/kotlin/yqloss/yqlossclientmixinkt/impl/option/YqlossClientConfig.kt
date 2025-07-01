@@ -28,6 +28,7 @@ import yqloss.yqlossclientmixinkt.DEV
 import yqloss.yqlossclientmixinkt.RT
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.impl.YCMixin
+import yqloss.yqlossclientmixinkt.impl.option.language.LanguageConfig
 import yqloss.yqlossclientmixinkt.impl.option.module.*
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.ycLogger
@@ -41,10 +42,18 @@ private val optionsImplMap = mutableMapOf<KClass<*>, () -> YCModuleOptions>()
 
 private val logger = ycLogger("Config")
 
+var settingUpYqlossClientConfig = false
+
 object YqlossClientConfig : Config(
     Mod("Yqloss Client ${YC.modVersion} ${if (DEV) "DEV " else ""}$RT", ModType.THIRD_PARTY),
     "yqlossclient.json",
 ) {
+    @SubConfig
+    var language = LanguageConfig().apply {
+        initialize()
+        settingUpYqlossClientConfig = true
+    }
+
     @SubConfig
     var main = MainConfig()
 
@@ -105,6 +114,8 @@ object YqlossClientConfig : Config(
                     }
                 }
             }
+
+        settingUpYqlossClientConfig = false
     }
 
     override fun load() {

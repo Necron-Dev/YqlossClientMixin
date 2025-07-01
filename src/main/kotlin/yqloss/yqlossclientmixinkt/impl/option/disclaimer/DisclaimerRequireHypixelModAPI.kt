@@ -23,7 +23,7 @@ import cc.polyfrost.oneconfig.config.data.InfoType
 
 class DisclaimerRequireHypixelModAPI {
     @Info(
-        text = "The features below require Hypixel Mod API to be installed. https://modrinth.com/mod/hypixel-mod-api",
+        text = "{config.disclaimer.require_hma}",
         type = InfoType.WARNING,
         size = 2,
     )

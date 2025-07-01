@@ -32,7 +32,7 @@ import yqloss.yqlossclientmixinkt.module.repository.Repository
 import yqloss.yqlossclientmixinkt.module.repository.RepositoryOptions
 
 class RepositoryOptionsImpl :
-    OptionsImpl(INFO_REPOSITORY, true),
+    OptionsImpl(INFO_REPOSITORY, defaultEnabled = true),
     RepositoryOptions {
     @Transient
     @Extract
@@ -44,20 +44,21 @@ class RepositoryOptionsImpl :
 
     @Transient
     @Header(
-        text = "Repository",
+        text = "{module.repository.config.header.module}",
         size = 2,
     )
     val headerModule = false
 
     @Transient
     @Header(
-        text = "Version API",
+        text = "{module.repository.config.header.version_api}",
         size = 2,
     )
     val headerVersion = false
 
     @Switch(
-        name = "Enable Requesting",
+        name = "{module.repository.config.option.version_enable_requesting.text}",
+        description = "{module.repository.config.option.version_enable_requesting.description}",
         size = 1,
     )
     var versionEnabledOption = true
@@ -66,8 +67,9 @@ class RepositoryOptionsImpl :
     @Extract
     val reloadVersion =
         @Button(
-            name = "Reload API",
-            text = "Reload",
+            name = "{module.repository.config.function.reload_version_api.text}",
+            text = "{module.repository.config.function.reload_version_api.button}",
+            description = "{module.repository.config.function.reload_version_api.description}",
             size = 1,
         )
         {
@@ -75,7 +77,8 @@ class RepositoryOptionsImpl :
         }
 
     @Number(
-        name = "Request Cooldown",
+        name = "{module.repository.config.option.version_cooldown.text}",
+        description = "{module.repository.config.option.version_cooldown.description}",
         min = 0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -83,20 +86,22 @@ class RepositoryOptionsImpl :
     var versionCooldownOption = 60F
 
     @Switch(
-        name = "Notify New Version",
+        name = "{module.repository.config.option.notify_new_version.text}",
+        description = "{module.repository.config.option.notify_new_version.description}",
         size = 1,
     )
     var notifyNewVersionOption = true
 
     @Transient
     @Header(
-        text = "Cape API",
+        text = "{module.repository.config.header.cape_api}",
         size = 2,
     )
     val headerCape = false
 
     @Switch(
-        name = "Enable Requesting",
+        name = "{module.repository.config.option.cape_enable_requesting.text}",
+        description = "{module.repository.config.option.cape_enable_requesting.description}",
         size = 1,
     )
     var capeEnabledOption = true
@@ -105,8 +110,9 @@ class RepositoryOptionsImpl :
     @Extract
     val reloadCape =
         @Button(
-            name = "Reload API",
-            text = "Reload",
+            name = "{module.repository.config.function.reload_cape_api.text}",
+            text = "{module.repository.config.function.reload_cape_api.button}",
+            description = "{module.repository.config.function.reload_cape_api.description}",
             size = 1,
         )
         {
@@ -114,7 +120,8 @@ class RepositoryOptionsImpl :
         }
 
     @Number(
-        name = "Request Cooldown",
+        name = "{module.repository.config.option.cape_cooldown.text}",
+        description = "{module.repository.config.option.cape_cooldown.description}",
         min = 0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -122,7 +129,8 @@ class RepositoryOptionsImpl :
     var capeCooldownOption = 60F
 
     @Number(
-        name = "Metadata Request Cooldown",
+        name = "{module.repository.config.option.cape_metadata_cooldown.text}",
+        description = "{module.repository.config.option.cape_metadata_cooldown.description}",
         min = 0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -130,7 +138,8 @@ class RepositoryOptionsImpl :
     var capeMetadataCooldownOption = 60F
 
     @Number(
-        name = "Texture Request Cooldown",
+        name = "{module.repository.config.option.cape_texture_cooldown.text}",
+        description = "{module.repository.config.option.cape_texture_cooldown.description}",
         min = 0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -138,7 +147,8 @@ class RepositoryOptionsImpl :
     var capeTextureCooldownOption = 60F
 
     @Switch(
-        name = "Show Mod Capes",
+        name = "{module.repository.config.option.show_mod_capes.text}",
+        description = "{module.repository.config.option.show_mod_capes.description}",
         size = 1,
     )
     var showModCapesOption = true

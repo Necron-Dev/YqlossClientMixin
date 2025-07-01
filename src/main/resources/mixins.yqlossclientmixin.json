@@ -23,8 +23,10 @@
         "MixinRenderGlobal"
     ],
     "mixins": [
+        "MixinBasicButton",
         "MixinBasicOption",
         "MixinChunkCacheOF",
+        "MixinConfigDropdown",
         "MixinEntity",
         "MixinForgeHooksClient",
         "MixinLwjglManagerImpl",

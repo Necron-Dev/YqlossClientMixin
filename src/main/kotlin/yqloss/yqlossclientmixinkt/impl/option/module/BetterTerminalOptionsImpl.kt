@@ -50,7 +50,7 @@ class BetterTerminalOptionsImpl :
 
     @Transient
     @Header(
-        text = "Better Terminal",
+        text = "{module.better_terminal.config.header.module}",
         size = 2,
     )
     val headerModule = false
@@ -59,31 +59,36 @@ class BetterTerminalOptionsImpl :
     var scaleOverride = ScreenScaleOption()
 
     @Switch(
-        name = "Enable Queueing Clicks",
+        name = "{module.better_terminal.config.option.enable_queueing_clicks.text}",
+        description = "{module.better_terminal.config.option.enable_queueing_clicks.description}",
         size = 1,
     )
     var enableQueueOption = false
 
     @Switch(
-        name = "Reload State When State Mismatch",
+        name = "{module.better_terminal.config.option.reload_state_when_state_mismatch.text}",
+        description = "{module.better_terminal.config.option.reload_state_when_state_mismatch.description}",
         size = 1,
     )
     var reloadOnMismatchOption = false
 
     @Switch(
-        name = "Prevent Fail",
+        name = "{module.better_terminal.config.option.prevent_fail.text}",
+        description = "{module.better_terminal.config.option.prevent_fail.description}",
         size = 1,
     )
     var preventFailOption = false
 
     @Switch(
-        name = "Prevent Misclick",
+        name = "{module.better_terminal.config.option.prevent_misclick.text}",
+        description = "{module.better_terminal.config.option.prevent_misclick.description}",
         size = 1,
     )
     var preventMisclickOption = false
 
     @Number(
-        name = "Click Delay From (in ticks)",
+        name = "{module.better_terminal.config.option.click_delay_from_ticks.text}",
+        description = "{module.better_terminal.config.option.click_delay_from_ticks.description}",
         min = 0.0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -91,7 +96,8 @@ class BetterTerminalOptionsImpl :
     var clickDelayFromOption = 2.0F
 
     @Number(
-        name = "Click Delay Until (in ticks)",
+        name = "{module.better_terminal.config.option.click_delay_until_ticks.text}",
+        description = "{module.better_terminal.config.option.click_delay_until_ticks.description}",
         min = 0.0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -99,7 +105,8 @@ class BetterTerminalOptionsImpl :
     var clickDelayUntilOption = 4.0F
 
     @Number(
-        name = "Slot Rounded Corner Radius",
+        name = "{module.better_terminal.config.option.slot_rounded_corner_radius.text}",
+        description = "{module.better_terminal.config.option.slot_rounded_corner_radius.description}",
         min = 0.0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -107,20 +114,23 @@ class BetterTerminalOptionsImpl :
     var cornerRadius = 4.0F
 
     @Switch(
-        name = "Show Vanilla Chest GUI",
+        name = "{module.better_terminal.config.option.show_vanilla_chest_gui.text}",
+        description = "{module.better_terminal.config.option.show_vanilla_chest_gui.description}",
         size = 1,
     )
     var showChestOption = false
 
     @Slider(
-        name = "Vanilla Chest GUI Scale",
+        name = "{module.better_terminal.config.option.vanilla_chest_gui_scale.text}",
+        description = "{module.better_terminal.config.option.vanilla_chest_gui_scale.description}",
         min = 0.0F,
         max = 1.0F,
     )
     var chestScaleOption = 0.25F
 
     @Switch(
-        name = "Drag Click",
+        name = "{module.better_terminal.config.option.drag_click.text}",
+        description = "{module.better_terminal.config.option.drag_click.description}",
         size = 2,
     )
     var dragClick = false
@@ -135,289 +145,329 @@ class BetterTerminalOptionsImpl :
 
     @Transient
     @Header(
-        text = "Click in order!",
+        text = "{module.better_terminal.config.header.order}",
         size = 2,
     )
     val headerOrder = false
 
     @Switch(
-        name = "Enabled",
+        name = "{module.better_terminal.config.option.order_enabled.text}",
+        description = "{module.better_terminal.config.option.order_enabled.description}",
         size = 1,
     )
     var orderEnabledOption = true
 
     @Switch(
-        name = "Smooth GUI",
+        name = "{module.better_terminal.config.option.order_smooth_gui.text}",
+        description = "{module.better_terminal.config.option.order_smooth_gui.description}",
         size = 1,
     )
     var orderSmoothGUI = true
 
     @Switch(
-        name = "Show Number",
+        name = "{module.better_terminal.config.option.order_show_number.text}",
+        description = "{module.better_terminal.config.option.order_show_number.description}",
         size = 1,
     )
     var orderShowNumberOption = true
 
     @Switch(
-        name = "Show Finished Number",
+        name = "{module.better_terminal.config.option.order_show_finished_number.text}",
+        description = "{module.better_terminal.config.option.order_show_finished_number.description}",
         size = 1,
     )
     var orderShowClickedNumberOption = false
 
     @Color(
-        name = "First",
+        name = "{module.better_terminal.config.option.order_first_color.text}",
+        description = "{module.better_terminal.config.option.order_first_color.description}",
         size = 1,
     )
     var order1 = Colors.GREEN[6]
 
     @Color(
-        name = "Second",
+        name = "{module.better_terminal.config.option.order_second_color.text}",
+        description = "{module.better_terminal.config.option.order_second_color.description}",
         size = 1,
     )
     var order2 = Colors.YELLOW[6]
 
     @Color(
-        name = "Third",
+        name = "{module.better_terminal.config.option.order_third_color.text}",
+        description = "{module.better_terminal.config.option.order_third_color.description}",
         size = 1,
     )
     var order3 = Colors.RED[6]
 
     @Color(
-        name = "Finished",
+        name = "{module.better_terminal.config.option.order_finished_color.text}",
+        description = "{module.better_terminal.config.option.order_finished_color.description}",
         size = 1,
     )
     var orderClicked = Colors.NONE
 
     @Color(
-        name = "Other",
+        name = "{module.better_terminal.config.option.order_other_color.text}",
+        description = "{module.better_terminal.config.option.order_other_color.description}",
         size = 1,
     )
     var orderOther = Colors.GRAY[8]
 
     @Transient
     @Header(
-        text = "Correct all the panes!",
+        text = "{module.better_terminal.config.header.panes}",
         size = 2,
     )
     val headerPanes = false
 
     @Switch(
-        name = "Enabled",
+        name = "{module.better_terminal.config.option.panes_enabled.text}",
+        description = "{module.better_terminal.config.option.panes_enabled.description}",
         size = 1,
     )
     var panesEnabledOption = true
 
     @Switch(
-        name = "Smooth GUI",
+        name = "{module.better_terminal.config.option.panes_smooth_gui.text}",
+        description = "{module.better_terminal.config.option.panes_smooth_gui.description}",
         size = 1,
     )
     var panesSmoothGUI = true
 
     @Color(
-        name = "ON",
+        name = "{module.better_terminal.config.option.panes_on_color.text}",
+        description = "{module.better_terminal.config.option.panes_on_color.description}",
         size = 1,
     )
     var panesOn = Colors.GREEN[6]
 
     @Color(
-        name = "OFF",
+        name = "{module.better_terminal.config.option.panes_off_color.text}",
+        description = "{module.better_terminal.config.option.panes_off_color.description}",
         size = 1,
     )
     var panesOff = Colors.RED[6]
 
     @Transient
     @Header(
-        text = "What starts with: '?'?",
+        text = "{module.better_terminal.config.header.start}",
         size = 2,
     )
     val headerStart = false
 
     @Switch(
-        name = "Enabled",
+        name = "{module.better_terminal.config.option.start_enabled.text}",
+        description = "{module.better_terminal.config.option.start_enabled.description}",
         size = 1,
     )
     var startEnabledOption = true
 
     @Switch(
-        name = "Smooth GUI",
+        name = "{module.better_terminal.config.option.start_smooth_gui.text}",
+        description = "{module.better_terminal.config.option.start_smooth_gui.description}",
         size = 1,
     )
     var startSmoothGUI = true
 
     @Color(
-        name = "Answer",
+        name = "{module.better_terminal.config.option.start_answer_color.text}",
+        description = "{module.better_terminal.config.option.start_answer_color.description}",
         size = 1,
     )
     var startAnswer = Colors.GREEN[6]
 
     @Color(
-        name = "Clicked Answer",
+        name = "{module.better_terminal.config.option.start_clicked_answer_color.text}",
+        description = "{module.better_terminal.config.option.start_clicked_answer_color.description}",
         size = 1,
     )
     var startClicked = Colors.GRAY[8]
 
     @Color(
-        name = "Other",
+        name = "{module.better_terminal.config.option.start_other_color.text}",
+        description = "{module.better_terminal.config.option.start_other_color.description}",
         size = 1,
     )
     var startOther = Colors.NONE
 
     @Transient
     @Header(
-        text = "Select all the COLOR items!",
+        text = "{module.better_terminal.config.header.color}",
         size = 2,
     )
     val headerColor = false
 
     @Switch(
-        name = "Enabled",
+        name = "{module.better_terminal.config.option.color_enabled.text}",
+        description = "{module.better_terminal.config.option.color_enabled.description}",
         size = 1,
     )
     var colorEnabledOption = true
 
     @Switch(
-        name = "Smooth GUI",
+        name = "{module.better_terminal.config.option.color_smooth_gui.text}",
+        description = "{module.better_terminal.config.option.color_smooth_gui.description}",
         size = 1,
     )
     var colorSmoothGUI = true
 
     @Color(
-        name = "Answer",
+        name = "{module.better_terminal.config.option.color_answer_color.text}",
+        description = "{module.better_terminal.config.option.color_answer_color.description}",
         size = 1,
     )
     var colorAnswer = Colors.GREEN[6]
 
     @Color(
-        name = "Clicked Answer",
+        name = "{module.better_terminal.config.option.color_clicked_answer_color.text}",
+        description = "{module.better_terminal.config.option.color_clicked_answer_color.description}",
         size = 1,
     )
     var colorClicked = Colors.GRAY[8]
 
     @Color(
-        name = "Other",
+        name = "{module.better_terminal.config.option.color_other_color.text}",
+        description = "{module.better_terminal.config.option.color_other_color.description}",
         size = 1,
     )
     var colorOther = Colors.NONE
 
     @Transient
     @Header(
-        text = "Change all to same color!",
+        text = "{module.better_terminal.config.header.rubix}",
         size = 2,
     )
     val headerRubix = false
 
     @Switch(
-        name = "Enabled",
+        name = "{module.better_terminal.config.option.rubix_enabled.text}",
+        description = "{module.better_terminal.config.option.rubix_enabled.description}",
         size = 1,
     )
     var rubixEnabledOption = true
 
     @Switch(
-        name = "Smooth GUI",
+        name = "{module.better_terminal.config.option.rubix_smooth_gui.text}",
+        description = "{module.better_terminal.config.option.rubix_smooth_gui.description}",
         size = 1,
     )
     var rubixSmoothGUI = true
 
     @Switch(
-        name = "Show Number",
+        name = "{module.better_terminal.config.option.rubix_show_number.text}",
+        description = "{module.better_terminal.config.option.rubix_show_number.description}",
         size = 1,
     )
     var rubixShowNumberOption = true
 
     @Color(
-        name = "0",
+        name = "{module.better_terminal.config.option.rubix_color_0.text}",
+        description = "{module.better_terminal.config.option.rubix_color_0.description}",
         size = 1,
     )
     var rubix0 = Colors.GRAY[8]
 
     @Color(
-        name = "-1",
+        name = "{module.better_terminal.config.option.rubix_color_minus_1.text}",
+        description = "{module.better_terminal.config.option.rubix_color_minus_1.description}",
         size = 1,
     )
     var rubixRight1 = Colors.TEAL[8]
 
     @Color(
-        name = "-2",
+        name = "{module.better_terminal.config.option.rubix_color_minus_2.text}",
+        description = "{module.better_terminal.config.option.rubix_color_minus_2.description}",
         size = 1,
     )
     var rubixRight2 = Colors.TEAL[5]
 
     @Color(
-        name = "1",
+        name = "{module.better_terminal.config.option.rubix_color_1.text}",
+        description = "{module.better_terminal.config.option.rubix_color_1.description}",
         size = 1,
     )
     var rubixLeft1 = Colors.INDIGO[8]
 
     @Color(
-        name = "2",
+        name = "{module.better_terminal.config.option.rubix_color_2.text}",
+        description = "{module.better_terminal.config.option.rubix_color_2.description}",
         size = 1,
     )
     var rubixLeft2 = Colors.INDIGO[5]
 
     @Switch(
-        name = "Correct Direction",
+        name = "{module.better_terminal.config.option.rubix_correct_direction.text}",
+        description = "{module.better_terminal.config.option.rubix_correct_direction.description}",
         size = 1,
     )
     var rubixCorrectDirectionOption = false
 
     @Transient
     @Header(
-        text = "Click the button on time!",
+        text = "{module.better_terminal.config.header.align}",
         size = 2,
     )
     val headerAlign = false
 
     @Switch(
-        name = "Enabled",
+        name = "{module.better_terminal.config.option.align_enabled.text}",
+        description = "{module.better_terminal.config.option.align_enabled.description}",
         size = 1,
     )
     var alignEnabledOption = true
 
     @Switch(
-        name = "Smooth GUI",
+        name = "{module.better_terminal.config.option.align_smooth_gui.text}",
+        description = "{module.better_terminal.config.option.align_smooth_gui.description}",
         size = 1,
     )
     var alignSmoothGUI = true
 
     @Color(
-        name = "Target",
+        name = "{module.better_terminal.config.option.align_target_color.text}",
+        description = "{module.better_terminal.config.option.align_target_color.description}",
         size = 1,
     )
     var alignTarget = Colors.GRAPE[6]
 
     @Color(
-        name = "Inactive",
+        name = "{module.better_terminal.config.option.align_inactive_color.text}",
+        description = "{module.better_terminal.config.option.align_inactive_color.description}",
         size = 1,
     )
     var alignInactive = Colors.GRAY[8]
 
     @Color(
-        name = "Current Active",
+        name = "{module.better_terminal.config.option.align_current_active_color.text}",
+        description = "{module.better_terminal.config.option.align_current_active_color.description}",
         size = 1,
     )
     var alignActiveCurrent = Colors.GREEN[6]
 
     @Color(
-        name = "Other Active",
+        name = "{module.better_terminal.config.option.align_other_active_color.text}",
+        description = "{module.better_terminal.config.option.align_other_active_color.description}",
         size = 1,
     )
     var alignActiveOther = Colors.RED[6]
 
     @Color(
-        name = "Lock In Slot",
+        name = "{module.better_terminal.config.option.align_lock_in_slot_color.text}",
+        description = "{module.better_terminal.config.option.align_lock_in_slot_color.description}",
         size = 1,
     )
     var alignActiveButton = Colors.GREEN[6]
 
     @Color(
-        name = "Row Not Active",
+        name = "{module.better_terminal.config.option.align_row_not_active_color.text}",
+        description = "{module.better_terminal.config.option.align_row_not_active_color.description}",
         size = 1,
     )
     var alignInactiveButton = Colors.GRAY[8]
 
     @Transient
     @Header(
-        text = "Notification On Correct Click",
+        text = "{module.better_terminal.config.header.notification_correct_click}",
         size = 2,
     )
     val headerCorrect = false
@@ -427,7 +477,7 @@ class BetterTerminalOptionsImpl :
 
     @Transient
     @Header(
-        text = "Notification On Canceled Click",
+        text = "{module.better_terminal.config.header.notification_canceled_click}",
         size = 2,
     )
     val headerCanceled = false
@@ -437,7 +487,7 @@ class BetterTerminalOptionsImpl :
 
     @Transient
     @Header(
-        text = "Notification On Wrong Click",
+        text = "{module.better_terminal.config.header.notification_wrong_click}",
         size = 2,
     )
     val headerWrong = false
@@ -447,7 +497,7 @@ class BetterTerminalOptionsImpl :
 
     @Transient
     @Header(
-        text = "Notification On Fail Click",
+        text = "{module.better_terminal.config.header.notification_fail_click}",
         size = 2,
     )
     val headerFail = false
@@ -457,7 +507,7 @@ class BetterTerminalOptionsImpl :
 
     @Transient
     @Header(
-        text = "Notification On Non Queued Click",
+        text = "{module.better_terminal.config.header.notification_non_queued_click}",
         size = 2,
     )
     val headerNonQueued = false
@@ -467,7 +517,7 @@ class BetterTerminalOptionsImpl :
 
     @Transient
     @Header(
-        text = "Notification On Actual Click (Sent To Server)",
+        text = "{module.better_terminal.config.header.notification_actual_click_sent_to_server}",
         size = 2,
     )
     val headerActual = false
@@ -477,13 +527,14 @@ class BetterTerminalOptionsImpl :
 
     @Transient
     @Header(
-        text = "Debug",
+        text = "{module.better_terminal.config.header.debug}",
         size = 2,
     )
     val headerDebug = false
 
     @Switch(
-        name = "Force Enabled",
+        name = "{module.better_terminal.config.option.force_enabled.text}",
+        description = "{module.better_terminal.config.option.force_enabled.description}",
         size = 1,
     )
     var forceEnabledOption = false

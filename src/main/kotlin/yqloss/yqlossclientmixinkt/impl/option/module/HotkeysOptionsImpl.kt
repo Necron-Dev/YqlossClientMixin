@@ -43,15 +43,21 @@ class HotkeysOptionsImpl :
 
     @Transient
     @Header(
-        text = "Hotkeys",
+        text = "{module.hotkeys.config.header.module}",
         size = 2,
     )
     val headerModule = false
 
-    @KeyBind(name = "Drop Single Item")
+    @KeyBind(
+        name = "{module.hotkeys.config.option.drop_single_item.text}",
+        description = "{module.hotkeys.config.option.drop_single_item.description}",
+    )
     var keyBindDropSingleItem = OneKeyBind()
 
-    @KeyBind(name = "Drop Item Stack")
+    @KeyBind(
+        name = "{module.hotkeys.config.option.drop_item_stack.text}",
+        description = "{module.hotkeys.config.option.drop_item_stack.description}",
+    )
     var keyBindDropItemStack = OneKeyBind()
 
     override fun onInitializationPost() {

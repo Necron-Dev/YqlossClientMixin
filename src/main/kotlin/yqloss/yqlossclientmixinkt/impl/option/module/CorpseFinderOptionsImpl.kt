@@ -36,13 +36,15 @@ import yqloss.yqlossclientmixinkt.module.corpsefinder.INFO_CORPSE_FINDER
 
 class CorpseOptionImpl : CorpseOption {
     @Switch(
-        name = "Show Box",
+        name = "{module.corpse_finder.config.corpse.option.show_box.text}",
+        description = "{module.corpse_finder.config.corpse.option.show_box.description}",
         size = 1,
     )
     var show = false
 
     @Color(
-        name = "Box Color",
+        name = "{module.corpse_finder.config.corpse.option.box_color.text}",
+        description = "{module.corpse_finder.config.corpse.option.box_color.description}",
         size = 1,
     )
     var colorOption = OneColor("FFFFFFFF")
@@ -71,26 +73,28 @@ class CorpseFinderOptionsImpl :
 
     @Transient
     @Header(
-        text = "Corpse Finder",
+        text = "{module.corpse_finder.config.header.module}",
         size = 2,
     )
     val headerModule = false
 
     @Switch(
-        name = "Show Exit Box",
+        name = "{module.corpse_finder.config.option.show_exit_box.text}",
+        description = "{module.corpse_finder.config.option.show_exit_box.description}",
         size = 1,
     )
     var showExitOption = false
 
     @Color(
-        name = "Exit Box Color",
+        name = "{module.corpse_finder.config.option.exit_box_color.text}",
+        description = "{module.corpse_finder.config.option.exit_box_color.description}",
         size = 1,
     )
     var exitColorOption = OneColor("00FF00FF")
 
     @Transient
     @Header(
-        text = "Lapis Corpse Options",
+        text = "{module.corpse_finder.config.header.lapis_corpse_options}",
         size = 2,
     )
     val headerLapis = false
@@ -103,7 +107,7 @@ class CorpseFinderOptionsImpl :
 
     @Transient
     @Header(
-        text = "Umber Corpse Options",
+        text = "{module.corpse_finder.config.header.umber_corpse_options}",
         size = 2,
     )
     val headerUmber = false
@@ -116,7 +120,7 @@ class CorpseFinderOptionsImpl :
 
     @Transient
     @Header(
-        text = "Tungsten Corpse Options",
+        text = "{module.corpse_finder.config.header.tungsten_corpse_options}",
         size = 2,
     )
     val headerTungsten = false
@@ -129,7 +133,7 @@ class CorpseFinderOptionsImpl :
 
     @Transient
     @Header(
-        text = "Vanguard Corpse Options",
+        text = "{module.corpse_finder.config.header.vanguard_corpse_options}",
         size = 2,
     )
     val headerVanguard = false
@@ -142,68 +146,77 @@ class CorpseFinderOptionsImpl :
 
     @Transient
     @Header(
-        text = "Mobs",
+        text = "{module.corpse_finder.config.header.mobs}",
         size = 2,
     )
     val headerMobs = false
 
     @Switch(
-        name = "Show Bowman Box",
+        name = "{module.corpse_finder.config.option.show_bowman_box.text}",
+        description = "{module.corpse_finder.config.option.show_bowman_box.description}",
         size = 1,
     )
     var showBowman = false
 
     @Color(
-        name = "Bowman Box Color",
+        name = "{module.corpse_finder.config.option.bowman_box_color.text}",
+        description = "{module.corpse_finder.config.option.bowman_box_color.description}",
         size = 1,
     )
     var bowmanColorOption = OneColor("FF0000FF")
 
     @Switch(
-        name = "Show Caver Box",
+        name = "{module.corpse_finder.config.option.show_caver_box.text}",
+        description = "{module.corpse_finder.config.option.show_caver_box.description}",
         size = 1,
     )
     var showCaver = false
 
     @Color(
-        name = "Caver Box Color",
+        name = "{module.corpse_finder.config.option.caver_box_color.text}",
+        description = "{module.corpse_finder.config.option.caver_box_color.description}",
         size = 1,
     )
     var caverColorOption = OneColor("FF0000FF")
 
     @Switch(
-        name = "Show Mage Box",
+        name = "{module.corpse_finder.config.option.show_mage_box.text}",
+        description = "{module.corpse_finder.config.option.show_mage_box.description}",
         size = 1,
     )
     var showMage = false
 
     @Color(
-        name = "Mage Box Color",
+        name = "{module.corpse_finder.config.option.mage_box_color.text}",
+        description = "{module.corpse_finder.config.option.mage_box_color.description}",
         size = 1,
     )
     var mageColorOption = OneColor("FF0000FF")
 
     @Switch(
-        name = "Show Mutt Box",
+        name = "{module.corpse_finder.config.option.show_mutt_box.text}",
+        description = "{module.corpse_finder.config.option.show_mutt_box.description}",
         size = 1,
     )
     var showMutt = false
 
     @Color(
-        name = "Mutt Box Color",
+        name = "{module.corpse_finder.config.option.mutt_box_color.text}",
+        description = "{module.corpse_finder.config.option.mutt_box_color.description}",
         size = 1,
     )
     var muttColorOption = OneColor("FF0000FF")
 
     @Transient
     @Header(
-        text = "Debug",
+        text = "{module.corpse_finder.config.header.debug}",
         size = 2,
     )
     val headerDebug = false
 
     @Switch(
-        name = "Force Enabled",
+        name = "{module.corpse_finder.config.option.force_enabled.text}",
+        description = "{module.corpse_finder.config.option.force_enabled.description}",
         size = 1,
     )
     var forceEnabledOption = false

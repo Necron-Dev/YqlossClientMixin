@@ -28,7 +28,7 @@ import yqloss.yqlossclientmixinkt.event.hypixel.hypixelServerTickDuration
 import yqloss.yqlossclientmixinkt.event.hypixel.hypixelServerTickUpdateTime
 import yqloss.yqlossclientmixinkt.event.minecraft.YCPacketEvent
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
-import yqloss.yqlossclientmixinkt.util.printChat
+import yqloss.yqlossclientmixinkt.util.printChatTranslated
 
 object CallbackNetHandlerPlayClient {
     object YqlossClient {
@@ -81,12 +81,14 @@ object CallbackNetHandlerPlayClient {
             if (serverTickQueue.size == samples && samples >= 2) {
                 hypixelServerTickDuration = (serverTickQueue.last() - serverTickQueue.first()) / (samples - 1)
                 if (YqlossClientConfig.main.verboseHypixelServerTickDuration) {
-                    printChat("Hypixel Server Tick Duration: $hypixelServerTickDuration")
+                    printChatTranslated("{module.main.message.hypixel_server_tick_duration}") {
+                        this["duration"] = hypixelServerTickDuration
+                    }
                 }
             } else {
                 hypixelServerTickDuration = 50_000_000
                 if (YqlossClientConfig.main.verboseHypixelServerTickDuration) {
-                    printChat("Hypixel Server Tick Duration: (50000000)")
+                    printChatTranslated("{module.main.message.hypixel_server_tick_duration_unknown}")
                 }
             }
             YC.eventDispatcher(YCHypixelEvent.ServerTick)

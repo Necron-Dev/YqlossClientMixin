@@ -25,20 +25,30 @@ import yqloss.yqlossclientmixinkt.module.option.YCLogOption
 
 class LogOption : YCLogOption {
     @Switch(
-        name = "Enable Log Notification",
+        name = "{config.notification.log.option.enabled.text}",
+        description = "{config.notification.log.option.enabled.description}",
         size = 2,
     )
     var enabledOption = false
 
     @Text(
-        name = "Log Text",
+        name = "{config.notification.log.option.text.text}",
+        description = "{config.notification.log.option.text.description}",
         size = 1,
     )
     var textOption = ""
 
     @Dropdown(
-        name = "Log Level",
-        options = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"],
+        name = "{config.notification.log.option.level.text}",
+        description = "{config.notification.log.option.level.description}",
+        options = [
+            "{config.notification.log.option.level.options.0}",
+            "{config.notification.log.option.level.options.1}",
+            "{config.notification.log.option.level.options.2}",
+            "{config.notification.log.option.level.options.3}",
+            "{config.notification.log.option.level.options.4}",
+            "{config.notification.log.option.level.options.5}",
+        ],
         size = 1,
     )
     var levelOption = 3

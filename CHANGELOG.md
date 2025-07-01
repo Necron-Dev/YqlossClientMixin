@@ -106,3 +106,4 @@
 * And we specially keep some illegal features that have been publicly verified to be safe
 * feat(Tweaks): add Catacombs boss bar fix
 * feat(CorpseFinder): add mob finder
+* feat: add I18n (Internationalization) support

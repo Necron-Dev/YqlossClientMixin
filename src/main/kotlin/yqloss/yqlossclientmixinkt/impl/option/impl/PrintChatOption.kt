@@ -24,13 +24,15 @@ import yqloss.yqlossclientmixinkt.module.option.YCPrintChatOption
 
 class PrintChatOption : YCPrintChatOption {
     @Switch(
-        name = "Enable Print Chat Message Notification",
+        name = "{config.notification.print_chat.option.enabled.text}",
+        description = "{config.notification.print_chat.option.enabled.description}",
         size = 1,
     )
     var enabledOption = false
 
     @Text(
-        name = "Chat Message",
+        name = "{config.notification.print_chat.option.text.text}",
+        description = "{config.notification.print_chat.option.text.description}",
         size = 1,
     )
     var textOption = ""

@@ -32,13 +32,13 @@ import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.MC
 import yqloss.yqlossclientmixinkt.util.printChat
 
-class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Client #"), true) {
+class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Client #"), defaultEnabled = true) {
     @Transient
     @Info(type = InfoType.INFO, text = "Ciallo\uFF5E(\u2220\u30FB\u03C9< )\u2312\u2606", size = 2)
     val infoCiallo = false
 
     @Transient
-    @Info(type = InfoType.INFO, text = "已为 OneConfig 添加中文支持", size = 2)
+    @Info(type = InfoType.INFO, text = "已为 OneConfig 添加中文字体支持", size = 2)
     val infoChineseFont = false
 
     @Transient
@@ -47,25 +47,28 @@ class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Cli
 
     @Transient
     @Header(
-        text = "Flags",
+        text = "{module.main.config.header.flags}",
         size = 2,
     )
     val headerFlag = false
 
     @Switch(
-        name = "Disable Yqloss Client Commands",
+        name = "{module.main.config.option.disable_yqloss_client_commands.text}",
+        description = "{module.main.config.option.disable_yqloss_client_commands.description}",
         size = 1,
     )
     var disableCommands = false
 
     @Switch(
-        name = "Disable IBlockAccess Wrapping",
+        name = "{module.main.config.option.disable_iblockaccess_wrapping.text}",
+        description = "{module.main.config.option.disable_iblockaccess_wrapping.description}",
         size = 1,
     )
     var disableBlockAccess = false
 
     @Number(
-        name = "Hypixel Partial Server Tick Samples",
+        name = "{module.main.config.option.hypixel_partial_server_tick_samples.text}",
+        description = "{module.main.config.option.hypixel_partial_server_tick_samples.description}",
         min = 1F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -74,26 +77,28 @@ class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Cli
 
     @Transient
     @Header(
-        text = "Debug Flags",
+        text = "{module.main.config.header.debug_flags}",
         size = 2,
     )
     val headerDebugFlag = false
 
     @Switch(
-        name = "Verbose Hypixel Mod API Wrapper",
+        name = "{module.main.config.option.verbose_hypixel_mod_api.text}",
+        description = "{module.main.config.option.verbose_hypixel_mod_api.description}",
         size = 1,
     )
     var verboseHypixelModAPI = false
 
     @Switch(
-        name = "Verbose Hypixel Server Tick Duration",
+        name = "{module.main.config.option.verbose_hypixel_server_tick_duration.text}",
+        description = "{module.main.config.option.verbose_hypixel_server_tick_duration.description}",
         size = 1,
     )
     var verboseHypixelServerTickDuration = false
 
     @Transient
     @Header(
-        text = "Utilities",
+        text = "{module.main.config.header.utilities}",
         size = 2,
     )
     val headerUtilities = false
@@ -102,8 +107,9 @@ class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Cli
     @Extract
     val loadAllCharacters =
         @Button(
-            name = "Load All Characters",
-            text = "Load",
+            name = "{module.main.config.function.load_all_characters.text}",
+            text = "{module.main.config.function.load_all_characters.button}",
+            description = "{module.main.config.function.load_all_characters.description}",
             size = 1,
         )
         {
@@ -114,7 +120,7 @@ class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Cli
 
     @Transient
     @Header(
-        text = "Hypixel Mod API Location",
+        text = "{module.main.config.header.hypixel_mod_api_location}",
         size = 2,
     )
     val headerHypixelModAPILocation = false
@@ -123,8 +129,9 @@ class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Cli
     @Extract
     val printHypixelModAPILocation =
         @Button(
-            name = "Print Hypixel Mod API Location",
-            text = "Print",
+            name = "{module.main.config.function.print_hypixel_mod_api_location.text}",
+            text = "{module.main.config.function.print_hypixel_mod_api_location.button}",
+            description = "{module.main.config.function.print_hypixel_mod_api_location.description}",
             size = 1,
         )
         {
@@ -135,8 +142,9 @@ class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Cli
     @Extract
     val setMineshaft =
         @Button(
-            name = "Mineshaft",
-            text = "Set",
+            name = "{module.main.config.function.hypixel_mod_api_location_set_mineshaft.text}",
+            text = "{module.main.config.function.hypixel_mod_api_location_set_mineshaft.button}",
+            description = "{module.main.config.function.hypixel_mod_api_location_set_mineshaft.description}",
             size = 1,
         )
         {
@@ -154,8 +162,9 @@ class MainConfig : OptionsImpl(moduleInfo<YCModuleOptions>("main", "# Yqloss Cli
     @Extract
     val setDungeon =
         @Button(
-            name = "Dungeon",
-            text = "Set",
+            name = "{module.main.config.function.hypixel_mod_api_location_set_dungeon.text}",
+            text = "{module.main.config.function.hypixel_mod_api_location_set_dungeon.button}",
+            description = "{module.main.config.function.hypixel_mod_api_location_set_dungeon.description}",
             size = 1,
         )
         {

@@ -23,7 +23,7 @@ import cc.polyfrost.oneconfig.config.data.InfoType
 
 class DisclaimerAtOwnRisk {
     @Info(
-        text = "Use all Yqloss Client features at your own risk! It's not guaranteed that you wouldn't be banned using \"safe\" features!",
+        text = "{config.disclaimer.at_own_risk}",
         type = InfoType.WARNING,
         size = 2,
     )

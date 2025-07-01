@@ -23,7 +23,7 @@ import cc.polyfrost.oneconfig.config.data.InfoType
 
 class DisclaimerSafeMacro {
     @Info(
-        text = "The features below are considered as macros but are not likely to get you banned on most servers.",
+        text = "{config.disclaimer.safe_macro}",
         type = InfoType.INFO,
         size = 2,
     )

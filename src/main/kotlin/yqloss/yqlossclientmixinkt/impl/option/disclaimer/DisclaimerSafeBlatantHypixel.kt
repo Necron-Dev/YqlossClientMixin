@@ -23,7 +23,7 @@ import cc.polyfrost.oneconfig.config.data.InfoType
 
 class DisclaimerSafeBlatantHypixel {
     @Info(
-        text = "The features below change vanilla behavior but are not likely to get you banned on Hypixel.",
+        text = "{config.disclaimer.safe_blatant_hypixel}",
         type = InfoType.INFO,
         size = 2,
     )

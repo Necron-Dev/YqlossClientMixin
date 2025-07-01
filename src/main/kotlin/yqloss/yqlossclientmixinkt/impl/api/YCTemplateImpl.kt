@@ -49,5 +49,6 @@ class YCTemplateImpl(
         st?.add(key, value)
     }
 
-    override fun format() = noExcept { st?.render() } ?: template
+    // ST4 replaces \n with \r\n for some reason
+    override fun format() = (noExcept { st?.render() } ?: template).replace("\r\n", "\n")
 }

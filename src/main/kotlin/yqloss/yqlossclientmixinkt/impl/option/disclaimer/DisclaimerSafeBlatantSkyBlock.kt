@@ -23,7 +23,7 @@ import cc.polyfrost.oneconfig.config.data.InfoType
 
 class DisclaimerSafeBlatantSkyBlock {
     @Info(
-        text = "The features below change vanilla behavior but are not likely to get you banned on Hypixel SkyBlock.",
+        text = "{config.disclaimer.safe_blatant_skyblock}",
         type = InfoType.INFO,
         size = 2,
     )

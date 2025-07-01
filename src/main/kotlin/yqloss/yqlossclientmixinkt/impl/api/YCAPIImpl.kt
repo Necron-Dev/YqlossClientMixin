@@ -25,6 +25,7 @@ import yqloss.yqlossclientmixinkt.api.YCAPI
 import yqloss.yqlossclientmixinkt.api.YCHypixelLocation
 import yqloss.yqlossclientmixinkt.impl.mixin.AccessorGuiChest
 import yqloss.yqlossclientmixinkt.impl.mixin.AccessorGuiScreen
+import yqloss.yqlossclientmixinkt.impl.option.language.LanguageManager
 import yqloss.yqlossclientmixinkt.ycLogger
 
 private val logger = ycLogger("API")
@@ -32,6 +33,8 @@ private val logger = ycLogger("API")
 class YCAPIImpl : YCAPI {
     override var hypixelLocation: YCHypixelLocation? = null
     override val templateProvider = ::YCTemplateImpl
+
+    override fun translate(string: String) = LanguageManager.translate(string)
 
     override fun call_GuiScreen_keyTyped(
         instance: GuiScreen,

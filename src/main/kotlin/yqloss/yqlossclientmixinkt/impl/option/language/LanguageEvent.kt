@@ -16,16 +16,18 @@
  * along with Yqloss Client (Mixin). If not, see <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
  */
 
-package yqloss.yqlossclientmixinkt.impl.option.disclaimer
+package yqloss.yqlossclientmixinkt.impl.option.language
 
-import cc.polyfrost.oneconfig.config.annotations.Info
-import cc.polyfrost.oneconfig.config.data.InfoType
+import net.yqloss.uktil.event.CancelableEvent
+import net.yqloss.uktil.event.Event
 
-class DisclaimerSafeBlatant {
-    @Info(
-        text = "{config.disclaimer.safe_blatant}",
-        type = InfoType.INFO,
-        size = 2,
-    )
-    var info = false
+interface LanguageEvent : Event {
+    data class Translate(
+        val language: String,
+        val fallbackLanguage: String,
+        val string: String,
+        var mutableString: String = string,
+        override var canceled: Boolean = false,
+    ) : LanguageEvent,
+        CancelableEvent
 }

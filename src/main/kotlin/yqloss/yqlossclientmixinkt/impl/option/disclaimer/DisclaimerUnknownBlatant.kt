@@ -23,7 +23,7 @@ import cc.polyfrost.oneconfig.config.data.InfoType
 
 class DisclaimerUnknownBlatant {
     @Info(
-        text = "The features below change vanilla behavior. Use them at your own risk!",
+        text = "{config.disclaimer.unknown_blatant}",
         type = InfoType.WARNING,
         size = 2,
     )

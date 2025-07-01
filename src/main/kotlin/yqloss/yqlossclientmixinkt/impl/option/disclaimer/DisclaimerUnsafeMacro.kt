@@ -23,7 +23,7 @@ import cc.polyfrost.oneconfig.config.data.InfoType
 
 class DisclaimerUnsafeMacro {
     @Info(
-        text = "THE FEATURES BELOW ARE CONSIDERED AS MACROS AND MAY GET YOU BANNED!",
+        text = "{config.disclaimer.unsafe_macro}",
         type = InfoType.ERROR,
         size = 2,
     )

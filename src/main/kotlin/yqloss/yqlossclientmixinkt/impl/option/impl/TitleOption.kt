@@ -26,37 +26,43 @@ import yqloss.yqlossclientmixinkt.module.option.YCTitleOption
 
 class TitleOption : YCTitleOption {
     @Switch(
-        name = "Enable Title Notification",
+        name = "{config.notification.title.option.enabled.text}",
+        description = "{config.notification.title.option.enabled.description}",
         size = 1,
     )
     var enabledOption = false
 
     @Text(
-        name = "Title",
+        name = "{config.notification.title.option.text.text}",
+        description = "{config.notification.title.option.text.description}",
         size = 1,
     )
     var textOption = ""
 
     @Checkbox(
-        name = "Set Subtitle",
+        name = "{config.notification.title.option.set_subtitle.text}",
+        description = "{config.notification.title.option.set_subtitle.description}",
         size = 1,
     )
     var setSubtitleOption = true
 
     @Text(
-        name = "Subtitle",
+        name = "{config.notification.title.option.subtitle.text}",
+        description = "{config.notification.title.option.subtitle.description}",
         size = 1,
     )
     var subtitleOption = ""
 
     @Checkbox(
-        name = "Set Fade-In, Display, Fade-Out Duration",
+        name = "{config.notification.title.option.set_fade_in_display_fade_out_duration.text}",
+        description = "{config.notification.title.option.set_fade_in_display_fade_out_duration.description}",
         size = 1,
     )
     var setTimeOption = true
 
     @Number(
-        name = "Display Duration (in ticks)",
+        name = "{config.notification.title.option.display_duration_ticks.text}",
+        description = "{config.notification.title.option.display_duration_ticks.description}",
         min = 0.0F,
         max = Float.MAX_VALUE,
         step = 1,
@@ -65,7 +71,8 @@ class TitleOption : YCTitleOption {
     var stayOption = 60
 
     @Number(
-        name = "Fade-In Duration (in ticks)",
+        name = "{config.notification.title.option.fade_in_duration_ticks.text}",
+        description = "{config.notification.title.option.fade_in_duration_ticks.description}",
         min = 0.0F,
         max = Float.MAX_VALUE,
         step = 1,
@@ -74,7 +81,8 @@ class TitleOption : YCTitleOption {
     var fadeInOption = 0
 
     @Number(
-        name = "Fade-Out Duration (in ticks)",
+        name = "{config.notification.title.option.fade_out_duration_ticks.text}",
+        description = "{config.notification.title.option.fade_out_duration_ticks.description}",
         min = 0.0F,
         max = Float.MAX_VALUE,
         step = 1,

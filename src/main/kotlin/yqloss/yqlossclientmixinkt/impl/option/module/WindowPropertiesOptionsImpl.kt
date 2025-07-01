@@ -41,50 +41,56 @@ class WindowPropertiesOptionsImpl :
 
     @Transient
     @Header(
-        text = "Window Properties",
+        text = "{module.window_properties.config.header.module}",
         size = 2,
     )
     val headerModule = false
 
     @Switch(
-        name = "Windowed Fullscreen",
+        name = "{module.window_properties.config.option.windowed_fullscreen.text}",
+        description = "{module.window_properties.config.option.windowed_fullscreen.description}",
         size = 1,
     )
     var windowedFullscreenOption = false
 
     @Switch(
-        name = "Disable Fullscreen Optimization",
+        name = "{module.window_properties.config.option.disable_fullscreen_optimization.text}",
+        description = "{module.window_properties.config.option.disable_fullscreen_optimization.description}",
         size = 1,
     )
     var disableFullscreenOptimizationOption = false
 
     @Switch(
-        name = "Borderless Window",
+        name = "{module.window_properties.config.option.borderless_window.text}",
+        description = "{module.window_properties.config.option.borderless_window.description}",
         size = 2,
     )
     var borderlessWindowOption = false
 
     @Switch(
-        name = "Enable Custom Title",
+        name = "{module.window_properties.config.option.enable_custom_title.text}",
+        description = "{module.window_properties.config.option.enable_custom_title.description}",
         size = 2,
     )
     var enableCustomTitleOption = false
 
     @Text(
-        name = "Custom Title",
+        name = "{module.window_properties.config.option.custom_title.text}",
+        description = "{module.window_properties.config.option.custom_title.description}",
         size = 2,
     )
     var customTitleOption = "Minecraft 1.8.9 [Yqloss Client]"
 
     @Transient
     @Header(
-        text = "Debug",
+        text = "{module.window_properties.config.header.debug}",
         size = 2,
     )
     val headerDebug = false
 
     @Switch(
-        name = "Half Fullscreen",
+        name = "{module.window_properties.config.option.debug_half_fullscreen.text}",
+        description = "{module.window_properties.config.option.debug_half_fullscreen.description}",
         size = 2,
     )
     var debugHalfFullscreenOption = false

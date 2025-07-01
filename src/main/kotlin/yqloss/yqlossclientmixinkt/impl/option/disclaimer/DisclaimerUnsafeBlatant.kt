@@ -23,7 +23,7 @@ import cc.polyfrost.oneconfig.config.data.InfoType
 
 class DisclaimerUnsafeBlatant {
     @Info(
-        text = "THE FEATURES BELOW CHANGE VANILLA BEHAVIOR AND MAY GET YOU BANNED!",
+        text = "{config.disclaimer.unsafe_blatant}",
         type = InfoType.ERROR,
         size = 2,
     )

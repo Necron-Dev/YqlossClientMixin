@@ -38,7 +38,7 @@ class TweaksOptionsImpl :
 
     @Transient
     @Header(
-        text = "Tweaks",
+        text = "{module.tweaks.config.header.module}",
         size = 2,
     )
     val headerModule = false
@@ -48,14 +48,15 @@ class TweaksOptionsImpl :
     val qol = DisclaimerQOL()
 
     @Switch(
-        name = "Enable Instant Aim",
-        description = "Set prevRotationYawHead and rotationYawHead of EntityPlayerSP to prevRotationYaw and rotationYaw.",
+        name = "{module.tweaks.config.option.enable_instant_aim.text}",
+        description = "{module.tweaks.config.option.enable_instant_aim.description}",
         size = 1,
     )
     var enableInstantAimOption = false
 
     @Switch(
-        name = "Enable Catacombs Boss Bar Fix",
+        name = "{module.tweaks.config.option.enable_catacombs_boss_bar_fix.text}",
+        description = "{module.tweaks.config.option.enable_catacombs_boss_bar_fix.description}",
         size = 1,
     )
     var enableCatacombsBossBarFixOption = false
@@ -65,9 +66,8 @@ class TweaksOptionsImpl :
     val safeBlatantSkyBlock = DisclaimerSafeBlatantSkyBlock()
 
     @Switch(
-        name = "Disable NBT Update Reset Digging on SkyBlock Mining Islands",
-        description = "This applies to all pickaxes, prismarine shards, skulls on these islands: Gold Mine, Deep Caverns, " +
-            "Dwarven Mines, Crystal Hollows, Mineshaft, The End, Crimson Isle.",
+        name = "{module.tweaks.config.option.disable_skyblock_tools_nbt_update_reset_digging.text}",
+        description = "{module.tweaks.config.option.disable_skyblock_tools_nbt_update_reset_digging.description}",
         size = 1,
     )
     var disableSkyBlockToolsNBTUpdateResetDiggingOption = false
@@ -77,9 +77,8 @@ class TweaksOptionsImpl :
     val unknownBlatant = DisclaimerUnknownBlatant()
 
     @Switch(
-        name = "Disable Pearl Click-On-Block Packet",
-        description = "Cancel the first C08PacketPlayerBlockPlacement packet when throwing an ender pearl while aiming at a block. " +
-            "This fixes not being able to throw pearls while aiming at a block on public islands in Hypixel SkyBlock.",
+        name = "{module.tweaks.config.option.disable_pearl_click_block.text}",
+        description = "{module.tweaks.config.option.disable_pearl_click_block.description}",
         size = 1,
     )
     var disablePearlClickBlockOption = false

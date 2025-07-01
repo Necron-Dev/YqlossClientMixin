@@ -23,7 +23,7 @@ import cc.polyfrost.oneconfig.config.data.InfoType
 
 class DisclaimerUnknownMacro {
     @Info(
-        text = "The features below are considered as macros. Use them at your own risk!",
+        text = "{config.disclaimer.unknown_macro}",
         type = InfoType.WARNING,
         size = 2,
     )

@@ -43,33 +43,36 @@ class CursorOptionsImpl :
 
     @Transient
     @Header(
-        text = "Cursor",
+        text = "{module.cursor.config.header.module}",
         size = 2,
     )
     val headerModule = false
 
     @Transient
     @Header(
-        text = "Continuous Trail",
+        text = "{module.cursor.config.continuous.header.module}",
         size = 2,
     )
     val headerContinuous = false
 
     class Continuous {
         @Switch(
-            name = "Enabled",
+            name = "{module.cursor.config.continuous.option.enabled.text}",
+            description = "{module.cursor.config.continuous.option.enabled.description}",
             size = 1,
         )
         val enabled = false
 
         @Color(
-            name = "Color",
+            name = "{module.cursor.config.continuous.option.color.text}",
+            description = "{module.cursor.config.continuous.option.color.description}",
             size = 1,
         )
         val color = OneColor(-1)
 
         @Number(
-            name = "Radius",
+            name = "{module.cursor.config.continuous.option.radius.text}",
+            description = "{module.cursor.config.continuous.option.radius.description}",
             min = 0F,
             max = Float.MAX_VALUE,
             size = 1,
@@ -77,7 +80,8 @@ class CursorOptionsImpl :
         val radius = 1F
 
         @Number(
-            name = "Bloom",
+            name = "{module.cursor.config.continuous.option.bloom.text}",
+            description = "{module.cursor.config.continuous.option.bloom.description}",
             min = 0F,
             max = Float.MAX_VALUE,
             size = 1,
@@ -85,7 +89,8 @@ class CursorOptionsImpl :
         val bloom = 3F
 
         @Number(
-            name = "Duration",
+            name = "{module.cursor.config.continuous.option.duration.text}",
+            description = "{module.cursor.config.continuous.option.duration.description}",
             min = 0F,
             max = Float.MAX_VALUE,
             size = 1,
@@ -93,7 +98,8 @@ class CursorOptionsImpl :
         val duration = 0F
 
         @Number(
-            name = "Fade",
+            name = "{module.cursor.config.continuous.option.fade.text}",
+            description = "{module.cursor.config.continuous.option.fade.description}",
             min = 0F,
             max = Float.MAX_VALUE,
             size = 1,
@@ -101,7 +107,8 @@ class CursorOptionsImpl :
         val fade = 0.1F
 
         @Number(
-            name = "Radius Samples",
+            name = "{module.cursor.config.continuous.option.radius_samples.text}",
+            description = "{module.cursor.config.continuous.option.radius_samples.description}",
             min = 0F,
             max = Float.MAX_VALUE,
             size = 1,
@@ -109,7 +116,8 @@ class CursorOptionsImpl :
         val radiusSamples = 3
 
         @Number(
-            name = "Time Samples",
+            name = "{module.cursor.config.continuous.option.time_samples.text}",
+            description = "{module.cursor.config.continuous.option.time_samples.description}",
             min = 0F,
             max = Float.MAX_VALUE,
             size = 1,
@@ -117,7 +125,8 @@ class CursorOptionsImpl :
         val timeSamples = 20
 
         @Number(
-            name = "Optimization",
+            name = "{module.cursor.config.continuous.option.optimization.text}",
+            description = "{module.cursor.config.continuous.option.optimization.description}",
             min = 0F,
             max = Float.MAX_VALUE,
             size = 1,
@@ -125,7 +134,8 @@ class CursorOptionsImpl :
         val optimization = 1F
 
         @Number(
-            name = "Keep Samples Duration",
+            name = "{module.cursor.config.continuous.option.keep_samples_duration.text}",
+            description = "{module.cursor.config.continuous.option.keep_samples_duration.description}",
             min = 0F,
             max = Float.MAX_VALUE,
             size = 1,
@@ -133,7 +143,8 @@ class CursorOptionsImpl :
         val keepSamples = 0.1F
 
         @Switch(
-            name = "Hide When Not Moving",
+            name = "{module.cursor.config.continuous.option.hide_when_not_moving.text}",
+            description = "{module.cursor.config.continuous.option.hide_when_not_moving.description}",
             size = 1,
         )
         val hideWhenNotMoving = false

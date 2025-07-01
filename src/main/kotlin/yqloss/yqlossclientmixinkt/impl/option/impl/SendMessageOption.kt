@@ -23,29 +23,33 @@ import cc.polyfrost.oneconfig.config.annotations.Number
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.module.option.SendMessagePool
 import yqloss.yqlossclientmixinkt.module.option.YCSendMessageOption
-import yqloss.yqlossclientmixinkt.util.printChat
+import yqloss.yqlossclientmixinkt.util.printChatTranslated
 
 class SendMessageOption : YCSendMessageOption {
     @Switch(
-        name = "Enable Send Message Notification",
+        name = "{config.notification.send_message.option.enabled.text}",
+        description = "{config.notification.send_message.option.enabled.description}",
         size = 1,
     )
     var enabledOption = false
 
     @Text(
-        name = "Message",
+        name = "{config.notification.send_message.option.text.text}",
+        description = "{config.notification.send_message.option.text.description}",
         size = 1,
     )
     var textOption = ""
 
     @Checkbox(
-        name = "Enable Interval",
+        name = "{config.notification.send_message.option.enable_interval.text}",
+        description = "{config.notification.send_message.option.enable_interval.description}",
         size = 1,
     )
     var enableIntervalOption = false
 
     @Number(
-        name = "Interval Since Last Message (in ticks)",
+        name = "{config.notification.send_message.option.interval_since_last_message_ticks.text}",
+        description = "{config.notification.send_message.option.interval_since_last_message_ticks.description}",
         min = 0.0F,
         max = Float.MAX_VALUE,
         step = 1,
@@ -54,13 +58,15 @@ class SendMessageOption : YCSendMessageOption {
     var intervalOption = 0
 
     @Text(
-        name = "Interval Pool",
+        name = "{config.notification.send_message.option.interval_pool.text}",
+        description = "{config.notification.send_message.option.interval_pool.description}",
         size = 1,
     )
     var intervalPoolOption = "default"
 
     @Number(
-        name = "Max Pool Size",
+        name = "{config.notification.send_message.option.max_pool_size.text}",
+        description = "{config.notification.send_message.option.max_pool_size.description}",
         min = 0.0F,
         max = Float.MAX_VALUE,
         step = 1,
@@ -79,31 +85,37 @@ class SendMessageOption : YCSendMessageOption {
     @Extract
     val clearPool =
         @Button(
-            name = "Clear this Pool",
-            text = "Clear",
+            name = "{config.notification.send_message.function.clear_this_pool.text}",
+            text = "{config.notification.send_message.function.clear_this_pool.button}",
+            description = "{config.notification.send_message.function.clear_this_pool.description}",
             size = 1,
         )
         {
             SendMessagePool.clear(intervalPool)
-            printChat("cleared pool $intervalPool")
+            printChatTranslated("{config.notification.send_message.message.clear_pool}") {
+                this["pool"] = intervalPool
+            }
         }
 
     @Transient
     @Extract
     val viewPoolSize =
         @Button(
-            name = "Print Pool Sizes",
-            text = "Print",
+            name = "{config.notification.send_message.function.print_pool_sizes.text}",
+            text = "{config.notification.send_message.function.print_pool_sizes.button}",
+            description = "{config.notification.send_message.function.print_pool_sizes.description}",
             size = 1,
         )
         {
-            printChat()
-            printChat("Pool Sizes:")
+            printChatTranslated("{config.notification.send_message.message.pool_size.header}")
             SendMessagePool.poolMap.forEach { (pool, list) ->
                 if (list.isNotEmpty()) {
-                    printChat("    $pool: ${list.size}")
+                    printChatTranslated("{config.notification.send_message.message.clear_pool}") {
+                        this["pool"] = pool
+                        this["size"] = list.size
+                    }
                 }
             }
-            printChat()
+            printChatTranslated("{config.notification.send_message.message.pool_size.footer}")
         }
 }

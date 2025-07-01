@@ -44,7 +44,7 @@ class MapMarkerOptionsImpl :
 
     @Transient
     @Header(
-        text = "Map Marker",
+        text = "{module.map_marker.config.header.module}",
         size = 2,
     )
     val headerModule = false

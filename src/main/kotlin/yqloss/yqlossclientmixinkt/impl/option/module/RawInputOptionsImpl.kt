@@ -40,13 +40,14 @@ class RawInputOptionsImpl :
 
     @Transient
     @Header(
-        text = "Raw Input",
+        text = "{module.raw_input.config.header.module}",
         size = 2,
     )
     val headerModule = false
 
     @Switch(
-        name = "Native Raw Input (Only Supported on Windows AMD64)",
+        name = "{module.raw_input.config.option.native_raw_input.text}",
+        description = "{module.raw_input.config.option.native_raw_input.description}",
         size = 2,
     )
     var nativeRawInputOption = false

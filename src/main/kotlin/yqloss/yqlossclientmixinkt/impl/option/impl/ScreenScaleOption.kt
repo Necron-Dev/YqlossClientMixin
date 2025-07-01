@@ -24,13 +24,15 @@ import net.yqloss.uktil.extension.double
 
 class ScreenScaleOption {
     @Switch(
-        name = "Override Screen Scale",
+        name = "{config.screen_scale.option.override_screen_scale.text}",
+        description = "{config.screen_scale.option.override_screen_scale.description}",
         size = 1,
     )
     var overrideEnabledOption: Boolean = false
 
     @Number(
-        name = "Override Screen Scale Value",
+        name = "{config.screen_scale.option.override_screen_scale_value.text}",
+        description = "{config.screen_scale.option.override_screen_scale_value.description}",
         min = 0.125F,
         max = Float.MAX_VALUE,
         size = 1,

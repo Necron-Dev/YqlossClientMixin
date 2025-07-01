@@ -24,7 +24,10 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import yqloss.yqlossclientmixinkt.YqlossClientKt;
+import yqloss.yqlossclientmixinkt.api.YCAPI;
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImplKt;
+import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfigKt;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -37,6 +40,12 @@ public abstract class MixinBasicOption {
     @Unique
     private static final Field yc$subcategoryField;
 
+    @Unique
+    private static final Field yc$nameField;
+
+    @Unique
+    private static final Field yc$descriptionField;
+
     static {
         try {
             yc$categoryField = BasicOption.class.getDeclaredField("category");
@@ -44,22 +53,41 @@ public abstract class MixinBasicOption {
 
             yc$subcategoryField = BasicOption.class.getDeclaredField("subcategory");
             yc$subcategoryField.setAccessible(true);
+
+            yc$nameField = BasicOption.class.getDeclaredField("name");
+            yc$nameField.setAccessible(true);
+
+            yc$descriptionField = BasicOption.class.getDeclaredField("description");
+            yc$descriptionField.setAccessible(true);
         } catch (NoSuchFieldException exception) {
             throw new RuntimeException(exception);
         }
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void setOverrideCategory(Field field, Object parent, String name, String description, String category, String subcategory, int size, CallbackInfo ci) throws Exception {
+    private void yc$modify(Field field, Object parent, String name, String description, String category, String subcategory, int size, CallbackInfo ci) throws Exception {
+        if (!YqlossClientConfigKt.getSettingUpYqlossClientConfig()) return;
+
+        YCAPI api = YqlossClientKt.getYC().getApi();
+
         List<String> categoryOverride = OptionsImplKt.getCategoryOverride();
         List<String> subCategoryOverride = OptionsImplKt.getSubCategoryOverride();
 
         if (!categoryOverride.isEmpty()) {
-            yc$categoryField.set(this, categoryOverride.get(categoryOverride.size() - 1));
+            category = categoryOverride.get(categoryOverride.size() - 1);
         }
 
         if (!subCategoryOverride.isEmpty()) {
-            yc$subcategoryField.set(this, subCategoryOverride.get(subCategoryOverride.size() - 1));
+            subcategory = subCategoryOverride.get(subCategoryOverride.size() - 1);
         }
+
+        if ("General".equals(category)) {
+            category = "{config.category.default}";
+        }
+
+        yc$categoryField.set(this, api.translate(category));
+        yc$subcategoryField.set(this, api.translate(subcategory));
+        yc$nameField.set(this, api.translate(name));
+        yc$descriptionField.set(this, api.translate(description));
     }
 }

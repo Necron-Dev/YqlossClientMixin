@@ -26,19 +26,22 @@ import yqloss.yqlossclientmixinkt.module.option.YCSoundOption
 
 class SoundOption : YCSoundOption {
     @Switch(
-        name = "Enable Sound Notification",
+        name = "{config.notification.sound.option.enabled.text}",
+        description = "{config.notification.sound.option.enabled.description}",
         size = 1,
     )
     var enabledOption = false
 
     @Text(
-        name = "Sound",
+        name = "{config.notification.sound.option.name.text}",
+        description = "{config.notification.sound.option.name.description}",
         size = 1,
     )
     var nameOption = ""
 
     @Number(
-        name = "Volume",
+        name = "{config.notification.sound.option.volume.text}",
+        description = "{config.notification.sound.option.volume.description}",
         min = 0.0F,
         max = 1.0F,
         size = 1,
@@ -46,7 +49,8 @@ class SoundOption : YCSoundOption {
     var volumeOption = 1.0F
 
     @Number(
-        name = "Pitch",
+        name = "{config.notification.sound.option.pitch.text}",
+        description = "{config.notification.sound.option.pitch.description}",
         min = 0.0F,
         max = 2.0F,
         size = 1,

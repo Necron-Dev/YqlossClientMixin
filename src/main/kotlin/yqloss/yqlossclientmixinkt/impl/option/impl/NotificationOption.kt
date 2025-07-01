@@ -24,7 +24,8 @@ import yqloss.yqlossclientmixinkt.module.option.YCNotificationOption
 
 class NotificationOption : YCNotificationOption {
     @Switch(
-        name = "Enable Notification",
+        name = "{config.notification.notification.option.enabled.text}",
+        description = "{config.notification.notification.option.enabled.description}",
         size = 2,
     )
     var enabledOption = false

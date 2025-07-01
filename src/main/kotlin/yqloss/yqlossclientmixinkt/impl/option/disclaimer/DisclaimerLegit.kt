@@ -23,7 +23,7 @@ import cc.polyfrost.oneconfig.config.data.InfoType
 
 class DisclaimerLegit {
     @Info(
-        text = "The features below are safe to use.",
+        text = "{config.disclaimer.legit}",
         type = InfoType.INFO,
         size = 2,
     )

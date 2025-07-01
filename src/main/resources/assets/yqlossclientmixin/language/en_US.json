@@ -1,0 +1,1056 @@
+{
+    "module": {
+        "main": {
+            "name": "# Yqloss Client #",
+            "config": {
+                "header": {
+                    "flags": "Flags",
+                    "debug_flags": "Debug Flags",
+                    "utilities": "Utilities",
+                    "hypixel_mod_api_location": "Hypixel Mod API Location"
+                },
+                "option": {
+                    "disable_yqloss_client_commands": {
+                        "text": "Disable Yqloss Client Commands",
+                        "description": ""
+                    },
+                    "disable_iblockaccess_wrapping": {
+                        "text": "Disable IBlockAccess Wrapping",
+                        "description": ""
+                    },
+                    "hypixel_partial_server_tick_samples": {
+                        "text": "Hypixel Partial Server Tick Samples",
+                        "description": ""
+                    },
+                    "verbose_hypixel_mod_api": {
+                        "text": "Verbose Hypixel Mod API Wrapper",
+                        "description": ""
+                    },
+                    "verbose_hypixel_server_tick_duration": {
+                        "text": "Verbose Hypixel Server Tick Duration",
+                        "description": ""
+                    }
+                },
+                "function": {
+                    "load_all_characters": {
+                        "text": "Load All Characters",
+                        "button": "Load",
+                        "description": ""
+                    },
+                    "print_hypixel_mod_api_location": {
+                        "text": "Print Hypixel Mod API Location",
+                        "button": "Print",
+                        "description": ""
+                    },
+                    "hypixel_mod_api_location_set_mineshaft": {
+                        "text": "Mineshaft",
+                        "button": "Set",
+                        "description": ""
+                    },
+                    "hypixel_mod_api_location_set_dungeon": {
+                        "text": "Dungeon",
+                        "button": "Set",
+                        "description": ""
+                    }
+                }
+            },
+            "message": {
+                "hypixel_server_tick_duration": "Hypixel Server Tick Duration: <duration>",
+                "hypixel_server_tick_duration_unknown": "Hypixel Server Tick Duration: (50000000)",
+                "print_error": [
+                    "<c>Yqloss Client (Mixin) has encountered some error. Please report the following messages to the developer!",
+                    "<c>Version: <e><version><c>, Dev: <e><dev><c>, Release Type: <e><releaseType>"
+                ]
+            }
+        },
+        "extensions": {
+            "name": "Extensions",
+            "config": {
+                "header": {
+                    "module": "Extensions"
+                }
+            },
+            "message": {
+                "help": [
+                    "<e>/ycext load <f>Unloads all loaded extensions and loads all installed extensions.",
+                    "<e>/ycext import ...[author.]<name>[-branch][:version][@repository] <f>Downloads and loads extensions (requires confirmation if the extension already exists).",
+                    "<e>/ycext delete ...[author.]<name>[-branch][:version][@repository] <f>Deletes extensions (requires confirmation).",
+                    "<e>/ycext update ...[author.]<name>[-branch][:version][@repository] <f>Updates extensions (requires confirmation).",
+                    "<e>/ycext updateall <f>Updates all installed extensions (requires confirmation).",
+                    "<e>/ycext help <f>Shows the help menu.",
+                    "<6>\\<\\> <e>Required Parameter",
+                    "<6>[] <e>Optional Parameter",
+                    "<6>Extensions are identified by all parameters. (author, name, branch, version, repository)",
+                    "<6>author <e>defaults to <a>official",
+                    "<6>package <e>defaults to <a>main",
+                    "<6>version <e>defaults to <a>latest",
+                    "<6>repository <e>defaults to <a>official"
+                ]
+            }
+        },
+        "repository": {
+            "name": "Repository",
+            "config": {
+                "header": {
+                    "module": "Repository",
+                    "version_api": "Version API",
+                    "cape_api": "Cape API"
+                },
+                "option": {
+                    "version_enable_requesting": {
+                        "text": "Enable Requesting",
+                        "description": ""
+                    },
+                    "version_cooldown": {
+                        "text": "Request Cooldown",
+                        "description": ""
+                    },
+                    "notify_new_version": {
+                        "text": "Notify New Version",
+                        "description": ""
+                    },
+                    "cape_enable_requesting": {
+                        "text": "Enable Requesting",
+                        "description": ""
+                    },
+                    "cape_cooldown": {
+                        "text": "Request Cooldown",
+                        "description": ""
+                    },
+                    "cape_metadata_cooldown": {
+                        "text": "Metadata Request Cooldown",
+                        "description": ""
+                    },
+                    "cape_texture_cooldown": {
+                        "text": "Texture Request Cooldown",
+                        "description": ""
+                    },
+                    "show_mod_capes": {
+                        "text": "Show Mod Capes",
+                        "description": ""
+                    }
+                },
+                "function": {
+                    "reload_version_api": {
+                        "text": "Reload API",
+                        "button": "Reload",
+                        "description": ""
+                    },
+                    "reload_cape_api": {
+                        "text": "Reload API",
+                        "button": "Reload",
+                        "description": ""
+                    }
+                }
+            },
+            "message": {
+                "version": {
+                    "error_mod_id_not_present": "Version API: Mod ID (yqlossclientmixin) is not present in response",
+                    "error_parsing_latest": "Version API: failed to parse the latest version number",
+                    "error_parsing_current": [
+                        "Version API: failed to parse the current version number",
+                        "This is probably due to modifications to Yqloss Client (Mixin)",
+                        "or the developers' mistakes"
+                    ],
+                    "update_links": "<a>Update the mod on one of the following websites:",
+                    "update": [
+                        "<a>There is a new update available for Yqloss Client (Mixin)!",
+                        "<a>Version <e><current> <a>-> <e><latest>"
+                    ],
+                    "preview": [
+                        "<a>You are now using the <e><current> <a>dev version of Yqloss Client (Mixin).",
+                        "<a>This version is still under development and any changes could be made before release!"
+                    ]
+                }
+            }
+        },
+        "raw_input": {
+            "name": "Raw Input",
+            "config": {
+                "header": {
+                    "module": "Raw Input"
+                },
+                "option": {
+                    "native_raw_input": {
+                        "text": "Native Raw Input (Only Supported on Windows AMD64)",
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "ss_motion_blur": {
+            "name": "SS Motion Blur",
+            "config": {
+                "header": {
+                    "module": "SS Motion Blur"
+                },
+                "option": {
+                    "strength": {
+                        "text": "Strength",
+                        "description": "0 means there won't be any effect. 100 means the screen will freeze."
+                    },
+                    "alpha_function": {
+                        "text": "Alpha Function",
+                        "description": "",
+                        "options": [
+                            "Instant",
+                            "Instant (Balanced)",
+                            "Linear (Balanced)"
+                        ]
+                    }
+                }
+            }
+        },
+        "tweaks": {
+            "name": "Tweaks",
+            "config": {
+                "header": {
+                    "module": "Tweaks"
+                },
+                "option": {
+                    "enable_instant_aim": {
+                        "text": "Enable Instant Aim",
+                        "description": "Set prevRotationYawHead and rotationYawHead of EntityPlayerSP to prevRotationYaw and rotationYaw."
+                    },
+                    "enable_catacombs_boss_bar_fix": {
+                        "text": "Enable Catacombs Boss Bar Fix",
+                        "description": ""
+                    },
+                    "disable_skyblock_tools_nbt_update_reset_digging": {
+                        "text": "Disable NBT Update Reset Digging on SkyBlock Mining Islands",
+                        "description": "This applies to all pickaxes, prismarine shards, skulls on these islands: Gold Mine, Deep Caverns, Dwarven Mines, Crystal Hollows, Mineshaft, The End, Crimson Isle."
+                    },
+                    "disable_pearl_click_block": {
+                        "text": "Disable Pearl Click-On-Block Packet",
+                        "description": "Cancel the first C08PacketPlayerBlockPlacement packet when throwing an ender pearl while aiming at a block. This fixes not being able to throw pearls while aiming at a block on public islands in Hypixel SkyBlock."
+                    }
+                }
+            }
+        },
+        "corpse_finder": {
+            "name": "Corpse Finder",
+            "config": {
+                "header": {
+                    "module": "Corpse Finder",
+                    "lapis_corpse_options": "Lapis Corpse Options",
+                    "umber_corpse_options": "Umber Corpse Options",
+                    "tungsten_corpse_options": "Tungsten Corpse Options",
+                    "vanguard_corpse_options": "Vanguard Corpse Options",
+                    "mobs": "Mobs",
+                    "debug": "Debug"
+                },
+                "option": {
+                    "show_exit_box": {
+                        "text": "Show Exit Box",
+                        "description": ""
+                    },
+                    "exit_box_color": {
+                        "text": "Exit Box Color",
+                        "description": ""
+                    },
+                    "force_enabled": {
+                        "text": "Force Enabled",
+                        "description": ""
+                    },
+                    "show_bowman_box": {
+                        "text": "Show Bowman Box",
+                        "description": ""
+                    },
+                    "bowman_box_color": {
+                        "text": "Bowman Box Color",
+                        "description": ""
+                    },
+                    "show_caver_box": {
+                        "text": "Show Caver Box",
+                        "description": ""
+                    },
+                    "caver_box_color": {
+                        "text": "Caver Box Color",
+                        "description": ""
+                    },
+                    "show_mage_box": {
+                        "text": "Show Mage Box",
+                        "description": ""
+                    },
+                    "mage_box_color": {
+                        "text": "Mage Box Color",
+                        "description": ""
+                    },
+                    "show_mutt_box": {
+                        "text": "Show Mutt Box",
+                        "description": ""
+                    },
+                    "mutt_box_color": {
+                        "text": "Mutt Box Color",
+                        "description": ""
+                    }
+                },
+                "corpse": {
+                    "option": {
+                        "show_box": {
+                            "text": "Show Box",
+                            "description": ""
+                        },
+                        "box_color": {
+                            "text": "Box Color",
+                            "description": ""
+                        }
+                    }
+                }
+            }
+        },
+        "mining_prediction": {
+            "name": "Mining Prediction",
+            "config": {
+                "header": {
+                    "module": "Mining Prediction",
+                    "replacement_block": "Replacement Block For Destroyed Blocks",
+                    "break_block_notification": "Notification On Breaking Block",
+                    "debug": "Debug"
+                },
+                "info": {
+                    "warning_usage": "This applies to all pickaxes, prismarine shards, skulls on these islands:",
+                    "warning_islands": "Gold Mine, Deep Caverns, Dwarven Mines, Crystal Hollows, Mineshaft, The End, Crimson Isle.",
+                    "warning_widget": "If Mining Speed Override is not enabled, Mining Speed stat is required to show in tab for this to work.",
+                    "warning_override": "Override means the FINAL Mining Speed used for calculation, not the specialized part."
+                },
+                "option": {
+                    "breaking_time_offset": {
+                        "text": "Breaking Time Offset",
+                        "description": ""
+                    },
+                    "gemstone_mining_speed_offset": {
+                        "text": "Mining Speed Offset When Mining Gemstone",
+                        "description": ""
+                    },
+                    "dwarven_metal_mining_speed_offset": {
+                        "text": "Mining Speed Offset When Mining Dwarven Metal",
+                        "description": ""
+                    },
+                    "general_mining_speed_offset": {
+                        "text": "Mining Speed Offset When Mining Other Blocks",
+                        "description": ""
+                    },
+                    "enable_gemstone_mining_speed_override": {
+                        "text": "Gemstone Mining Speed Override",
+                        "description": ""
+                    },
+                    "gemstone_mining_speed_override": {
+                        "text": "Gemstone Mining Speed",
+                        "description": ""
+                    },
+                    "enable_dwarven_metal_mining_speed_override": {
+                        "text": "Dwarven Metal Mining Speed Override",
+                        "description": ""
+                    },
+                    "dwarven_metal_mining_speed_override": {
+                        "text": "Dwarven Metal Mining Speed",
+                        "description": ""
+                    },
+                    "enable_general_mining_speed_override": {
+                        "text": "Other Blocks Mining Speed Override",
+                        "description": ""
+                    },
+                    "general_mining_speed_override": {
+                        "text": "Other Blocks Mining Speed",
+                        "description": ""
+                    },
+                    "width": {
+                        "text": "Width",
+                        "description": ""
+                    },
+                    "progress_bar_height": {
+                        "text": "Progress Bar Height",
+                        "description": ""
+                    },
+                    "progress_bar_color_digging": {
+                        "text": "Progress Bar Color When Digging",
+                        "description": ""
+                    },
+                    "progress_bar_color_destroyed": {
+                        "text": "Progress Bar Color When Block Destroyed",
+                        "description": ""
+                    },
+                    "progress_bar_background_color": {
+                        "text": "Progress Bar Background Color",
+                        "description": ""
+                    },
+                    "font_size": {
+                        "text": "Font Size",
+                        "description": ""
+                    },
+                    "left_text_color": {
+                        "text": "Left Text Color",
+                        "description": ""
+                    },
+                    "right_text_color": {
+                        "text": "Right Text Color",
+                        "description": ""
+                    },
+                    "left_text": {
+                        "text": "Left Text",
+                        "description": ""
+                    },
+                    "right_text": {
+                        "text": "Right Text",
+                        "description": ""
+                    },
+                    "text_progress_gap": {
+                        "text": "Gap Between Text And Progress Bar",
+                        "description": ""
+                    },
+                    "force_enabled": {
+                        "text": "Force Enabled",
+                        "description": ""
+                    },
+                    "force_example": {
+                        "text": "Force Example",
+                        "description": ""
+                    },
+                    "use_client_tick": {
+                        "text": "Use Client Tick",
+                        "description": ""
+                    }
+                },
+                "function": {
+                    "print_debug_info": {
+                        "text": "Print Debug Info",
+                        "button": "Print",
+                        "description": ""
+                    }
+                }
+            },
+            "message": {
+                "debug_info": [
+                    "Available: <isAvailable>",
+                    "Tab Mining Speed: <miningSpeed>"
+                ]
+            }
+        },
+        "better_terminal": {
+            "name": "Better Terminal",
+            "config": {
+                "header": {
+                    "module": "Better Terminal",
+                    "order": "Click in order!",
+                    "panes": "Correct all the panes!",
+                    "start": "What starts with: '?'?",
+                    "color": "Select all the COLOR items!",
+                    "rubix": "Change all to same color!",
+                    "align": "Click the button on time!",
+                    "notification_correct_click": "Notification On Correct Click",
+                    "notification_canceled_click": "Notification On Canceled Click",
+                    "notification_wrong_click": "Notification On Wrong Click",
+                    "notification_fail_click": "Notification On Fail Click",
+                    "notification_non_queued_click": "Notification On Non Queued Click",
+                    "notification_actual_click_sent_to_server": "Notification On Actual Click (Sent To Server)",
+                    "debug": "Debug"
+                },
+                "option": {
+                    "enable_queueing_clicks": {
+                        "text": "Enable Queueing Clicks",
+                        "description": ""
+                    },
+                    "reload_state_when_state_mismatch": {
+                        "text": "Reload State When State Mismatch",
+                        "description": ""
+                    },
+                    "prevent_fail": {
+                        "text": "Prevent Fail",
+                        "description": ""
+                    },
+                    "prevent_misclick": {
+                        "text": "Prevent Misclick",
+                        "description": ""
+                    },
+                    "click_delay_from_ticks": {
+                        "text": "Click Delay From (in ticks)",
+                        "description": ""
+                    },
+                    "click_delay_until_ticks": {
+                        "text": "Click Delay Until (in ticks)",
+                        "description": ""
+                    },
+                    "slot_rounded_corner_radius": {
+                        "text": "Slot Rounded Corner Radius",
+                        "description": ""
+                    },
+                    "show_vanilla_chest_gui": {
+                        "text": "Show Vanilla Chest GUI",
+                        "description": ""
+                    },
+                    "vanilla_chest_gui_scale": {
+                        "text": "Vanilla Chest GUI Scale",
+                        "description": ""
+                    },
+                    "drag_click": {
+                        "text": "Drag Click",
+                        "description": ""
+                    },
+                    "order_enabled": {
+                        "text": "Enabled",
+                        "description": ""
+                    },
+                    "order_smooth_gui": {
+                        "text": "Smooth GUI",
+                        "description": ""
+                    },
+                    "order_show_number": {
+                        "text": "Show Number",
+                        "description": ""
+                    },
+                    "order_show_finished_number": {
+                        "text": "Show Finished Number",
+                        "description": ""
+                    },
+                    "order_first_color": {
+                        "text": "First",
+                        "description": ""
+                    },
+                    "order_second_color": {
+                        "text": "Second",
+                        "description": ""
+                    },
+                    "order_third_color": {
+                        "text": "Third",
+                        "description": ""
+                    },
+                    "order_finished_color": {
+                        "text": "Finished",
+                        "description": ""
+                    },
+                    "order_other_color": {
+                        "text": "Other",
+                        "description": ""
+                    },
+                    "panes_enabled": {
+                        "text": "Enabled",
+                        "description": ""
+                    },
+                    "panes_smooth_gui": {
+                        "text": "Smooth GUI",
+                        "description": ""
+                    },
+                    "panes_on_color": {
+                        "text": "ON",
+                        "description": ""
+                    },
+                    "panes_off_color": {
+                        "text": "OFF",
+                        "description": ""
+                    },
+                    "start_enabled": {
+                        "text": "Enabled",
+                        "description": ""
+                    },
+                    "start_smooth_gui": {
+                        "text": "Smooth GUI",
+                        "description": ""
+                    },
+                    "start_answer_color": {
+                        "text": "Answer",
+                        "description": ""
+                    },
+                    "start_clicked_answer_color": {
+                        "text": "Clicked Answer",
+                        "description": ""
+                    },
+                    "start_other_color": {
+                        "text": "Other",
+                        "description": ""
+                    },
+                    "color_enabled": {
+                        "text": "Enabled",
+                        "description": ""
+                    },
+                    "color_smooth_gui": {
+                        "text": "Smooth GUI",
+                        "description": ""
+                    },
+                    "color_answer_color": {
+                        "text": "Answer",
+                        "description": ""
+                    },
+                    "color_clicked_answer_color": {
+                        "text": "Clicked Answer",
+                        "description": ""
+                    },
+                    "color_other_color": {
+                        "text": "Other",
+                        "description": ""
+                    },
+                    "rubix_enabled": {
+                        "text": "Enabled",
+                        "description": ""
+                    },
+                    "rubix_smooth_gui": {
+                        "text": "Smooth GUI",
+                        "description": ""
+                    },
+                    "rubix_show_number": {
+                        "text": "Show Number",
+                        "description": ""
+                    },
+                    "rubix_color_0": {
+                        "text": "0",
+                        "description": ""
+                    },
+                    "rubix_color_minus_1": {
+                        "text": "-1",
+                        "description": ""
+                    },
+                    "rubix_color_minus_2": {
+                        "text": "-2",
+                        "description": ""
+                    },
+                    "rubix_color_1": {
+                        "text": "1",
+                        "description": ""
+                    },
+                    "rubix_color_2": {
+                        "text": "2",
+                        "description": ""
+                    },
+                    "rubix_correct_direction": {
+                        "text": "Correct Direction",
+                        "description": ""
+                    },
+                    "align_enabled": {
+                        "text": "Enabled",
+                        "description": ""
+                    },
+                    "align_smooth_gui": {
+                        "text": "Smooth GUI",
+                        "description": ""
+                    },
+                    "align_target_color": {
+                        "text": "Target",
+                        "description": ""
+                    },
+                    "align_inactive_color": {
+                        "text": "Inactive",
+                        "description": ""
+                    },
+                    "align_current_active_color": {
+                        "text": "Current Active",
+                        "description": ""
+                    },
+                    "align_other_active_color": {
+                        "text": "Other Active",
+                        "description": ""
+                    },
+                    "align_lock_in_slot_color": {
+                        "text": "Lock In Slot",
+                        "description": ""
+                    },
+                    "align_row_not_active_color": {
+                        "text": "Row Not Active",
+                        "description": ""
+                    },
+                    "force_enabled": {
+                        "text": "Force Enabled",
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "yc_leap_menu": {
+            "name": "YC Leap Menu",
+            "config": {
+                "header": {
+                    "module": "YC Leap Menu",
+                    "hotkeys": "Hotkeys",
+                    "notification_on_clicking_leap_button": "Notification On Clicking Leap Button",
+                    "debug": "Debug"
+                },
+                "option": {
+                    "smooth_gui": {
+                        "text": "Smooth GUI",
+                        "description": ""
+                    },
+                    "keybind_index_0": {
+                        "text": "Index 0 (Typically Archer)",
+                        "description": ""
+                    },
+                    "keybind_index_1": {
+                        "text": "Index 1 (Typically Berserk)",
+                        "description": ""
+                    },
+                    "keybind_index_2": {
+                        "text": "Index 2 (Typically Mage)",
+                        "description": ""
+                    },
+                    "keybind_index_3": {
+                        "text": "Index 3 (Typically Healer)",
+                        "description": ""
+                    },
+                    "keybind_index_4": {
+                        "text": "Index 4 (Typically Tank)",
+                        "description": ""
+                    },
+                    "force_enabled": {
+                        "text": "Force Enabled",
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "map_marker": {
+            "name": "Map Marker",
+            "config": {
+                "header": {
+                    "module": "Map Marker"
+                }
+            }
+        },
+        "window_properties": {
+            "name": "Window Properties",
+            "config": {
+                "header": {
+                    "module": "Window Properties",
+                    "debug": "Debug"
+                },
+                "option": {
+                    "windowed_fullscreen": {
+                        "text": "Windowed Fullscreen",
+                        "description": ""
+                    },
+                    "disable_fullscreen_optimization": {
+                        "text": "Disable Fullscreen Optimization",
+                        "description": ""
+                    },
+                    "borderless_window": {
+                        "text": "Borderless Window",
+                        "description": ""
+                    },
+                    "enable_custom_title": {
+                        "text": "Enable Custom Title",
+                        "description": ""
+                    },
+                    "custom_title": {
+                        "text": "Custom Title",
+                        "description": ""
+                    },
+                    "debug_half_fullscreen": {
+                        "text": "Half Fullscreen",
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "hotkeys": {
+            "name": "Hotkeys",
+            "config": {
+                "header": {
+                    "module": "Hotkeys"
+                },
+                "option": {
+                    "drop_single_item": {
+                        "text": "Drop Single Item",
+                        "description": ""
+                    },
+                    "drop_item_stack": {
+                        "text": "Drop Item Stack",
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "cursor": {
+            "name": "Cursor",
+            "config": {
+                "header": {
+                    "module": "Cursor"
+                },
+                "continuous": {
+                    "header": {
+                        "module": "Continuous Trail"
+                    },
+                    "option": {
+                        "enabled": {
+                            "text": "Enabled",
+                            "description": ""
+                        },
+                        "color": {
+                            "text": "Color",
+                            "description": ""
+                        },
+                        "radius": {
+                            "text": "Radius",
+                            "description": ""
+                        },
+                        "bloom": {
+                            "text": "Bloom",
+                            "description": ""
+                        },
+                        "duration": {
+                            "text": "Duration",
+                            "description": ""
+                        },
+                        "fade": {
+                            "text": "Fade",
+                            "description": ""
+                        },
+                        "radius_samples": {
+                            "text": "Radius Samples",
+                            "description": ""
+                        },
+                        "time_samples": {
+                            "text": "Time Samples",
+                            "description": ""
+                        },
+                        "optimization": {
+                            "text": "Optimization",
+                            "description": ""
+                        },
+                        "keep_samples_duration": {
+                            "text": "Keep Samples Duration",
+                            "description": ""
+                        },
+                        "hide_when_not_moving": {
+                            "text": "Hide When Not Moving",
+                            "description": ""
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "config": {
+        "category": {
+            "default": "General"
+        },
+        "disclaimer": {
+            "at_own_risk": "Use all Yqloss Client features at your own risk! It's not guaranteed that you wouldn't be banned using \"safe\" features!",
+            "require_hma": "The features below require Hypixel Mod API to be installed. https://modrinth.com/mod/hypixel-mod-api",
+            "legit": "The features below are safe to use.",
+            "qol": "The features below change vanilla behavior but are not detectable by servers. They are basically safe to use.",
+            "safe_macro": "The features below are considered as macros but are not likely to get you banned on most servers.",
+            "safe_blatant": "The features below change vanilla behavior but are not likely to get you banned on most servers.",
+            "safe_blatant_hypixel": "The features below change vanilla behavior but are not likely to get you banned on Hypixel.",
+            "safe_blatant_skyblock": "The features below change vanilla behavior but are not likely to get you banned on Hypixel SkyBlock.",
+            "unknown_macro": "The features below are considered as macros. Use them at your own risk!",
+            "unknown_blatant": "The features below change vanilla behavior. Use them at your own risk!",
+            "unsafe_macro": "THE FEATURES BELOW ARE CONSIDERED AS MACROS AND MAY GET YOU BANNED!",
+            "unsafe_blatant": "THE FEATURES BELOW CHANGE VANILLA BEHAVIOR AND MAY GET YOU BANNED!"
+        },
+        "notification": {
+            "notification": {
+                "option": {
+                    "enabled": {
+                        "text": "Enable Notification",
+                        "description": ""
+                    }
+                }
+            },
+            "actionbar": {
+                "option": {
+                    "enabled": {
+                        "text": "Enable Action Bar Notification",
+                        "description": ""
+                    },
+                    "text": {
+                        "text": "Action Bar Text",
+                        "description": ""
+                    },
+                    "chroma": {
+                        "text": "Chroma Action Bar",
+                        "description": ""
+                    }
+                }
+            },
+            "log": {
+                "option": {
+                    "enabled": {
+                        "text": "Enable Log Notification",
+                        "description": ""
+                    },
+                    "text": {
+                        "text": "Log Text",
+                        "description": ""
+                    },
+                    "level": {
+                        "text": "Log Level",
+                        "description": "",
+                        "options": [
+                            "FATAL",
+                            "ERROR",
+                            "WARN",
+                            "INFO",
+                            "DEBUG",
+                            "TRACE"
+                        ]
+                    }
+                }
+            },
+            "print_chat": {
+                "option": {
+                    "enabled": {
+                        "text": "Enable Print Chat Message Notification",
+                        "description": ""
+                    },
+                    "text": {
+                        "text": "Chat Message",
+                        "description": ""
+                    }
+                }
+            },
+            "send_message": {
+                "option": {
+                    "enabled": {
+                        "text": "Enable Send Message Notification",
+                        "description": ""
+                    },
+                    "text": {
+                        "text": "Message",
+                        "description": ""
+                    },
+                    "enable_interval": {
+                        "text": "Enable Interval",
+                        "description": ""
+                    },
+                    "interval_since_last_message_ticks": {
+                        "text": "Interval Since Last Message (in ticks)",
+                        "description": ""
+                    },
+                    "interval_pool": {
+                        "text": "Interval Pool",
+                        "description": ""
+                    },
+                    "max_pool_size": {
+                        "text": "Max Pool Size",
+                        "description": ""
+                    }
+                },
+                "function": {
+                    "clear_this_pool": {
+                        "text": "Clear this Pool",
+                        "button": "Clear",
+                        "description": ""
+                    },
+                    "print_pool_sizes": {
+                        "text": "Print Pool Sizes",
+                        "button": "Print",
+                        "description": ""
+                    }
+                },
+                "message": {
+                    "clear_pool": "Cleared pool <pool>",
+                    "pool_size": {
+                        "header": "\nPool Sizes:",
+                        "pool": "    <pool>: <size>",
+                        "footer": ""
+                    }
+                }
+            },
+            "sound": {
+                "option": {
+                    "enabled": {
+                        "text": "Enable Sound Notification",
+                        "description": ""
+                    },
+                    "name": {
+                        "text": "Sound",
+                        "description": ""
+                    },
+                    "volume": {
+                        "text": "Volume",
+                        "description": ""
+                    },
+                    "pitch": {
+                        "text": "Pitch",
+                        "description": ""
+                    }
+                }
+            },
+            "title": {
+                "option": {
+                    "enabled": {
+                        "text": "Enable Title Notification",
+                        "description": ""
+                    },
+                    "text": {
+                        "text": "Title",
+                        "description": ""
+                    },
+                    "set_subtitle": {
+                        "text": "Set Subtitle",
+                        "description": ""
+                    },
+                    "subtitle": {
+                        "text": "Subtitle",
+                        "description": ""
+                    },
+                    "set_fade_in_display_fade_out_duration": {
+                        "text": "Set Fade-In, Display, Fade-Out Duration",
+                        "description": ""
+                    },
+                    "display_duration_ticks": {
+                        "text": "Display Duration (in ticks)",
+                        "description": ""
+                    },
+                    "fade_in_duration_ticks": {
+                        "text": "Fade-In Duration (in ticks)",
+                        "description": ""
+                    },
+                    "fade_out_duration_ticks": {
+                        "text": "Fade-Out Duration (in ticks)",
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "gui_background": {
+            "option": {
+                "show_background": {
+                    "text": "Show Background",
+                    "description": ""
+                },
+                "background_color": {
+                    "text": "Background Color",
+                    "description": ""
+                },
+                "rounded_corner_radius": {
+                    "text": "Rounded Corner Radius",
+                    "description": ""
+                },
+                "shadow_blur": {
+                    "text": "Shadow Blur",
+                    "description": ""
+                },
+                "x_padding": {
+                    "text": "X Padding",
+                    "description": ""
+                },
+                "y_padding": {
+                    "text": "Y Padding",
+                    "description": ""
+                }
+            }
+        },
+        "screen_scale": {
+            "option": {
+                "override_screen_scale": {
+                    "text": "Override Screen Scale",
+                    "description": ""
+                },
+                "override_screen_scale_value": {
+                    "text": "Override Screen Scale Value",
+                    "description": ""
+                }
+            }
+        },
+        "block": {
+            "option": {
+                "block_id": {
+                    "text": "Block ID",
+                    "description": ""
+                },
+                "block_metadata": {
+                    "text": "Block Metadata",
+                    "description": ""
+                }
+            }
+        }
+    }
+}

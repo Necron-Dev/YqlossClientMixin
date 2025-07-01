@@ -52,7 +52,7 @@ class MiningPredictionOptionsImpl :
 
     @Transient
     @Header(
-        text = "Mining Prediction",
+        text = "{module.mining_prediction.config.header.module}",
         size = 2,
     )
     val headerModule = false
@@ -60,7 +60,7 @@ class MiningPredictionOptionsImpl :
     @Transient
     @Info(
         text =
-        "This applies to all pickaxes, prismarine shards, skulls on these islands:",
+        "{module.mining_prediction.config.info.warning_usage}",
         type = InfoType.WARNING,
         size = 2,
     )
@@ -68,7 +68,7 @@ class MiningPredictionOptionsImpl :
 
     @Transient
     @Info(
-        text = "Gold Mine, Deep Caverns, Dwarven Mines, Crystal Hollows, Mineshaft, The End, Crimson Isle.",
+        text = "{module.mining_prediction.config.info.warning_islands}",
         type = InfoType.WARNING,
         size = 2,
     )
@@ -76,14 +76,23 @@ class MiningPredictionOptionsImpl :
 
     @Transient
     @Info(
-        text = "If Mining Speed Override is not enabled, Mining Speed stat is required to show in tab for this to work.",
+        text = "{module.mining_prediction.config.info.warning_widget}",
         type = InfoType.WARNING,
         size = 2,
     )
     val warningWidget = false
 
+    @Transient
+    @Info(
+        text = "{module.mining_prediction.config.info.warning_override}",
+        type = InfoType.WARNING,
+        size = 2,
+    )
+    val warningOverride = false
+
     @Number(
-        name = "Breaking Time Offset",
+        name = "{module.mining_prediction.config.option.breaking_time_offset.text}",
+        description = "{module.mining_prediction.config.option.breaking_time_offset.description}",
         min = -Float.MAX_VALUE,
         max = Float.MAX_VALUE,
         step = 1,
@@ -92,7 +101,8 @@ class MiningPredictionOptionsImpl :
     var offsetOption = 0
 
     @Number(
-        name = "Mining Speed Offset When Mining Gemstone",
+        name = "{module.mining_prediction.config.option.gemstone_mining_speed_offset.text}",
+        description = "{module.mining_prediction.config.option.gemstone_mining_speed_offset.description}",
         min = -Float.MAX_VALUE,
         max = Float.MAX_VALUE,
         step = 1,
@@ -101,7 +111,8 @@ class MiningPredictionOptionsImpl :
     var gemstoneMiningSpeedOffsetOption = 0
 
     @Number(
-        name = "Mining Speed Offset When Mining Dwarven Metal",
+        name = "{module.mining_prediction.config.option.dwarven_metal_mining_speed_offset.text}",
+        description = "{module.mining_prediction.config.option.dwarven_metal_mining_speed_offset.description}",
         min = -Float.MAX_VALUE,
         max = Float.MAX_VALUE,
         step = 1,
@@ -110,7 +121,8 @@ class MiningPredictionOptionsImpl :
     var dwarvenMetalMiningSpeedOffsetOption = 0
 
     @Number(
-        name = "Mining Speed Offset When Mining Other Blocks",
+        name = "{module.mining_prediction.config.option.general_mining_speed_offset.text}",
+        description = "{module.mining_prediction.config.option.general_mining_speed_offset.description}",
         min = -Float.MAX_VALUE,
         max = Float.MAX_VALUE,
         step = 1,
@@ -118,22 +130,16 @@ class MiningPredictionOptionsImpl :
     )
     var generalMiningSpeedOffsetOption = 0
 
-    @Transient
-    @Info(
-        text = "Override means the FINAL Mining Speed used for calculation, not the specialized part.",
-        type = InfoType.WARNING,
-        size = 2,
-    )
-    val warningOverride = false
-
     @Switch(
-        name = "Gemstone Mining Speed Override",
+        name = "{module.mining_prediction.config.option.enable_gemstone_mining_speed_override.text}",
+        description = "{module.mining_prediction.config.option.enable_gemstone_mining_speed_override.description}",
         size = 1,
     )
     var enableGemstoneMiningSpeedOverrideOption = false
 
     @Number(
-        name = "Gemstone Mining Speed",
+        name = "{module.mining_prediction.config.option.gemstone_mining_speed_override.text}",
+        description = "{module.mining_prediction.config.option.gemstone_mining_speed_override.description}",
         min = -Float.MAX_VALUE,
         max = Float.MAX_VALUE,
         step = 1,
@@ -142,13 +148,15 @@ class MiningPredictionOptionsImpl :
     var gemstoneMiningSpeedOverrideOption = 0
 
     @Switch(
-        name = "Dwarven Metal Mining Speed Override",
+        name = "{module.mining_prediction.config.option.enable_dwarven_metal_mining_speed_override.text}",
+        description = "{module.mining_prediction.config.option.enable_dwarven_metal_mining_speed_override.description}",
         size = 1,
     )
     var enableDwarvenMetalMiningSpeedOverrideOption = false
 
     @Number(
-        name = "Dwarven Metal Mining Speed",
+        name = "{module.mining_prediction.config.option.dwarven_metal_mining_speed_override.text}",
+        description = "{module.mining_prediction.config.option.dwarven_metal_mining_speed_override.description}",
         min = -Float.MAX_VALUE,
         max = Float.MAX_VALUE,
         step = 1,
@@ -157,13 +165,15 @@ class MiningPredictionOptionsImpl :
     var dwarvenMetalMiningSpeedOverrideOption = 0
 
     @Switch(
-        name = "Other Blocks Mining Speed Override",
+        name = "{module.mining_prediction.config.option.enable_general_mining_speed_override.text}",
+        description = "{module.mining_prediction.config.option.enable_general_mining_speed_override.description}",
         size = 1,
     )
     var enableGeneralMiningSpeedOverrideOption = false
 
     @Number(
-        name = "Other Blocks Mining Speed",
+        name = "{module.mining_prediction.config.option.general_mining_speed_override.text}",
+        description = "{module.mining_prediction.config.option.general_mining_speed_override.description}",
         min = -Float.MAX_VALUE,
         max = Float.MAX_VALUE,
         step = 1,
@@ -173,7 +183,7 @@ class MiningPredictionOptionsImpl :
 
     @Transient
     @Header(
-        text = "Replacement Block For Destroyed Blocks",
+        text = "{module.mining_prediction.config.header.replacement_block}",
         size = 2,
     )
     val headerReplacement = false
@@ -183,7 +193,7 @@ class MiningPredictionOptionsImpl :
 
     @Transient
     @Header(
-        text = "Notification On Breaking Block",
+        text = "{module.mining_prediction.config.header.break_block_notification}",
         size = 2,
     )
     val headerBreakBlockNotification = false
@@ -200,7 +210,8 @@ class MiningPredictionOptionsImpl :
     var background = GUIBackground()
 
     @Number(
-        name = "Width",
+        name = "{module.mining_prediction.config.option.width.text}",
+        description = "{module.mining_prediction.config.option.width.description}",
         min = 1.0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -208,7 +219,8 @@ class MiningPredictionOptionsImpl :
     var width = 80.0F
 
     @Number(
-        name = "Progress Bar Height",
+        name = "{module.mining_prediction.config.option.progress_bar_height.text}",
+        description = "{module.mining_prediction.config.option.progress_bar_height.description}",
         min = 1.0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -216,25 +228,29 @@ class MiningPredictionOptionsImpl :
     var progressHeight = 4.0F
 
     @Color(
-        name = "Progress Bar Color When Digging",
+        name = "{module.mining_prediction.config.option.progress_bar_color_digging.text}",
+        description = "{module.mining_prediction.config.option.progress_bar_color_digging.description}",
         size = 1,
     )
     var progressForeground = Colors.GREEN[6]
 
     @Color(
-        name = "Progress Bar Color When Block Destroyed",
+        name = "{module.mining_prediction.config.option.progress_bar_color_destroyed.text}",
+        description = "{module.mining_prediction.config.option.progress_bar_color_destroyed.description}",
         size = 1,
     )
     var progressForegroundOnBreak = Colors.YELLOW[6]
 
     @Color(
-        name = "Progress Bar Background Color",
+        name = "{module.mining_prediction.config.option.progress_bar_background_color.text}",
+        description = "{module.mining_prediction.config.option.progress_bar_background_color.description}",
         size = 1,
     )
     var progressBackground = Colors.GRAY[3]
 
     @Number(
-        name = "Font Size",
+        name = "{module.mining_prediction.config.option.font_size.text}",
+        description = "{module.mining_prediction.config.option.font_size.description}",
         min = 1.0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -242,31 +258,36 @@ class MiningPredictionOptionsImpl :
     var textSize = 8.0F
 
     @Color(
-        name = "Left Text Color",
+        name = "{module.mining_prediction.config.option.left_text_color.text}",
+        description = "{module.mining_prediction.config.option.left_text_color.description}",
         size = 1,
     )
     var textColorLeft = Colors.GRAY[3]
 
     @Color(
-        name = "Right Text Color",
+        name = "{module.mining_prediction.config.option.right_text_color.text}",
+        description = "{module.mining_prediction.config.option.right_text_color.description}",
         size = 1,
     )
     var textColorRight = Colors.GRAY[3]
 
     @Text(
-        name = "Left Text",
+        name = "{module.mining_prediction.config.option.left_text.text}",
+        description = "{module.mining_prediction.config.option.left_text.description}",
         size = 1,
     )
     var textLeft = "<ore.displayName>"
 
     @Text(
-        name = "Right Text",
+        name = "{module.mining_prediction.config.option.right_text.text}",
+        description = "{module.mining_prediction.config.option.right_text.description}",
         size = 1,
     )
     var textRight = "<normalizedProgress> / <ticks>"
 
     @Number(
-        name = "Gap Between Text And Progress Bar",
+        name = "{module.mining_prediction.config.option.text_progress_gap.text}",
+        description = "{module.mining_prediction.config.option.text_progress_gap.description}",
         min = 1.0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -275,25 +296,28 @@ class MiningPredictionOptionsImpl :
 
     @Transient
     @Header(
-        text = "Debug",
+        text = "{module.mining_prediction.config.header.debug}",
         size = 2,
     )
     val headerDebug = false
 
     @Switch(
-        name = "Force Enabled",
+        name = "{module.mining_prediction.config.option.force_enabled.text}",
+        description = "{module.mining_prediction.config.option.force_enabled.description}",
         size = 1,
     )
     var forceEnabledOption = false
 
     @Switch(
-        name = "Force Example",
+        name = "{module.mining_prediction.config.option.force_example.text}",
+        description = "{module.mining_prediction.config.option.force_example.description}",
         size = 1,
     )
     var forceExample = false
 
     @Switch(
-        name = "Use Client Tick",
+        name = "{module.mining_prediction.config.option.use_client_tick.text}",
+        description = "{module.mining_prediction.config.option.use_client_tick.description}",
         size = 1,
     )
     var useClientTickOption = false
@@ -302,8 +326,9 @@ class MiningPredictionOptionsImpl :
     @Extract
     val printDebugInfo =
         @Button(
-            name = "Print Debug Info",
-            text = "Print",
+            name = "{module.mining_prediction.config.function.print_debug_info.text}",
+            text = "{module.mining_prediction.config.function.print_debug_info.button}",
+            description = "{module.mining_prediction.config.function.print_debug_info.description}",
             size = 1,
         )
         {

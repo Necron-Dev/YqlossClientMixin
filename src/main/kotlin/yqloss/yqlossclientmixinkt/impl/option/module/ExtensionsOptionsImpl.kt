@@ -34,7 +34,7 @@ class ExtensionsOptionsImpl :
 
     @Transient
     @Header(
-        text = "Extensions",
+        text = "{module.extensions.config.header.module}",
         size = 2,
     )
     val headerModule = false

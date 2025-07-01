@@ -30,6 +30,7 @@ import cc.polyfrost.oneconfig.config.migration.Migrator
 import cc.polyfrost.oneconfig.internal.config.annotations.Option
 import yqloss.yqlossclientmixinkt.RT
 import yqloss.yqlossclientmixinkt.ReleaseType
+import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.module.YCModuleInfo
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
@@ -38,8 +39,9 @@ import java.lang.reflect.Method
 
 abstract class OptionsImpl(
     info: YCModuleInfo<*>,
+    nameTranslationKey: String = "{module.${info.id}.name}",
     defaultEnabled: Boolean = false,
-) : SubConfig(info.name, info.configFile),
+) : SubConfig(YC.api.translate(nameTranslationKey), info.configFile),
     YCModuleOptions {
     init {
         super.enabled = defaultEnabled

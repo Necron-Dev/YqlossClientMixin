@@ -50,7 +50,7 @@ class YCLeapMenuOptionsImpl :
 
     @Transient
     @Header(
-        text = "YC Leap Menu",
+        text = "{module.yc_leap_menu.config.header.module}",
         size = 2,
     )
     val headerModule = false
@@ -59,31 +59,47 @@ class YCLeapMenuOptionsImpl :
     var scaleOverride = ScreenScaleOption()
 
     @Switch(
-        name = "Smooth GUI",
+        name = "{module.yc_leap_menu.config.option.smooth_gui.text}",
+        description = "{module.yc_leap_menu.config.option.smooth_gui.description}",
         size = 1,
     )
     var smoothGUI = true
 
     @Transient
     @Header(
-        text = "Hotkeys",
+        text = "{module.yc_leap_menu.config.header.hotkeys}",
         size = 2,
     )
     val headerHotkeys = false
 
-    @KeyBind(name = "Index 0 (Typically Archer)")
+    @KeyBind(
+        name = "{module.yc_leap_menu.config.option.keybind_index_0.text}",
+        description = "{module.yc_leap_menu.config.option.keybind_index_0.description}",
+    )
     var keyBindIndex0 = OneKeyBind()
 
-    @KeyBind(name = "Index 1 (Typically Berserk)")
+    @KeyBind(
+        name = "{module.yc_leap_menu.config.option.keybind_index_1.text}",
+        description = "{module.yc_leap_menu.config.option.keybind_index_1.description}",
+    )
     var keyBindIndex1 = OneKeyBind()
 
-    @KeyBind(name = "Index 2 (Typically Mage)")
+    @KeyBind(
+        name = "{module.yc_leap_menu.config.option.keybind_index_2.text}",
+        description = "{module.yc_leap_menu.config.option.keybind_index_2.description}",
+    )
     var keyBindIndex2 = OneKeyBind()
 
-    @KeyBind(name = "Index 3 (Typically Healer)")
+    @KeyBind(
+        name = "{module.yc_leap_menu.config.option.keybind_index_3.text}",
+        description = "{module.yc_leap_menu.config.option.keybind_index_3.description}",
+    )
     var keyBindIndex3 = OneKeyBind()
 
-    @KeyBind(name = "Index 4 (Typically Tank)")
+    @KeyBind(
+        name = "{module.yc_leap_menu.config.option.keybind_index_4.text}",
+        description = "{module.yc_leap_menu.config.option.keybind_index_4.description}",
+    )
     var keyBindIndex4 = OneKeyBind()
 
     val keyBinds: List<OneKeyBind>
@@ -109,7 +125,7 @@ class YCLeapMenuOptionsImpl :
 
     @Transient
     @Header(
-        text = "Notification On Clicking Leap Button",
+        text = "{module.yc_leap_menu.config.header.notification_on_clicking_leap_button}",
         size = 2,
     )
     val headerNotification = false
@@ -119,13 +135,14 @@ class YCLeapMenuOptionsImpl :
 
     @Transient
     @Header(
-        text = "Debug",
+        text = "{module.yc_leap_menu.config.header.debug}",
         size = 2,
     )
     val headerDebug = false
 
     @Switch(
-        name = "Force Enabled",
+        name = "{module.yc_leap_menu.config.option.force_enabled.text}",
+        description = "{module.yc_leap_menu.config.option.force_enabled.description}",
         size = 1,
     )
     var forceEnabledOption = false

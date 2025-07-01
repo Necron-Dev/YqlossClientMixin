@@ -30,19 +30,22 @@ import yqloss.yqlossclientmixinkt.impl.util.Colors
 
 class GUIBackground {
     @Switch(
-        name = "Show Background",
+        name = "{config.gui_background.option.show_background.text}",
+        description = "{config.gui_background.option.show_background.description}",
         size = 2,
     )
     var enabledOption = true
 
     @Color(
-        name = "Background Color",
+        name = "{config.gui_background.option.background_color.text}",
+        description = "{config.gui_background.option.background_color.description}",
         size = 2,
     )
     var backgroundColorOption = Colors.GRAY[9]
 
     @Number(
-        name = "Rounded Corner Radius",
+        name = "{config.gui_background.option.rounded_corner_radius.text}",
+        description = "{config.gui_background.option.rounded_corner_radius.description}",
         min = 0.0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -50,7 +53,8 @@ class GUIBackground {
     var radiusOption = 6.0F
 
     @Number(
-        name = "Shadow Blur",
+        name = "{config.gui_background.option.shadow_blur.text}",
+        description = "{config.gui_background.option.shadow_blur.description}",
         min = 0.0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -58,7 +62,8 @@ class GUIBackground {
     var shadowBlur = 2.0F
 
     @Number(
-        name = "X Padding",
+        name = "{config.gui_background.option.x_padding.text}",
+        description = "{config.gui_background.option.x_padding.description}",
         min = 0.0F,
         max = Float.MAX_VALUE,
         size = 1,
@@ -66,7 +71,8 @@ class GUIBackground {
     var paddingXOption = 6.0F
 
     @Number(
-        name = "Y Padding",
+        name = "{config.gui_background.option.y_padding.text}",
+        description = "{config.gui_background.option.y_padding.description}",
         min = 0.0F,
         max = Float.MAX_VALUE,
         size = 1,

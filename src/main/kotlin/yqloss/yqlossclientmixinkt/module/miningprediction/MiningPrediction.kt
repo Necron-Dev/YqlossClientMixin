@@ -147,8 +147,10 @@ object MiningPrediction : YCModuleBase<MiningPredictionOptions>(INFO_MINING_PRED
     }
 
     fun printDebugInfo() {
-        printChat("Available: $isAvailable")
-        printChat("Tab Mining Speed: $miningSpeed")
+        printChatTranslated("{module.mining_prediction.message.debug_info}") {
+            this["isAvailable"] = isAvailable
+            this["miningSpeed"] = miningSpeed
+        }
     }
 
     override val registerEvents: EventRegistry.() -> Unit

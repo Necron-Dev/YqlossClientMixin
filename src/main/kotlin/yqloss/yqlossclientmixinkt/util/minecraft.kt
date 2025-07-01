@@ -37,14 +37,14 @@ import net.yqloss.uktil.extension.type.stackTraceMessage
 import net.yqloss.uktil.math.*
 import yqloss.yqlossclientmixinkt.DEV
 import yqloss.yqlossclientmixinkt.RT
+import yqloss.yqlossclientmixinkt.YC
+import yqloss.yqlossclientmixinkt.api.YCTemplate
+import yqloss.yqlossclientmixinkt.api.formatTranslated
 import yqloss.yqlossclientmixinkt.api.internalLowerChestInventory
-import yqloss.yqlossclientmixinkt.impl.MOD_VERSION
 import yqloss.yqlossclientmixinkt.module.inWorld
 import yqloss.yqlossclientmixinkt.module.option.YCColor
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.invoke
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.red
-import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.text
-import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.yellow
 import yqloss.yqlossclientmixinkt.ycLogger
 
 val mcUtilLogger = ycLogger("Minecraft Util")
@@ -112,6 +112,10 @@ inline fun printChat(component: IChatComponent) {
 
 inline fun printChat(message: String = "") = printChat(ChatComponentText(message))
 
+inline fun printChatTranslated(message: String = "", crossinline placeholders: YCTemplate.() -> Unit = {}) {
+    printChat(ChatComponentText(formatTranslated(message, placeholders)))
+}
+
 inline fun printChat(noinline textBuilder: TextBuilder) = printChat(
     buildComponentOrEmpty {
         !textBuilder
@@ -122,14 +126,10 @@ inline fun printChat(throwable: Throwable) = printChat(throwable.stackTraceMessa
 
 inline fun printError(noinline textBuilder: TextBuilder) = printChat {
     +red {
-        +"Yqloss Client (Mixin) has encountered some error. Please report the following messages to the developer!"
-        +text {
-            -"Version: "
-            -yellow(MOD_VERSION)
-            -", Dev: "
-            -yellow("$DEV")
-            -", Release Type: "
-            -yellow("$RT")
+        +formatTranslated("{module.main.message.print_error}") {
+            this["version"] = YC.modVersion
+            this["dev"] = DEV
+            this["releaseType"] = RT
         }
         +textBuilder
     }
@@ -137,6 +137,10 @@ inline fun printError(noinline textBuilder: TextBuilder) = printChat {
 
 inline fun printError(message: String = "") = printError {
     +message
+}
+
+inline fun printErrorTranslated(message: String = "", crossinline placeholders: YCTemplate.() -> Unit = {}) {
+    printError(formatTranslated(message, placeholders))
 }
 
 inline fun printError(throwable: Throwable) = printError(throwable.stackTraceMessage)

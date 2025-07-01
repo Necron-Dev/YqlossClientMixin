@@ -24,10 +24,7 @@ import cc.polyfrost.oneconfig.utils.gui.GuiUtils
 import net.yqloss.uktil.accessor.getValue
 import net.yqloss.uktil.accessor.refs.lateVal
 import net.yqloss.uktil.accessor.setValue
-import net.yqloss.uktil.event.LongExecutionPolicy
-import net.yqloss.uktil.event.ManagerEventManager
-import net.yqloss.uktil.event.SubEventRegistry
-import net.yqloss.uktil.event.register
+import net.yqloss.uktil.event.*
 import yqloss.yqlossclientmixinkt.*
 import yqloss.yqlossclientmixinkt.event.minecraft.YCCommandEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
@@ -38,6 +35,8 @@ import yqloss.yqlossclientmixinkt.impl.module.cursor.CursorOverlay
 import yqloss.yqlossclientmixinkt.impl.module.miningprediction.MiningPredictionHUD
 import yqloss.yqlossclientmixinkt.impl.module.ycleapmenu.YCLeapMenuScreen
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
+import yqloss.yqlossclientmixinkt.impl.option.language.LanguageManager
+import yqloss.yqlossclientmixinkt.impl.option.language.ResourceLanguageProvider
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinder
 import yqloss.yqlossclientmixinkt.module.cursor.Cursor
@@ -91,6 +90,9 @@ class YqlossClientMixin : YqlossClient {
     override fun <T : YCModuleOptions> getOptionsImpl(type: KClass<T>) = YqlossClientConfig.getOptionsImpl(type)
 
     init {
+        ResourceLanguageProvider(YqlossClient::class.java).registerEventEntries(eventRegistry)
+        LanguageManager
+
         YqlossClientConfig
 
         loadWindowsX64NativeAPI()
