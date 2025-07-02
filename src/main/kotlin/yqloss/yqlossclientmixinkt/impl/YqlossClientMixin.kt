@@ -19,10 +19,12 @@
 package yqloss.yqlossclientmixinkt.impl
 
 import cc.polyfrost.oneconfig.gui.OneConfigGui
+import cc.polyfrost.oneconfig.gui.pages.ModsPage
 import cc.polyfrost.oneconfig.gui.pages.SubModsPage
 import cc.polyfrost.oneconfig.utils.gui.GuiUtils
 import net.yqloss.uktil.accessor.getValue
 import net.yqloss.uktil.accessor.refs.lateVal
+import net.yqloss.uktil.accessor.refs.trigger
 import net.yqloss.uktil.accessor.setValue
 import net.yqloss.uktil.event.*
 import yqloss.yqlossclientmixinkt.*
@@ -37,6 +39,7 @@ import yqloss.yqlossclientmixinkt.impl.module.ycleapmenu.YCLeapMenuScreen
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.impl.option.language.LanguageManager
 import yqloss.yqlossclientmixinkt.impl.option.language.ResourceLanguageProvider
+import yqloss.yqlossclientmixinkt.impl.option.removeMod
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinder
 import yqloss.yqlossclientmixinkt.module.cursor.Cursor
@@ -51,6 +54,8 @@ import yqloss.yqlossclientmixinkt.module.tweaks.Tweaks
 import yqloss.yqlossclientmixinkt.module.windowproperties.WindowProperties
 import yqloss.yqlossclientmixinkt.module.ycleapmenu.YCLeapMenu
 import yqloss.yqlossclientmixinkt.nativeapi.loadWindowsX64NativeAPI
+import yqloss.yqlossclientmixinkt.util.MC
+import yqloss.yqlossclientmixinkt.util.printChat
 import kotlin.reflect.KClass
 
 const val MOD_ID = "@ID@"
@@ -87,13 +92,16 @@ class YqlossClientMixin : YqlossClient {
 
     override var configVersion = 0
 
-    override fun <T : YCModuleOptions> getOptionsImpl(type: KClass<T>) = YqlossClientConfig.getOptionsImpl(type)
+    var config: YqlossClientConfig
+        private set
+
+    override fun <T : YCModuleOptions> getOptionsImpl(type: KClass<T>) = config.getOptionsImpl(type)
 
     init {
         ResourceLanguageProvider(YqlossClient::class.java).registerEventEntries(eventRegistry)
         LanguageManager
 
-        YqlossClientConfig
+        config = YqlossClientConfig()
 
         loadWindowsX64NativeAPI()
 
@@ -127,10 +135,30 @@ class YqlossClientMixin : YqlossClient {
                 when (event.args.getOrNull(0)) {
                     "/yc", "/yqlossclient", "/yqlossclientmixin" -> {
                         event.canceled = true
-                        GuiUtils.displayScreen(OneConfigGui(SubModsPage(YqlossClientConfig.mod)))
+                        GuiUtils.displayScreen(OneConfigGui(SubModsPage(config.mod)))
                     }
                 }
             }
         }
+
+        val languageDetector by trigger(Unit, config.language.language, { config.language.language }) {
+            reloadConfig()
+        }
+
+        eventRegistry.register<YCMinecraftEvent.Loop.Pre> { event ->
+            languageDetector
+        }
+    }
+
+    fun reloadConfig() {
+        MC.displayGuiScreen(null)
+        OneConfigGui(ModsPage())
+        printChat("Reloading Yqloss Client (Mixin) configurations...")
+        config.save()
+        config.configs.forEach { it.save() }
+        removeMod(config.mod)
+        config = YqlossClientConfig()
+        OneConfigGui(ModsPage())
+        printChat("Reloaded Yqloss Client (Mixin) configurations!")
     }
 }

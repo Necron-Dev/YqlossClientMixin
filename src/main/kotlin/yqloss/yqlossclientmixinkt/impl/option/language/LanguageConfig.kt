@@ -20,8 +20,6 @@ package yqloss.yqlossclientmixinkt.impl.option.language
 
 import cc.polyfrost.oneconfig.config.annotations.Dropdown
 import cc.polyfrost.oneconfig.config.annotations.Header
-import cc.polyfrost.oneconfig.config.annotations.Info
-import cc.polyfrost.oneconfig.config.data.InfoType
 import cc.polyfrost.oneconfig.config.elements.SubConfig
 
 private val LANGUAGE_LIST = listOf(
@@ -36,22 +34,6 @@ class LanguageConfig : SubConfig("Language 语言", "yqlossclient-language.json"
         size = 2,
     )
     val header = false
-
-    @Transient
-    @Info(
-        type = InfoType.WARNING,
-        text = "The language option takes effect after restarting the game!",
-        size = 2,
-    )
-    val infoEnglish = false
-
-    @Transient
-    @Info(
-        type = InfoType.WARNING,
-        text = "设置的语言将在重启游戏后生效！",
-        size = 2,
-    )
-    val infoChinese = false
 
     @Dropdown(
         name = "Language 语言",

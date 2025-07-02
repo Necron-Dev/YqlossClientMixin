@@ -37,7 +37,7 @@ import net.yqloss.uktil.math.Vec3I
 import net.yqloss.uktil.math.contains
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCRenderEvent
-import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
+import yqloss.yqlossclientmixinkt.impl.YCMixin
 import yqloss.yqlossclientmixinkt.util.asVec3I
 import yqloss.yqlossclientmixinkt.util.printError
 import java.lang.ref.WeakReference
@@ -177,7 +177,7 @@ object CallbackRenderChunk {
             blockAccess: IBlockAccess,
             blockPos: BlockPos,
         ): IBlockState {
-            if (YqlossClientConfig.main.disableBlockAccess) {
+            if (YCMixin.config.main.disableBlockAccess) {
                 return blockAccess.getBlockState(blockPos)
             }
             return wrapper
@@ -193,7 +193,7 @@ object CallbackRenderChunk {
             blockAccess: IBlockAccess,
             blockPos: BlockPos,
         ): TileEntity? {
-            if (YqlossClientConfig.main.disableBlockAccess) {
+            if (YCMixin.config.main.disableBlockAccess) {
                 return blockAccess.getTileEntity(blockPos)
             }
             return wrapper
@@ -212,7 +212,7 @@ object CallbackRenderChunk {
             blockAccess: IBlockAccess,
             worldRenderer: WorldRenderer,
         ): Boolean {
-            if (YqlossClientConfig.main.disableBlockAccess) {
+            if (YCMixin.config.main.disableBlockAccess) {
                 return dispatcher.renderBlock(blockState, blockPos, blockAccess, worldRenderer)
             }
             return dispatcher.renderBlock(blockState, blockPos, wrapper.wrap(blockAccess), worldRenderer)

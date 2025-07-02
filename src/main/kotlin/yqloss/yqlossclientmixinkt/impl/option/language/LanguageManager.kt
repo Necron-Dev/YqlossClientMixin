@@ -19,7 +19,7 @@
 package yqloss.yqlossclientmixinkt.impl.option.language
 
 import net.yqloss.uktil.accessor.getValue
-import net.yqloss.uktil.accessor.refs.lateVal
+import net.yqloss.uktil.accessor.refs.lateVar
 import net.yqloss.uktil.accessor.setValue
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
@@ -28,7 +28,7 @@ import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 
 const val FALLBACK_LANGUAGE = "en_US"
 
-var globalLanguage: String by lateVal()
+var globalLanguage: String by lateVar()
 
 object LanguageManager : YCModuleBase<YCModuleOptions>(moduleInfo("language_manager", "Language Manager")) {
     fun translate(string: String): String {

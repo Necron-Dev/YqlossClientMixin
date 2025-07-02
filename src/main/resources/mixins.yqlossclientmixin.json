@@ -29,6 +29,7 @@
         "MixinConfigDropdown",
         "MixinEntity",
         "MixinForgeHooksClient",
+        "MixinHUDUtils",
         "MixinLwjglManagerImpl",
         "MixinWindowsDisplay"
     ]

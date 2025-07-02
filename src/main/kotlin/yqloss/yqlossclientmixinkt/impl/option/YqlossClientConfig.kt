@@ -38,16 +38,16 @@ import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.starProjectedType
 
-private val optionsImplMap = mutableMapOf<KClass<*>, () -> YCModuleOptions>()
-
 private val logger = ycLogger("Config")
 
 var settingUpYqlossClientConfig = false
+var settingUpHUD = false
 
-object YqlossClientConfig : Config(
-    Mod("Yqloss Client ${YC.modVersion} ${if (DEV) "DEV " else ""}$RT", ModType.THIRD_PARTY),
-    "yqlossclient.json",
-) {
+class YqlossClientConfig :
+    Config(
+        Mod("Yqloss Client ${YC.modVersion} ${if (DEV) "DEV " else ""}$RT", ModType.THIRD_PARTY),
+        "yqlossclient.json",
+    ) {
     @SubConfig
     var language = LanguageConfig().apply {
         initialize()
@@ -96,6 +96,12 @@ object YqlossClientConfig : Config(
 //    @SubConfig
 //    var extensions = ExtensionsOptionsImpl()
 
+    @Transient
+    val configs = mutableListOf<Config>()
+
+    @Transient
+    private val optionsImplMap = mutableMapOf<KClass<*>, () -> YCModuleOptions>()
+
     init {
         initialize()
 
@@ -114,6 +120,11 @@ object YqlossClientConfig : Config(
                     }
                 }
             }
+
+        configs += YqlossClientConfig::class
+            .declaredMemberProperties
+            .filter { it.returnType.isSubtypeOf(Config::class.starProjectedType) }
+            .map { it(this) as Config }
 
         settingUpYqlossClientConfig = false
     }

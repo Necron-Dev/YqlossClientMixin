@@ -202,7 +202,7 @@ class MiningPredictionOptionsImpl :
     var onBreakBlockOption = NotificationOption()
 
     @HUD(
-        name = "Progress HUD",
+        name = "{module.mining_prediction.config.hud.progress}",
     )
     var hud = YCHUD()
 

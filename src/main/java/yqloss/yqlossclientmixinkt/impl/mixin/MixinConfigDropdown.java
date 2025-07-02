@@ -26,6 +26,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import yqloss.yqlossclientmixinkt.YqlossClientKt;
 import yqloss.yqlossclientmixinkt.api.YCAPI;
+import yqloss.yqlossclientmixinkt.impl.option.ExtensionsKt;
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfigKt;
 
 import java.lang.reflect.Field;
@@ -59,6 +60,10 @@ public abstract class MixinConfigDropdown {
         YCAPI api = YqlossClientKt.getYC().getApi();
 
         String[] copiedOptions = Arrays.copyOf(options, options.length);
+
+        if (YqlossClientConfigKt.getSettingUpHUD()) {
+            ExtensionsKt.mapHUDDropdownOptions(field.getName(), copiedOptions);
+        }
 
         for (int i = 0; i < copiedOptions.length; ++i) {
             copiedOptions[i] = api.translate(copiedOptions[i]);

@@ -8,6 +8,25 @@ Showcase Video: https://www.bilibili.com/video/BV1Q4wfejEAB
 
 Note that this mod is not registered as a Forge mod, nor do it use Forge events or API. It's all based on Mixin.
 
+## Internationalization
+
+* This mod supports multi-language.
+* Currently two languages are supported: en_US and zh_CN
+* If you find any mistakes or have better translations, feel free to make an issue!
+
+
+* 本模组支持多语言
+* 目前支持两种语言：英语、简体中文
+* 如果您发现了翻译错误或有更好的翻译，欢迎提交 Issue
+
+## Feature Legitimacy
+
+* Normal Version (without suffix): purely visual features only
+* PLUS Version: purely visual features, macros and features that are possible on vanilla in the server's view
+* EX version: all features
+
+Configurations will NOT be lost switching between different legitimacy versions!
+
 ## Feature List
 
 * Better Terminal (queue clicks; drag click)

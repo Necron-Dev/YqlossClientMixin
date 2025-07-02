@@ -31,6 +31,7 @@ import cc.polyfrost.oneconfig.internal.config.annotations.Option
 import yqloss.yqlossclientmixinkt.RT
 import yqloss.yqlossclientmixinkt.ReleaseType
 import yqloss.yqlossclientmixinkt.YC
+import yqloss.yqlossclientmixinkt.impl.YCMixin
 import yqloss.yqlossclientmixinkt.impl.option.adapter.Extract
 import yqloss.yqlossclientmixinkt.module.YCModuleInfo
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
@@ -49,7 +50,7 @@ abstract class OptionsImpl(
 
     val itemNames = mutableMapOf<String, List<String>>()
 
-    override val enabled get() = YqlossClientConfig.enabled && super.enabled
+    override val enabled get() = YCMixin.config.enabled && super.enabled
 
     protected fun requireReleaseType(type: ReleaseType, vararg keys: String) {
         keys.forEach { key ->

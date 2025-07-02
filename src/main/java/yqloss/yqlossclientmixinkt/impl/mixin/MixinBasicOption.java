@@ -19,6 +19,7 @@
 package yqloss.yqlossclientmixinkt.impl.mixin;
 
 import cc.polyfrost.oneconfig.config.elements.BasicOption;
+import kotlin.Pair;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,6 +27,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import yqloss.yqlossclientmixinkt.YqlossClientKt;
 import yqloss.yqlossclientmixinkt.api.YCAPI;
+import yqloss.yqlossclientmixinkt.impl.option.ExtensionsKt;
 import yqloss.yqlossclientmixinkt.impl.option.OptionsImplKt;
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfigKt;
 
@@ -67,6 +69,12 @@ public abstract class MixinBasicOption {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void yc$modify(Field field, Object parent, String name, String description, String category, String subcategory, int size, CallbackInfo ci) throws Exception {
         if (!YqlossClientConfigKt.getSettingUpYqlossClientConfig()) return;
+
+        if (YqlossClientConfigKt.getSettingUpHUD()) {
+            Pair<String, String> mapped = ExtensionsKt.mapHUDOption(field.getName());
+            if (mapped.getFirst() != null) name = mapped.getFirst();
+            if (mapped.getSecond() != null) description = mapped.getSecond();
+        }
 
         YCAPI api = YqlossClientKt.getYC().getApi();
 

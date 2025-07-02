@@ -4,295 +4,303 @@
             "name": "# Yqloss Client #",
             "config": {
                 "header": {
-                    "flags": "Flags",
-                    "debug_flags": "Debug Flags",
-                    "utilities": "Utilities",
-                    "hypixel_mod_api_location": "Hypixel Mod API Location"
+                    "flags": "标记",
+                    "debug_flags": "调试标记",
+                    "utilities": "实用工具",
+                    "hypixel_mod_api_location": "Hypixel Mod API 位置"
                 },
                 "option": {
                     "disable_yqloss_client_commands": {
-                        "text": "Disable Yqloss Client Commands",
+                        "text": "禁用 Yqloss Client 命令",
                         "description": ""
                     },
                     "disable_iblockaccess_wrapping": {
-                        "text": "Disable IBlockAccess Wrapping",
+                        "text": "禁用 IBlockAccess 包装",
                         "description": ""
                     },
                     "hypixel_partial_server_tick_samples": {
-                        "text": "Hypixel Partial Server Tick Samples",
+                        "text": "Hypixel 服务器刻拟合采样数",
                         "description": ""
                     },
                     "verbose_hypixel_mod_api": {
-                        "text": "Verbose Hypixel Mod API Wrapper",
+                        "text": "Hypixel Mod API 包装器详细信息",
                         "description": ""
                     },
                     "verbose_hypixel_server_tick_duration": {
-                        "text": "Verbose Hypixel Server Tick Duration",
+                        "text": "Hypixel 服务器刻时长详细信息",
                         "description": ""
                     }
                 },
                 "function": {
                     "load_all_characters": {
-                        "text": "Load All Characters",
-                        "button": "Load",
+                        "text": "加载全部字形",
+                        "button": "加载",
                         "description": ""
                     },
                     "print_hypixel_mod_api_location": {
-                        "text": "Print Hypixel Mod API Location",
-                        "button": "Print",
+                        "text": "打印 Hypixel Mod API 位置",
+                        "button": "打印",
                         "description": ""
                     },
                     "hypixel_mod_api_location_set_mineshaft": {
                         "text": "Mineshaft",
-                        "button": "Set",
+                        "button": "设置",
                         "description": ""
                     },
                     "hypixel_mod_api_location_set_dungeon": {
                         "text": "Dungeon",
-                        "button": "Set",
+                        "button": "设置",
                         "description": ""
                     }
                 }
             },
             "message": {
-                "hypixel_server_tick_duration": "Hypixel Server Tick Duration: <duration>",
-                "hypixel_server_tick_duration_unknown": "Hypixel Server Tick Duration: (50000000)",
+                "hypixel_server_tick_duration": "Hypixel 服务器刻时长：<duration>",
+                "hypixel_server_tick_duration_unknown": "Hypixel 服务器刻时长：(50000000)",
                 "print_error": [
-                    "<c>Yqloss Client (Mixin) has encountered some error. Please report the following messages to the developer!",
+                    "<c>Yqloss Client (Mixin) 发生了一些错误。请将以下信息报告给开发者！",
                     "<c>Version: <e><version><c>, Dev: <e><dev><c>, Release Type: <e><releaseType>"
                 ]
             }
         },
         "extensions": {
-            "name": "Extensions",
+            "name": "扩展",
             "config": {
                 "header": {
-                    "module": "Extensions"
+                    "module": "扩展"
                 }
             },
             "message": {
                 "help": [
-                    "<e>/ycext load <f>Unloads all loaded extensions and loads all installed extensions.",
-                    "<e>/ycext import ...[author.]<name>[-branch][:version][@repository] <f>Downloads and loads extensions (requires confirmation if the extension already exists).",
-                    "<e>/ycext delete ...[author.]<name>[-branch][:version][@repository] <f>Deletes extensions (requires confirmation).",
-                    "<e>/ycext update ...[author.]<name>[-branch][:version][@repository] <f>Updates extensions (requires confirmation).",
-                    "<e>/ycext updateall <f>Updates all installed extensions (requires confirmation).",
-                    "<e>/ycext help <f>Shows the help menu.",
-                    "<6>\\<\\> <e>Required Parameter",
-                    "<6>[] <e>Optional Parameter",
-                    "<6>Extensions are identified by all parameters (author, name, branch, version, repository).",
-                    "<6>author <e>defaults to <a>official",
-                    "<6>package <e>defaults to <a>main",
-                    "<6>version <e>defaults to <a>latest",
-                    "<6>repository <e>defaults to <a>official"
+                    "<e>/ycext load <f>卸载所有已加载的扩展并加载所有已安装的扩展。",
+                    "<e>/ycext import ...[作者.]<名称>[-分支][:版本][@存储库] <f>下载并安装扩展（如果扩展已存在则需要确认）。",
+                    "<e>/ycext delete ...[作者.]<名称>[-分支][:版本][@存储库] <f>删除扩展（需要确认）。",
+                    "<e>/ycext update ...[作者.]<名称>[-分支][:版本][@存储库] <f>更新扩展（需要确认）。",
+                    "<e>/ycext updateall <f>更新所有已安装的扩展（需要确认）。",
+                    "<e>/ycext help <f>显示帮助菜单。",
+                    "<6>\\<\\> <e>必需参数",
+                    "<6>[] <e>可选参数",
+                    "<6>扩展由所有参数标识（作者、名称、分支、版本、存储库）。",
+                    "<6>作者 <e>默认为 <a>official",
+                    "<6>名称 <e>默认为 <a>main",
+                    "<6>版本 <e>默认为 <a>latest",
+                    "<6>存储库 <e>默认为 <a>official"
                 ]
             }
         },
         "repository": {
-            "name": "Repository",
+            "name": "储存库",
             "config": {
                 "header": {
-                    "module": "Repository",
-                    "version_api": "Version API",
-                    "cape_api": "Cape API"
+                    "module": "储存库",
+                    "version_api": "版本 API",
+                    "cape_api": "披风 API"
                 },
                 "option": {
                     "version_enable_requesting": {
-                        "text": "Enable Requesting",
+                        "text": "启用请求",
                         "description": ""
                     },
                     "version_cooldown": {
-                        "text": "Request Cooldown",
+                        "text": "请求冷却",
                         "description": ""
                     },
                     "notify_new_version": {
-                        "text": "Notify New Version",
+                        "text": "新版本通知",
                         "description": ""
                     },
                     "cape_enable_requesting": {
-                        "text": "Enable Requesting",
+                        "text": "启用请求",
                         "description": ""
                     },
                     "cape_cooldown": {
-                        "text": "Request Cooldown",
+                        "text": "请求冷却",
                         "description": ""
                     },
                     "cape_metadata_cooldown": {
-                        "text": "Metadata Request Cooldown",
+                        "text": "元数据请求冷却",
                         "description": ""
                     },
                     "cape_texture_cooldown": {
-                        "text": "Texture Request Cooldown",
+                        "text": "纹理请求冷却",
                         "description": ""
                     },
                     "show_mod_capes": {
-                        "text": "Show Mod Capes",
+                        "text": "显示模组披风",
                         "description": ""
                     }
                 },
                 "function": {
                     "reload_version_api": {
-                        "text": "Reload API",
-                        "button": "Reload",
+                        "text": "重载 API",
+                        "button": "重载",
                         "description": ""
                     },
                     "reload_cape_api": {
-                        "text": "Reload API",
-                        "button": "Reload",
+                        "text": "重载 API",
+                        "button": "重载",
                         "description": ""
                     }
                 }
             },
             "message": {
                 "version": {
-                    "error_mod_id_not_present": "Version API: Mod ID (yqlossclientmixin) is not present in response",
-                    "error_parsing_latest": "Version API: failed to parse the latest version number",
+                    "error_mod_id_not_present": [
+                        "Version API: Mod ID (yqlossclientmixin) is not present in response",
+                        "版本 API：响应中不存在 Mod ID (yqlossclientmixin)"
+                    ],
+                    "error_parsing_latest": [
+                        "Version API: failed to parse the latest version number",
+                        "版本 API：解析最新版本号失败"
+                    ],
                     "error_parsing_current": [
                         "Version API: failed to parse the current version number",
                         "This is probably due to modifications to Yqloss Client (Mixin)",
-                        "or the developers' mistakes"
+                        "or the developers' mistakes",
+                        "版本 API：解析当前版本号失败",
+                        "这可能是对 Yqloss Client (Mixin) 的修改或开发者的失误导致"
                     ],
-                    "update_links": "<a>Update the mod on one of the following websites:",
+                    "update_links": "<a>在下列网站更新模组:",
                     "update": [
-                        "<a>There is a new update available for Yqloss Client (Mixin)!",
-                        "<a>Version <e><current> <a>-> <e><latest>"
+                        "<a>Yqloss Client (Mixin) 有新版本可用！",
+                        "<a>版本 <e><current> <a>-> <e><latest>"
                     ],
                     "preview": [
-                        "<a>You are now using the <e><current> <a>dev version of Yqloss Client (Mixin).",
-                        "<a>This version is still under development and any changes could be made before release!"
+                        "<a>您现在正在使用 Yqloss Client (Mixin) 的 <e><current> <a>开发版本。",
+                        "<a>这个版本仍在开发中，发布前随时可能进行改动！"
                     ]
                 }
             }
         },
         "raw_input": {
-            "name": "Raw Input",
+            "name": "原始输入",
             "config": {
                 "header": {
-                    "module": "Raw Input"
+                    "module": "原始输入"
                 },
                 "option": {
                     "native_raw_input": {
-                        "text": "Native Raw Input (Only Supported on Windows AMD64)",
+                        "text": "原生原始输入（只支持 Windows AMD64 平台）",
                         "description": ""
                     }
                 }
             }
         },
         "ss_motion_blur": {
-            "name": "SS Motion Blur",
+            "name": "SS 动态模糊",
             "config": {
                 "header": {
-                    "module": "SS Motion Blur"
+                    "module": "SS 动态模糊"
                 },
                 "option": {
                     "strength": {
-                        "text": "Strength",
-                        "description": "0 means there won't be any effect. 100 means the screen will freeze."
+                        "text": "强度",
+                        "description": "0 表示没有效果。100 表示屏幕会冻结。"
                     },
                     "alpha_function": {
-                        "text": "Alpha Function",
+                        "text": "Alpha 函数",
                         "description": "",
                         "options": [
-                            "Instant",
-                            "Instant (Balanced)",
-                            "Linear (Balanced)"
+                            "瞬时变化",
+                            "瞬时变化（帧率平衡）",
+                            "线性变化（帧率平衡）"
                         ]
                     }
                 }
             }
         },
         "tweaks": {
-            "name": "Tweaks",
+            "name": "微调",
             "config": {
                 "header": {
-                    "module": "Tweaks"
+                    "module": "微调"
                 },
                 "option": {
                     "enable_instant_aim": {
-                        "text": "Enable Instant Aim",
-                        "description": "Set prevRotationYawHead and rotationYawHead of EntityPlayerSP to prevRotationYaw and rotationYaw."
+                        "text": "修复瞄准延迟",
+                        "description": "使 EntityPlayerSP 的 prevRotationYawHead、rotationYawHead 与 prevRotationYaw、rotationYaw 同步。在原版中实际的瞄准位置比屏幕显示的要延后 1 刻。"
                     },
                     "enable_catacombs_boss_bar_fix": {
-                        "text": "Enable Catacombs Boss Bar Fix",
+                        "text": "修复 Catacombs 内 Boss 栏",
                         "description": ""
                     },
                     "disable_skyblock_tools_nbt_update_reset_digging": {
-                        "text": "Disable NBT Update Reset Digging on SkyBlock Mining Islands",
-                        "description": "This applies to all pickaxes, prismarine shards, skulls on these islands: Gold Mine, Deep Caverns, Dwarven Mines, Crystal Hollows, Mineshaft, The End, Crimson Isle."
+                        "text": "修复 SkyBlock 挖矿岛屿上 NBT 更新导致挖掘进度重置",
+                        "description": "适用于这些岛屿上的所有镐子、海晶碎片和头颅：Gold Mine、Deep Caverns、Dwarven Mines、Crystal Hollows、Mineshaft、The End、Crimson Isle。"
                     },
                     "disable_pearl_click_block": {
-                        "text": "Disable Pearl Click-On-Block Packet",
-                        "description": "Cancel the first C08PacketPlayerBlockPlacement packet when throwing an ender pearl while aiming at a block. This fixes not being able to throw pearls while aiming at a block on public islands in Hypixel SkyBlock."
+                        "text": "取消发送末影珍珠点击方块的第一个包",
+                        "description": "在瞄准方块扔末影珍珠时取消第一个 C08PacketPlayerBlockPlacement 包。可以在 SkyBlock 一些不能这样扔出末影珍珠的岛屿上正常扔出末影珍珠。"
                     }
                 }
             }
         },
         "corpse_finder": {
-            "name": "Corpse Finder",
+            "name": "Corpse 寻找器",
             "config": {
                 "header": {
-                    "module": "Corpse Finder",
-                    "lapis_corpse_options": "Lapis Corpse Options",
-                    "umber_corpse_options": "Umber Corpse Options",
-                    "tungsten_corpse_options": "Tungsten Corpse Options",
-                    "vanguard_corpse_options": "Vanguard Corpse Options",
-                    "mobs": "Mobs",
-                    "debug": "Debug"
+                    "module": "Corpse 寻找器",
+                    "lapis_corpse_options": "Lapis Corpse 选项",
+                    "umber_corpse_options": "Umber Corpse 选项",
+                    "tungsten_corpse_options": "Tungsten Corpse 选项",
+                    "vanguard_corpse_options": "Vanguard Corpse 选项",
+                    "mobs": "怪物",
+                    "debug": "调试"
                 },
                 "option": {
                     "show_exit_box": {
-                        "text": "Show Exit Box",
+                        "text": "高亮出口",
                         "description": ""
                     },
                     "exit_box_color": {
-                        "text": "Exit Box Color",
+                        "text": "出口高亮颜色",
                         "description": ""
                     },
                     "show_bowman_box": {
-                        "text": "Show Bowman Box",
+                        "text": "高亮 Bowman",
                         "description": ""
                     },
                     "bowman_box_color": {
-                        "text": "Bowman Box Color",
+                        "text": "Bowman 高亮颜色",
                         "description": ""
                     },
                     "show_caver_box": {
-                        "text": "Show Caver Box",
+                        "text": "高亮 Caver",
                         "description": ""
                     },
                     "caver_box_color": {
-                        "text": "Caver Box Color",
+                        "text": "Caver 高亮颜色",
                         "description": ""
                     },
                     "show_mage_box": {
-                        "text": "Show Mage Box",
+                        "text": "高亮 Mage",
                         "description": ""
                     },
                     "mage_box_color": {
-                        "text": "Mage Box Color",
+                        "text": "Mage 高亮颜色",
                         "description": ""
                     },
                     "show_mutt_box": {
-                        "text": "Show Mutt Box",
+                        "text": "高亮 Mutt",
                         "description": ""
                     },
                     "mutt_box_color": {
-                        "text": "Mutt Box Color",
+                        "text": "Mutt 高亮颜色",
                         "description": ""
                     },
                     "force_enabled": {
-                        "text": "Force Enabled",
+                        "text": "强制开启",
                         "description": ""
                     }
                 },
                 "corpse": {
                     "option": {
                         "show_box": {
-                            "text": "Show Box",
+                            "text": "显示高亮",
                             "description": ""
                         },
                         "box_color": {
-                            "text": "Box Color",
+                            "text": "高亮颜色",
                             "description": ""
                         }
                     }
@@ -300,298 +308,298 @@
             }
         },
         "mining_prediction": {
-            "name": "Mining Prediction",
+            "name": "挖掘预测",
             "config": {
                 "header": {
-                    "module": "Mining Prediction",
-                    "replacement_block": "Replacement Block For Destroyed Blocks",
-                    "break_block_notification": "Notification On Breaking Block",
-                    "debug": "Debug"
+                    "module": "挖掘预测",
+                    "replacement_block": "被破坏的方块的替换方块",
+                    "break_block_notification": "破坏方块时的提示",
+                    "debug": "调试"
                 },
                 "info": {
-                    "warning_usage": "This applies to all pickaxes, prismarine shards, skulls on these islands:",
-                    "warning_islands": "Gold Mine, Deep Caverns, Dwarven Mines, Crystal Hollows, Mineshaft, The End, Crimson Isle.",
-                    "warning_widget": "If Mining Speed Override is not enabled, Mining Speed stat is required to show in tab for this to work.",
-                    "warning_override": "Override means the FINAL Mining Speed used for calculation, not the specialized part."
+                    "warning_usage": "适用于这些岛屿上的所有镐子、海晶碎片和头颅：",
+                    "warning_islands": "Gold Mine、Deep Caverns、Dwarven Mines、Crystal Hollows、Mineshaft、The End、Crimson Isle",
+                    "warning_widget": "如果固定挖掘速度未启用，则需要在玩家列表中显示挖掘速度，此功能才能生效。",
+                    "warning_override": "“固定挖掘速度”指的是用于计算的最终挖掘速度，而非特殊加成部分。"
                 },
                 "option": {
                     "breaking_time_offset": {
-                        "text": "Breaking Time Offset",
+                        "text": "破坏时间偏移（单位：刻）",
                         "description": ""
                     },
                     "gemstone_mining_speed_offset": {
-                        "text": "Mining Speed Offset When Mining Gemstone",
+                        "text": "挖掘 Gemstone 时的挖掘速度偏移",
                         "description": ""
                     },
                     "dwarven_metal_mining_speed_offset": {
-                        "text": "Mining Speed Offset When Mining Dwarven Metal",
+                        "text": "挖掘 Dwarven Metal 时的挖掘速度偏移",
                         "description": ""
                     },
                     "general_mining_speed_offset": {
-                        "text": "Mining Speed Offset When Mining Other Blocks",
+                        "text": "挖掘其他方块时的挖掘速度偏移",
                         "description": ""
                     },
                     "enable_gemstone_mining_speed_override": {
-                        "text": "Gemstone Mining Speed Override",
+                        "text": "固定 Gemstone 的挖掘速度",
                         "description": ""
                     },
                     "gemstone_mining_speed_override": {
-                        "text": "Gemstone Mining Speed",
+                        "text": "Gemstone 的挖掘速度",
                         "description": ""
                     },
                     "enable_dwarven_metal_mining_speed_override": {
-                        "text": "Dwarven Metal Mining Speed Override",
+                        "text": "固定 Dwarven Metal 的挖掘速度",
                         "description": ""
                     },
                     "dwarven_metal_mining_speed_override": {
-                        "text": "Dwarven Metal Mining Speed",
+                        "text": "Dwarven Metal 的挖掘速度",
                         "description": ""
                     },
                     "enable_general_mining_speed_override": {
-                        "text": "Other Blocks Mining Speed Override",
+                        "text": "固定其他方块的挖掘速度",
                         "description": ""
                     },
                     "general_mining_speed_override": {
-                        "text": "Other Blocks Mining Speed",
+                        "text": "其他方块的挖掘速度",
                         "description": ""
                     },
                     "width": {
-                        "text": "Width",
+                        "text": "宽度",
                         "description": ""
                     },
                     "progress_bar_height": {
-                        "text": "Progress Bar Height",
+                        "text": "进度条高度",
                         "description": ""
                     },
                     "progress_bar_color_digging": {
-                        "text": "Progress Bar Color When Digging",
+                        "text": "挖掘时的进度条颜色",
                         "description": ""
                     },
                     "progress_bar_color_destroyed": {
-                        "text": "Progress Bar Color When Block Destroyed",
+                        "text": "方块被破坏的进度条颜色",
                         "description": ""
                     },
                     "progress_bar_background_color": {
-                        "text": "Progress Bar Background Color",
+                        "text": "进度条背景颜色",
                         "description": ""
                     },
                     "font_size": {
-                        "text": "Font Size",
+                        "text": "字体大小",
                         "description": ""
                     },
                     "left_text_color": {
-                        "text": "Left Text Color",
+                        "text": "左侧文本颜色",
                         "description": ""
                     },
                     "right_text_color": {
-                        "text": "Right Text Color",
+                        "text": "右侧文本颜色",
                         "description": ""
                     },
                     "left_text": {
-                        "text": "Left Text",
+                        "text": "左侧文本",
                         "description": ""
                     },
                     "right_text": {
-                        "text": "Right Text",
+                        "text": "右侧文本",
                         "description": ""
                     },
                     "text_progress_gap": {
-                        "text": "Gap Between Text And Progress Bar",
+                        "text": "文本与进度条间距",
                         "description": ""
                     },
                     "force_enabled": {
-                        "text": "Force Enabled",
+                        "text": "强制启用",
                         "description": ""
                     },
                     "force_example": {
-                        "text": "Force Example",
+                        "text": "强制显示",
                         "description": ""
                     },
                     "use_client_tick": {
-                        "text": "Use Client Tick",
+                        "text": "使用客户端刻",
                         "description": ""
                     }
                 },
                 "function": {
                     "print_debug_info": {
-                        "text": "Print Debug Info",
-                        "button": "Print",
+                        "text": "打印调试信息",
+                        "button": "打印",
                         "description": ""
                     }
                 },
                 "hud": {
-                    "progress": "Progress HUD"
+                    "progress": "进度 HUD"
                 }
             },
             "message": {
                 "debug_info": [
-                    "Available: <isAvailable>",
-                    "Tab Mining Speed: <miningSpeed>"
+                    "可用: <isAvailable>",
+                    "玩家列表中的挖掘速度: <miningSpeed>"
                 ]
             }
         },
         "better_terminal": {
-            "name": "Better Terminal",
+            "name": "更好的 Terminal",
             "config": {
                 "header": {
-                    "module": "Better Terminal",
-                    "order": "Click in order!",
-                    "panes": "Correct all the panes!",
-                    "start": "What starts with: '?'?",
-                    "color": "Select all the COLOR items!",
-                    "rubix": "Change all to same color!",
-                    "align": "Click the button on time!",
-                    "notification_correct_click": "Notification On Correct Click",
-                    "notification_canceled_click": "Notification On Canceled Click",
-                    "notification_wrong_click": "Notification On Wrong Click",
-                    "notification_fail_click": "Notification On Fail Click",
-                    "notification_non_queued_click": "Notification On Non Queued Click",
-                    "notification_actual_click_sent_to_server": "Notification On Actual Click (Sent To Server)",
-                    "debug": "Debug"
+                    "module": "更好的 Terminal",
+                    "order": "Click in order!（按顺序点击）",
+                    "panes": "Correct all the panes!（修正所有格子的颜色）",
+                    "start": "What starts with: '?'?（什么物品的名字以 “?” 开头）",
+                    "color": "Select all the COLOR items!（选择所有颜色为 “颜色” 的物品）",
+                    "rubix": "Change all to same color!（将所有格子变为同色）",
+                    "align": "Click the button on time!（按时点击按钮）",
+                    "notification_correct_click": "点击正确时的提示",
+                    "notification_canceled_click": "点击被阻止的提示",
+                    "notification_wrong_click": "点击错误时的提示",
+                    "notification_fail_click": "点击会导致 Terminal 失败时的提示",
+                    "notification_non_queued_click": "非排队点击时的提示",
+                    "notification_actual_click_sent_to_server": "点击实际被发送到服务器时的提示",
+                    "debug": "调试"
                 },
                 "option": {
                     "enable_queueing_clicks": {
-                        "text": "Enable Queueing Clicks",
+                        "text": "启用排队点击",
                         "description": ""
                     },
                     "reload_state_when_state_mismatch": {
-                        "text": "Reload State When State Mismatch",
+                        "text": "状态不匹配时重载",
                         "description": ""
                     },
                     "prevent_fail": {
-                        "text": "Prevent Fail",
+                        "text": "阻止 Terminal 失败",
                         "description": ""
                     },
                     "prevent_misclick": {
-                        "text": "Prevent Misclick",
+                        "text": "阻止错误点击",
                         "description": ""
                     },
                     "click_delay_from_ticks": {
-                        "text": "Click Delay From (in ticks)",
+                        "text": "排队点击间隔最小值（左闭 单位：刻）",
                         "description": ""
                     },
                     "click_delay_until_ticks": {
-                        "text": "Click Delay Until (in ticks)",
+                        "text": "排队点击间隔最大值（右开 单位：刻）",
                         "description": ""
                     },
                     "slot_rounded_corner_radius": {
-                        "text": "Slot Rounded Corner Radius",
+                        "text": "格子圆角半径",
                         "description": ""
                     },
                     "show_vanilla_chest_gui": {
-                        "text": "Show Vanilla Chest GUI",
+                        "text": "显示原版箱子 GUI",
                         "description": ""
                     },
                     "vanilla_chest_gui_scale": {
-                        "text": "Vanilla Chest GUI Scale",
+                        "text": "原版箱子 GUI 缩放",
                         "description": ""
                     },
                     "drag_click": {
-                        "text": "Drag Click",
+                        "text": "拖动点击",
                         "description": ""
                     },
                     "order_enabled": {
-                        "text": "Enabled",
+                        "text": "启用",
                         "description": ""
                     },
                     "order_smooth_gui": {
-                        "text": "Smooth GUI",
+                        "text": "GUI 动画",
                         "description": ""
                     },
                     "order_show_number": {
-                        "text": "Show Number",
+                        "text": "显示数字",
                         "description": ""
                     },
                     "order_show_finished_number": {
-                        "text": "Show Finished Number",
+                        "text": "显示已完成的格子的数字",
                         "description": ""
                     },
                     "order_first_color": {
-                        "text": "First",
+                        "text": "后续第一次点击的格子",
                         "description": ""
                     },
                     "order_second_color": {
-                        "text": "Second",
+                        "text": "后续第二次点击的格子",
                         "description": ""
                     },
                     "order_third_color": {
-                        "text": "Third",
+                        "text": "后续第三次点击的格子",
                         "description": ""
                     },
                     "order_finished_color": {
-                        "text": "Finished",
+                        "text": "已完成的格子",
                         "description": ""
                     },
                     "order_other_color": {
-                        "text": "Other",
+                        "text": "其他格子",
                         "description": ""
                     },
                     "panes_enabled": {
-                        "text": "Enabled",
+                        "text": "启用",
                         "description": ""
                     },
                     "panes_smooth_gui": {
-                        "text": "Smooth GUI",
+                        "text": "GUI 动画",
                         "description": ""
                     },
                     "panes_on_color": {
-                        "text": "ON",
+                        "text": "正确的格子（无需点击）",
                         "description": ""
                     },
                     "panes_off_color": {
-                        "text": "OFF",
+                        "text": "错误的格子（需要点击）",
                         "description": ""
                     },
                     "start_enabled": {
-                        "text": "Enabled",
+                        "text": "启用",
                         "description": ""
                     },
                     "start_smooth_gui": {
-                        "text": "Smooth GUI",
+                        "text": "GUI 动画",
                         "description": ""
                     },
                     "start_answer_color": {
-                        "text": "Answer",
+                        "text": "答案格子",
                         "description": ""
                     },
                     "start_clicked_answer_color": {
-                        "text": "Clicked Answer",
+                        "text": "已点击的答案格子",
                         "description": ""
                     },
                     "start_other_color": {
-                        "text": "Other",
+                        "text": "其他格子",
                         "description": ""
                     },
                     "color_enabled": {
-                        "text": "Enabled",
+                        "text": "启用",
                         "description": ""
                     },
                     "color_smooth_gui": {
-                        "text": "Smooth GUI",
+                        "text": "GUI 动画",
                         "description": ""
                     },
                     "color_answer_color": {
-                        "text": "Answer",
+                        "text": "答案格子",
                         "description": ""
                     },
                     "color_clicked_answer_color": {
-                        "text": "Clicked Answer",
+                        "text": "已点击的答案格子",
                         "description": ""
                     },
                     "color_other_color": {
-                        "text": "Other",
+                        "text": "其他格子",
                         "description": ""
                     },
                     "rubix_enabled": {
-                        "text": "Enabled",
+                        "text": "启用",
                         "description": ""
                     },
                     "rubix_smooth_gui": {
-                        "text": "Smooth GUI",
+                        "text": "GUI 动画",
                         "description": ""
                     },
                     "rubix_show_number": {
-                        "text": "Show Number",
+                        "text": "显示数字",
                         "description": ""
                     },
                     "rubix_color_0": {
@@ -615,203 +623,203 @@
                         "description": ""
                     },
                     "rubix_correct_direction": {
-                        "text": "Correct Direction",
-                        "description": ""
+                        "text": "修正方向",
+                        "description": "不管按左键还是右键，只要格子为非负数都会当作左键，为负数都会当作右键。"
                     },
                     "align_enabled": {
-                        "text": "Enabled",
+                        "text": "启用",
                         "description": ""
                     },
                     "align_smooth_gui": {
-                        "text": "Smooth GUI",
+                        "text": "GUI 动画",
                         "description": ""
                     },
                     "align_target_color": {
-                        "text": "Target",
+                        "text": "目标格子",
                         "description": ""
                     },
                     "align_inactive_color": {
-                        "text": "Inactive",
+                        "text": "其他行的格子",
                         "description": ""
                     },
                     "align_current_active_color": {
-                        "text": "Current Active",
+                        "text": "当前行的指针格子",
                         "description": ""
                     },
                     "align_other_active_color": {
-                        "text": "Other Active",
+                        "text": "当前行的其他格子",
                         "description": ""
                     },
                     "align_lock_in_slot_color": {
-                        "text": "Lock In Slot",
+                        "text": "当前行的按钮",
                         "description": ""
                     },
                     "align_row_not_active_color": {
-                        "text": "Row Not Active",
+                        "text": "其他行的按钮",
                         "description": ""
                     },
                     "force_enabled": {
-                        "text": "Force Enabled",
+                        "text": "强制启用",
                         "description": ""
                     }
                 }
             }
         },
         "yc_leap_menu": {
-            "name": "YC Leap Menu",
+            "name": "YC Leap 菜单",
             "config": {
                 "header": {
-                    "module": "YC Leap Menu",
-                    "hotkeys": "Hotkeys",
-                    "notification_on_clicking_leap_button": "Notification On Clicking Leap Button",
-                    "debug": "Debug"
+                    "module": "YC Leap 菜单",
+                    "hotkeys": "快捷键",
+                    "notification_on_clicking_leap_button": "点击 Leap 按钮时的提示",
+                    "debug": "调试"
                 },
                 "option": {
                     "smooth_gui": {
-                        "text": "Smooth GUI",
+                        "text": "GUI 动画",
                         "description": ""
                     },
                     "keybind_index_0": {
-                        "text": "Index 0 (Typically Archer)",
+                        "text": "0 号按钮（一般为 Archer）",
                         "description": ""
                     },
                     "keybind_index_1": {
-                        "text": "Index 1 (Typically Berserk)",
+                        "text": "1 号按钮（一般为 Berserk）",
                         "description": ""
                     },
                     "keybind_index_2": {
-                        "text": "Index 2 (Typically Mage)",
+                        "text": "2 号按钮（一般为 Mage）",
                         "description": ""
                     },
                     "keybind_index_3": {
-                        "text": "Index 3 (Typically Healer)",
+                        "text": "3 号按钮（一般为 Healer）",
                         "description": ""
                     },
                     "keybind_index_4": {
-                        "text": "Index 4 (Typically Tank)",
+                        "text": "4 号按钮（一般为 Tank）",
                         "description": ""
                     },
                     "force_enabled": {
-                        "text": "Force Enabled",
+                        "text": "强制启用",
                         "description": ""
                     }
                 }
             }
         },
         "map_marker": {
-            "name": "Map Marker",
+            "name": "地图标记",
             "config": {
                 "header": {
-                    "module": "Map Marker"
+                    "module": "地图标记"
                 }
             }
         },
         "window_properties": {
-            "name": "Window Properties",
+            "name": "窗口属性",
             "config": {
                 "header": {
-                    "module": "Window Properties",
-                    "debug": "Debug"
+                    "module": "窗口属性",
+                    "debug": "调试"
                 },
                 "option": {
                     "windowed_fullscreen": {
-                        "text": "Windowed Fullscreen",
-                        "description": ""
+                        "text": "窗口化全屏",
+                        "description": "如果仍然无法显示输入法等，请打开禁用全屏优化。"
                     },
                     "disable_fullscreen_optimization": {
-                        "text": "Disable Fullscreen Optimization",
-                        "description": ""
+                        "text": "禁用全屏优化",
+                        "description": "强制游戏以窗口而非全屏渲染，窗口大小会比屏幕稍大，请调整好录制选项。"
                     },
                     "borderless_window": {
-                        "text": "Borderless Window",
+                        "text": "无边框窗口",
                         "description": ""
                     },
                     "enable_custom_title": {
-                        "text": "Enable Custom Title",
+                        "text": "启用自定义标题",
                         "description": ""
                     },
                     "custom_title": {
-                        "text": "Custom Title",
+                        "text": "自定义标题",
                         "description": ""
                     },
                     "debug_half_fullscreen": {
-                        "text": "Half Fullscreen",
+                        "text": "半屏大小全屏",
                         "description": ""
                     }
                 }
             }
         },
         "hotkeys": {
-            "name": "Hotkeys",
+            "name": "快捷键",
             "config": {
                 "header": {
-                    "module": "Hotkeys"
+                    "module": "快捷键"
                 },
                 "option": {
                     "drop_single_item": {
-                        "text": "Drop Single Item",
+                        "text": "丢弃一个物品",
                         "description": ""
                     },
                     "drop_item_stack": {
-                        "text": "Drop Item Stack",
+                        "text": "丢弃一组物品",
                         "description": ""
                     }
                 }
             }
         },
         "cursor": {
-            "name": "Cursor",
+            "name": "光标",
             "config": {
                 "header": {
-                    "module": "Cursor"
+                    "module": "光标"
                 },
                 "continuous": {
                     "header": {
-                        "module": "Continuous Trail"
+                        "module": "连续轨迹"
                     },
                     "option": {
                         "enabled": {
-                            "text": "Enabled",
+                            "text": "启用",
                             "description": ""
                         },
                         "color": {
-                            "text": "Color",
+                            "text": "颜色",
                             "description": ""
                         },
                         "radius": {
-                            "text": "Radius",
+                            "text": "半径",
                             "description": ""
                         },
                         "bloom": {
-                            "text": "Bloom",
+                            "text": "泛光半径",
                             "description": ""
                         },
                         "duration": {
-                            "text": "Duration",
+                            "text": "持续时长",
                             "description": ""
                         },
                         "fade": {
-                            "text": "Fade",
+                            "text": "渐出时长",
                             "description": ""
                         },
                         "radius_samples": {
-                            "text": "Radius Samples",
+                            "text": "半径采样数",
                             "description": ""
                         },
                         "time_samples": {
-                            "text": "Time Samples",
+                            "text": "时间采样数",
                             "description": ""
                         },
                         "optimization": {
-                            "text": "Optimization",
+                            "text": "优化",
                             "description": ""
                         },
                         "keep_samples_duration": {
-                            "text": "Keep Samples Duration",
+                            "text": "采样点留存时间",
                             "description": ""
                         },
                         "hide_when_not_moving": {
-                            "text": "Hide When Not Moving",
+                            "text": "静止时隐藏",
                             "description": ""
                         }
                     }
@@ -821,27 +829,27 @@
     },
     "config": {
         "category": {
-            "default": "General"
+            "default": "通用"
         },
         "disclaimer": {
-            "at_own_risk": "Use all Yqloss Client features at your own risk! It's not guaranteed that you wouldn't be banned using \"safe\" features!",
-            "require_hypixel_mod_api": "The features below require Hypixel Mod API or Skytils to be installed. https://modrinth.com/mod/hypixel-mod-api",
-            "legit": "The features below are safe to use.",
-            "qol": "The features below change vanilla behavior but are not detectable by servers. They are basically safe to use.",
-            "safe_macro": "The features below are considered as macros but are not likely to get you banned on most servers.",
-            "safe_blatant": "The features below change vanilla behavior but are not likely to get you banned on most servers.",
-            "safe_blatant_hypixel": "The features below change vanilla behavior but are not likely to get you banned on Hypixel.",
-            "safe_blatant_skyblock": "The features below change vanilla behavior but are not likely to get you banned on Hypixel SkyBlock.",
-            "unknown_macro": "The features below are considered as macros. Use them at your own risk!",
-            "unknown_blatant": "The features below change vanilla behavior. Use them at your own risk!",
-            "unsafe_macro": "THE FEATURES BELOW ARE CONSIDERED AS MACROS AND MAY GET YOU BANNED!",
-            "unsafe_blatant": "THE FEATURES BELOW CHANGE VANILLA BEHAVIOR AND MAY GET YOU BANNED!"
+            "at_own_risk": "使用 Yqloss Client 的任何功能后果自负！使用“安全”的功能也不保证一定不会被封禁！",
+            "require_hypixel_mod_api": "以下功能需要安装 Hypixel Mod API 或 Skytils。https://modrinth.com/mod/hypixel-mod-api",
+            "legit": "以下功能可以安全使用。",
+            "qol": "以下功能改变了原版行为但无法被服务器检测，基本可以安全使用。",
+            "safe_macro": "以下功能属于脚本/宏，但在大多数服务器中基本不会导致封禁。",
+            "safe_blatant": "以下功能改变了原版行为，但在大多数服务器中基本不会导致封禁。",
+            "safe_blatant_hypixel": "以下功能改变了原版行为，但在 Hypixel 中基本不会导致封禁。",
+            "safe_blatant_skyblock": "以下功能改变了原版行为，但在 Hypixel SkyBlock 中基本不会导致封禁。",
+            "unknown_macro": "以下功能属于脚本/宏，使用后果自负！",
+            "unknown_blatant": "以下功能改变了原版行为，使用后果自负！!",
+            "unsafe_macro": "以下功能属于脚本/宏，可能会导致封禁！！！",
+            "unsafe_blatant": "以下功能改变了原版行为，可能会导致封禁！！！"
         },
         "notification": {
             "notification": {
                 "option": {
                     "enabled": {
-                        "text": "Enable Notification",
+                        "text": "启用提示",
                         "description": ""
                     }
                 }
@@ -849,15 +857,15 @@
             "actionbar": {
                 "option": {
                     "enabled": {
-                        "text": "Enable Action Bar Notification",
+                        "text": "启用状态栏提示",
                         "description": ""
                     },
                     "text": {
-                        "text": "Action Bar Text",
+                        "text": "状态栏文本",
                         "description": ""
                     },
                     "chroma": {
-                        "text": "Chroma Action Bar",
+                        "text": "彩虹状态栏",
                         "description": ""
                     }
                 }
@@ -865,23 +873,23 @@
             "log": {
                 "option": {
                     "enabled": {
-                        "text": "Enable Log Notification",
+                        "text": "启用日志提示",
                         "description": ""
                     },
                     "text": {
-                        "text": "Log Text",
+                        "text": "日志文本",
                         "description": ""
                     },
                     "level": {
-                        "text": "Log Level",
+                        "text": "日志等级",
                         "description": "",
                         "options": [
-                            "FATAL",
-                            "ERROR",
-                            "WARN",
-                            "INFO",
-                            "DEBUG",
-                            "TRACE"
+                            "致命",
+                            "错误",
+                            "警告",
+                            "信息",
+                            "调试",
+                            "跟踪"
                         ]
                     }
                 }
@@ -889,11 +897,11 @@
             "print_chat": {
                 "option": {
                     "enabled": {
-                        "text": "Enable Print Chat Message Notification",
+                        "text": "启用打印聊天消息提示",
                         "description": ""
                     },
                     "text": {
-                        "text": "Chat Message",
+                        "text": "消息",
                         "description": ""
                     }
                 }
@@ -901,46 +909,46 @@
             "send_message": {
                 "option": {
                     "enabled": {
-                        "text": "Enable Send Message Notification",
+                        "text": "启用发送聊天消息提示",
                         "description": ""
                     },
                     "text": {
-                        "text": "Message",
+                        "text": "消息",
                         "description": ""
                     },
                     "enable_interval": {
-                        "text": "Enable Interval",
+                        "text": "启用消息队列",
                         "description": ""
                     },
                     "interval_since_last_message_ticks": {
-                        "text": "Interval Since Last Message (in ticks)",
+                        "text": "距离上次发送消息的间隔（单位：刻）",
                         "description": ""
                     },
                     "interval_pool": {
-                        "text": "Interval Pool",
+                        "text": "消息队列",
                         "description": ""
                     },
                     "max_pool_size": {
-                        "text": "Max Pool Size",
+                        "text": "最大队列大小",
                         "description": ""
                     }
                 },
                 "function": {
                     "clear_this_pool": {
-                        "text": "Clear this Pool",
-                        "button": "Clear",
+                        "text": "清空此消息队列",
+                        "button": "清空",
                         "description": ""
                     },
                     "print_pool_sizes": {
-                        "text": "Print Pool Sizes",
-                        "button": "Print",
+                        "text": "打印全部消息队列大小",
+                        "button": "打印",
                         "description": ""
                     }
                 },
                 "message": {
-                    "clear_pool": "Cleared pool <pool>",
+                    "clear_pool": "已清空 <pool> 消息队列",
                     "pool_size": {
-                        "header": "\nPool Sizes:",
+                        "header": "\n消息队列大小：",
                         "pool": "    <pool>: <size>",
                         "footer": ""
                     }
@@ -949,19 +957,19 @@
             "sound": {
                 "option": {
                     "enabled": {
-                        "text": "Enable Sound Notification",
+                        "text": "启用声音提示",
                         "description": ""
                     },
                     "name": {
-                        "text": "Sound",
+                        "text": "声音",
                         "description": ""
                     },
                     "volume": {
-                        "text": "Volume",
+                        "text": "音量",
                         "description": ""
                     },
                     "pitch": {
-                        "text": "Pitch",
+                        "text": "音调",
                         "description": ""
                     }
                 }
@@ -969,35 +977,35 @@
             "title": {
                 "option": {
                     "enabled": {
-                        "text": "Enable Title Notification",
+                        "text": "启用标题提示",
                         "description": ""
                     },
                     "text": {
-                        "text": "Title",
+                        "text": "标题",
                         "description": ""
                     },
                     "set_subtitle": {
-                        "text": "Set Subtitle",
+                        "text": "设置副标题",
                         "description": ""
                     },
                     "subtitle": {
-                        "text": "Subtitle",
+                        "text": "副标题",
                         "description": ""
                     },
                     "set_fade_in_display_fade_out_duration": {
-                        "text": "Set Fade-In, Display, Fade-Out Duration",
+                        "text": "设置渐入、持续、渐出时间",
                         "description": ""
                     },
                     "display_duration_ticks": {
-                        "text": "Display Duration (in ticks)",
+                        "text": "持续时间 (单位：刻)",
                         "description": ""
                     },
                     "fade_in_duration_ticks": {
-                        "text": "Fade-In Duration (in ticks)",
+                        "text": "渐入时间 (单位：刻)",
                         "description": ""
                     },
                     "fade_out_duration_ticks": {
-                        "text": "Fade-Out Duration (in ticks)",
+                        "text": "渐出时间 (单位：刻)",
                         "description": ""
                     }
                 }
@@ -1006,112 +1014,112 @@
         "hud": {
             "option": {
                 "enabled": {
-                    "text": "Enabled",
-                    "description": "If the HUD is enabled"
+                    "text": "启用",
+                    "description": ""
                 },
                 "locked": {
-                    "text": "Locked",
-                    "description": "If the position is locked"
+                    "text": "锁定位置",
+                    "description": ""
                 },
                 "ignore_caching": {
-                    "text": "Ignore HUD Caching",
-                    "description": "Ignore Patcher's HUD Caching feature, which limits HUDs to a specific FPS."
+                    "text": "忽略 HUD 缓存（HUD Caching）",
+                    "description": "忽略 Patcher 模组的 HUD 缓存功能，这个功能会限制 HUD 渲染的 FPS。"
                 },
                 "scale": {
-                    "text": "Scale",
-                    "description": "The scale of the HUD"
+                    "text": "缩放",
+                    "description": ""
                 },
                 "position_alignment": {
-                    "text": "Position Alignment",
-                    "description": "The alignment of the HUD",
+                    "text": "HUD 位置对齐",
+                    "description": "",
                     "options": [
-                        "Auto",
-                        "Left",
-                        "Center",
-                        "Right"
+                        "自动",
+                        "左对齐",
+                        "居中",
+                        "右对齐"
                     ]
                 },
                 "background": {
-                    "text": "Background",
-                    "description": "If the background of the HUD is enabled."
+                    "text": "显示背景",
+                    "description": ""
                 },
                 "rounded": {
-                    "text": "Rounded corners",
-                    "description": "If the background has rounded corners."
+                    "text": "背景圆角",
+                    "description": ""
                 },
                 "border": {
-                    "text": "Outline/border",
-                    "description": "If the hud has an outline."
+                    "text": "显示边框",
+                    "description": ""
                 },
                 "background_color": {
-                    "text": "Background color:",
-                    "description": "The color of the background."
+                    "text": "背景颜色",
+                    "description": ""
                 },
                 "border_color": {
-                    "text": "Border color:",
-                    "description": "The color of the border."
+                    "text": "边框颜色",
+                    "description": ""
                 },
                 "corner_radius": {
-                    "text": "Corner radius:",
-                    "description": "The corner radius of the background."
+                    "text": "背景圆角半径",
+                    "description": ""
                 },
                 "border_size": {
-                    "text": "Border thickness:",
-                    "description": "The thickness of the outline."
+                    "text": "边框粗细",
+                    "description": ""
                 },
                 "padding_x": {
-                    "text": "X-Padding",
-                    "description": "The horizontal padding of the HUD."
+                    "text": "横向外边距",
+                    "description": ""
                 },
                 "padding_y": {
-                    "text": "Y-Padding",
-                    "description": "The vertical padding of the HUD."
+                    "text": "纵向外边距",
+                    "description": ""
                 },
                 "show_in_chat": {
-                    "text": "Show in Chat",
+                    "text": "在聊天界面打开时显示",
                     "description": ""
                 },
                 "show_in_debug": {
-                    "text": "Show in F3 (Debug)",
+                    "text": "在 F3 调试界面打开时显示",
                     "description": ""
                 },
                 "show_in_guis": {
-                    "text": "Show in GUIs",
+                    "text": "在 GUI 打开时显示",
                     "description": ""
                 }
             },
             "function": {
                 "reset_position": {
-                    "text": "Position",
-                    "button": "Reset",
-                    "description": "Reset HUD to default position"
+                    "text": "重置到默认位置",
+                    "button": "重置",
+                    "description": ""
                 }
             }
         },
         "gui_background": {
             "option": {
                 "show_background": {
-                    "text": "Show Background",
+                    "text": "显示背景",
                     "description": ""
                 },
                 "background_color": {
-                    "text": "Background Color",
+                    "text": "背景颜色",
                     "description": ""
                 },
                 "rounded_corner_radius": {
-                    "text": "Rounded Corner Radius",
+                    "text": "圆角半径",
                     "description": ""
                 },
                 "shadow_blur": {
-                    "text": "Shadow Blur",
+                    "text": "阴影模糊",
                     "description": ""
                 },
                 "x_padding": {
-                    "text": "X Padding",
+                    "text": "横向外边距",
                     "description": ""
                 },
                 "y_padding": {
-                    "text": "Y Padding",
+                    "text": "纵向外边距",
                     "description": ""
                 }
             }
@@ -1119,11 +1127,11 @@
         "screen_scale": {
             "option": {
                 "override_screen_scale": {
-                    "text": "Override Screen Scale",
+                    "text": "固定屏幕缩放",
                     "description": ""
                 },
                 "override_screen_scale_value": {
-                    "text": "Override Screen Scale Value",
+                    "text": "屏幕缩放倍率",
                     "description": ""
                 }
             }
@@ -1131,11 +1139,11 @@
         "block": {
             "option": {
                 "block_id": {
-                    "text": "Block ID",
+                    "text": "方块 ID",
                     "description": ""
                 },
                 "block_metadata": {
-                    "text": "Block Metadata",
+                    "text": "方块数据值",
                     "description": ""
                 }
             }

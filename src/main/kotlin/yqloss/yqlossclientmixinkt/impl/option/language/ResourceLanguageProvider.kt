@@ -20,9 +20,6 @@ package yqloss.yqlossclientmixinkt.impl.option.language
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.*
-import net.yqloss.uktil.accessor.outs.Box
-import net.yqloss.uktil.accessor.outs.inBox
-import net.yqloss.uktil.accessor.outs.value
 import net.yqloss.uktil.event.EventRegistration
 import net.yqloss.uktil.event.EventRegistry
 import net.yqloss.uktil.event.register
@@ -32,34 +29,37 @@ import net.yqloss.uktil.scope.usingScope
 import yqloss.yqlossclientmixinkt.YCJson
 
 class ResourceLanguageProvider(private val clazz: Class<*>) : EventRegistration {
-    private val languageMap = mutableMapOf<String, JsonElement>()
+    private data class Language(
+        val json: JsonElement,
+        val cache: MutableMap<String, String?> = mutableMapOf(),
+    )
 
-    private val translationMap = mutableMapOf<String, Box<String?>>()
+    private val languageMap = mutableMapOf<String, Language?>()
 
     @OptIn(ExperimentalSerializationApi::class)
-    private fun loadLanguage(language: String): JsonElement? {
-        languageMap[language]?.let { return it }
-
-        return noExcept {
+    private fun loadLanguage(language: String) = languageMap.getOrPut(language) {
+        noExcept {
             usingScope {
-                YCJson.decodeFromStream<JsonElement>(
-                    clazz.getResourceAsStream("/assets/yqlossclientmixin/language/$language.json")!!.using,
+                Language(
+                    YCJson.decodeFromStream<JsonElement>(
+                        clazz.getResourceAsStream("/assets/yqlossclientmixin/language/$language.json")!!.using,
+                    ),
                 )
             }
-        }?.also { languageMap[language] = it }
+        }
     }
 
-    private fun getTranslation(language: JsonElement, translationKey: String): String? {
+    private fun getTranslation(language: Language, translationKey: String) = language.cache.getOrPut(translationKey) {
         val split = translationKey.split('.')
-        var element = language
+        var element = language.json
         split.forEach { name ->
             element = when (val element = element) {
                 is JsonObject -> element[name]
                 is JsonArray -> name.toIntOrNull()?.let { element.getOrNull(it) }
                 else -> null
-            } ?: return null
+            } ?: return@getOrPut null
         }
-        return when (val element = element) {
+        when (val element = element) {
             is JsonPrimitive -> element.content
             is JsonArray -> element.mapNotNull { (it as? JsonPrimitive)?.content }.joinToString("\n")
             else -> null
@@ -73,15 +73,13 @@ class ResourceLanguageProvider(private val clazz: Class<*>) : EventRegistration 
             register<LanguageEvent.Translate> { event ->
                 event.canceled && longRet
 
-                val translation = translationMap[event.string] ?: run {
-                    loadLanguage(event.language)?.let {
-                        getTranslation(it, event.string)
-                    } ?: loadLanguage(event.fallbackLanguage)?.let {
-                        getTranslation(it, event.string)
-                    }
-                }.inBox.also { translationMap[event.string] = it }
+                val translation = loadLanguage(event.language)?.let {
+                    getTranslation(it, event.string)
+                } ?: loadLanguage(event.fallbackLanguage)?.let {
+                    getTranslation(it, event.string)
+                }
 
-                translation.value?.let {
+                translation?.let {
                     event.mutableString = it
                     event.canceled = true
                 }

@@ -28,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import yqloss.yqlossclientmixinkt.YqlossClientKt;
 import yqloss.yqlossclientmixinkt.api.YCAPI;
+import yqloss.yqlossclientmixinkt.impl.option.ExtensionsKt;
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfigKt;
 
 import java.lang.reflect.Field;
@@ -49,6 +50,10 @@ public abstract class MixinBasicButton {
     @Inject(method = "<init>(IIIIILjava/lang/String;Lcc/polyfrost/oneconfig/renderer/asset/SVG;Lcc/polyfrost/oneconfig/renderer/asset/SVG;ILcc/polyfrost/oneconfig/utils/color/ColorPalette;)V", at = @At("RETURN"), remap = false)
     private void yc$modify(int width, int size, int iconSize, int xSpacing, int xPadding, String text, SVG icon1, SVG icon2, int align, ColorPalette colorPalette, CallbackInfo ci) throws Exception {
         if (text == null || !YqlossClientConfigKt.getSettingUpYqlossClientConfig()) return;
+
+        if (YqlossClientConfigKt.getSettingUpHUD()) {
+            text = ExtensionsKt.mapHUDButtonText(text);
+        }
 
         YCAPI api = YqlossClientKt.getYC().getApi();
 

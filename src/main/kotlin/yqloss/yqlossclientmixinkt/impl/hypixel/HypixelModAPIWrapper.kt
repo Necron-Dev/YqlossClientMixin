@@ -31,7 +31,6 @@ import yqloss.yqlossclientmixinkt.api.YCHypixelServerType
 import yqloss.yqlossclientmixinkt.event.hypixel.YCHypixelAPIEvent
 import yqloss.yqlossclientmixinkt.event.minecraft.YCMinecraftEvent
 import yqloss.yqlossclientmixinkt.impl.YCMixin
-import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
@@ -56,14 +55,14 @@ class HypixelModAPIWrapper(
                 packet.mode.getOrNull(),
                 packet.map.getOrNull(),
             )
-            if (YqlossClientConfig.main.verboseHypixelModAPI) printChat("YCMixin.api.hypixelLocation = $location")
+            if (YCMixin.config.main.verboseHypixelModAPI) printChat("YCMixin.api.hypixelLocation = $location")
             YCMixin.api.hypixelLocation = location
             YC.eventDispatcher(YCHypixelAPIEvent.Location(location))
         }
     }
 
     private val resetLocation by trigger({ MC.isIntegratedServerRunning to MC.currentServerData }) {
-        if (YqlossClientConfig.main.verboseHypixelModAPI) printChat("YCMixin.api.hypixelLocation = null")
+        if (YCMixin.config.main.verboseHypixelModAPI) printChat("YCMixin.api.hypixelLocation = null")
         YCMixin.api.hypixelLocation = null
         YC.eventDispatcher(YCHypixelAPIEvent.Location(null))
     }

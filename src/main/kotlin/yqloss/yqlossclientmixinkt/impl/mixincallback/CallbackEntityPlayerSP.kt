@@ -21,7 +21,7 @@ package yqloss.yqlossclientmixinkt.impl.mixincallback
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 import yqloss.yqlossclientmixinkt.YC
 import yqloss.yqlossclientmixinkt.event.minecraft.YCCommandEvent
-import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
+import yqloss.yqlossclientmixinkt.impl.YCMixin
 
 object CallbackEntityPlayerSP {
     object YqlossClient {
@@ -30,7 +30,7 @@ object CallbackEntityPlayerSP {
             ci: CallbackInfo,
         ) {
             YCCommandEvent
-                .Execute(message, YqlossClientConfig.main.disableCommands)
+                .Execute(message, YCMixin.config.main.disableCommands)
                 .also(YC.eventDispatcher)
                 .apply {
                     if (canceled) ci.cancel()
