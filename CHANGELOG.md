@@ -108,3 +108,5 @@
 * feat(CorpseFinder): add mob finder
 * feat: add I18n (Internationalization) support
 * feat: add zh_CN Chinese 简体中文 language
+
+## 2.1.0 ()
