@@ -97,7 +97,11 @@ sourceSets {
 
 repositories {
     mavenCentral()
-    maven("https://maven.yqloss.net")
+    maven("https://maven.yqloss.net") {
+        content {
+            includeGroup("net.yqloss")
+        }
+    }
     maven("https://repo.polyfrost.org/releases")
     maven("https://repo.hypixel.net/repository/Hypixel/")
 }
