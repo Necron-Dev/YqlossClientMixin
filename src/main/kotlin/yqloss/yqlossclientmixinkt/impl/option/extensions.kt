@@ -29,6 +29,7 @@ fun OneKeyBind.handle() {
 fun removeMod(mod: Mod) {
     ConfigCore.mods.remove(mod)
     ConfigCore.subMods[mod]?.forEach(::removeMod)
+    ConfigCore.subMods.remove(mod)
 }
 
 fun removeSubMod(mod: Mod) {
