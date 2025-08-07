@@ -23,9 +23,9 @@ import cc.polyfrost.oneconfig.config.annotations.Button
 import cc.polyfrost.oneconfig.config.annotations.CustomOption
 import cc.polyfrost.oneconfig.config.core.ConfigUtils
 import cc.polyfrost.oneconfig.config.data.Mod
+import cc.polyfrost.oneconfig.config.data.ModType
 import cc.polyfrost.oneconfig.config.elements.BasicOption
 import cc.polyfrost.oneconfig.config.elements.OptionPage
-import cc.polyfrost.oneconfig.config.elements.SubConfig
 import cc.polyfrost.oneconfig.config.migration.Migrator
 import cc.polyfrost.oneconfig.internal.config.annotations.Option
 import yqloss.yqlossclientmixinkt.RT
@@ -41,13 +41,11 @@ import java.lang.reflect.Method
 abstract class OptionsImpl(
     info: YCModuleInfo<*>,
     nameTranslationKey: String = "{module.${info.id}.name}",
+    mod: Mod = Mod(YC.api.translate(nameTranslationKey), ModType.UTIL_QOL),
     defaultEnabled: Boolean = false,
-) : SubConfig(YC.api.translate(nameTranslationKey), info.configFile),
+    canToggle: Boolean = true,
+) : Config(mod, info.configFile, defaultEnabled, canToggle),
     YCModuleOptions {
-    init {
-        super.enabled = defaultEnabled
-    }
-
     val itemNames = mutableMapOf<String, List<String>>()
 
     override val enabled get() = YCMixin.config.enabled && super.enabled
