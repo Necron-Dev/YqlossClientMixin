@@ -20,6 +20,7 @@ package yqloss.yqlossclientmixinkt.impl.mixin;
 
 import cc.polyfrost.oneconfig.config.Config;
 import cc.polyfrost.oneconfig.config.annotations.HUD;
+import cc.polyfrost.oneconfig.config.elements.BasicOption;
 import cc.polyfrost.oneconfig.config.elements.OptionPage;
 import cc.polyfrost.oneconfig.hud.HUDUtils;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,6 +35,7 @@ import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfigKt;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Mixin(HUDUtils.class)
 public abstract class MixinHUDUtils {
@@ -83,5 +85,12 @@ public abstract class MixinHUDUtils {
         }
 
         return api.translate(subCategory);
+    }
+
+    @Redirect(method = "addHudOptions", at = @At(value = "INVOKE", target = "Lcc/polyfrost/oneconfig/config/elements/BasicOption;addDependency(Ljava/lang/String;Ljava/util/function/Supplier;)V"), remap = false)
+    private static void yc$filterAddDependency(BasicOption instance, String optionName, Supplier<Boolean> supplier) {
+        Field field = instance.getField();
+        if (field != null && "enabled".equals(field.getName())) return;
+        instance.addDependency(optionName, supplier);
     }
 }
