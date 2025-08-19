@@ -35,6 +35,7 @@ import yqloss.yqlossclientmixinkt.impl.hypixel.loadHypixelModAPI
 import yqloss.yqlossclientmixinkt.impl.module.betterterminal.BetterTerminalScreen
 import yqloss.yqlossclientmixinkt.impl.module.cursor.CursorOverlay
 import yqloss.yqlossclientmixinkt.impl.module.miningprediction.MiningPredictionHUD
+import yqloss.yqlossclientmixinkt.impl.module.sackcounter.SackCounterHUD
 import yqloss.yqlossclientmixinkt.impl.module.ycleapmenu.YCLeapMenuScreen
 import yqloss.yqlossclientmixinkt.impl.option.YqlossClientConfig
 import yqloss.yqlossclientmixinkt.impl.option.language.LanguageManager
@@ -49,6 +50,7 @@ import yqloss.yqlossclientmixinkt.module.miningprediction.MiningPrediction
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.module.rawinput.RawInput
 import yqloss.yqlossclientmixinkt.module.repository.Repository
+import yqloss.yqlossclientmixinkt.module.sackcounter.SackCounter
 import yqloss.yqlossclientmixinkt.module.ssmotionblur.SSMotionBlur
 import yqloss.yqlossclientmixinkt.module.tweaks.Tweaks
 import yqloss.yqlossclientmixinkt.module.windowproperties.WindowProperties
@@ -117,12 +119,14 @@ class YqlossClientMixin : YqlossClient {
         WindowProperties
         Hotkeys
         Cursor
+        SackCounter
 
         BetterTerminalScreen
         YCLeapMenuScreen
         CursorOverlay
 
         MiningPredictionHUD
+        SackCounterHUD
 
 //        Extensions
 

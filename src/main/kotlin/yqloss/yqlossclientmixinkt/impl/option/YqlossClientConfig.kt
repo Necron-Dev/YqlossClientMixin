@@ -93,6 +93,9 @@ class YqlossClientConfig :
     @SubConfig
     var cursor = CursorOptionsImpl()
 
+    @SubConfig
+    var sackCounter = SackCounterOptionsImpl()
+
 //    @SubConfig
 //    var extensions = ExtensionsOptionsImpl()
 

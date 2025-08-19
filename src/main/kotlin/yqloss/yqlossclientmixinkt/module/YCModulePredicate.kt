@@ -41,6 +41,11 @@ fun isWindowTitled(
 
 fun isWindowTitled(
     chest: GuiChest,
+    title: Regex,
+) = title.matches(chest.internalLowerChestInventory.name.trimStyle)
+
+fun isWindowTitled(
+    chest: GuiChest,
     titles: Collection<String>,
 ) = chest.internalLowerChestInventory.name.trimStyle in titles
 
