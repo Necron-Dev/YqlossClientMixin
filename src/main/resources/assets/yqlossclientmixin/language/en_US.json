@@ -817,6 +817,27 @@
                     }
                 }
             }
+        },
+        "sack_counter": {
+            "name": "Sack Counter",
+            "config": {
+                "header": {
+                    "module": "Sack Counter"
+                },
+                "option": {
+                    "width": {
+                        "text": "Width",
+                        "description": ""
+                    },
+                    "entries": {
+                        "text": "Entries",
+                        "description": "Item names split by \",\". Example: Ender Pearl,Emerald,Enchanted Gold Block"
+                    }
+                },
+                "hud": {
+                    "sack_counter": "Sack Counter HUD"
+                }
+            }
         }
     },
     "config": {

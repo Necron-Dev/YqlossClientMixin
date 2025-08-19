@@ -825,6 +825,27 @@
                     }
                 }
             }
+        },
+        "sack_counter": {
+            "name": "Sack 物品计数器",
+            "config": {
+                "header": {
+                    "module": "Sack 物品计数器"
+                },
+                "option": {
+                    "width": {
+                        "text": "宽度",
+                        "description": ""
+                    },
+                    "entries": {
+                        "text": "条目",
+                        "description": "以半角逗号 \",\" 分隔的物品名称。例如：Ender Pearl,Emerald,Enchanted Gold Block"
+                    }
+                },
+                "hud": {
+                    "sack_counter": "Sack 物品计数器 HUD"
+                }
+            }
         }
     },
     "config": {
