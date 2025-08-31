@@ -24,4 +24,7 @@ import java.security.MessageDigest
 
 private val md5Instance by threadLocal { MessageDigest.getInstance("MD5") }
 
-fun md5(data: ByteArray): ByteArray = md5Instance.digest(data)
+fun md5(data: ByteArray, offset: Int = 0, length: Int = data.size - offset): ByteArray = md5Instance.run {
+    update(data, offset, length)
+    digest()
+}

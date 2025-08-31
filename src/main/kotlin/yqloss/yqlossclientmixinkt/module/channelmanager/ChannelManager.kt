@@ -98,12 +98,9 @@ object ChannelManager : YCModuleBase<ChannelManagerOptions>(INFO_CHANNEL_MANAGER
             val serial = if (blockIndex == 0) compressed.size else blockIndex
             encodeInt(serial).copyInto(block, 4)
 
-            var checksum = 0
-            repeat(dataSize + 5) {
-                checksum *= 31
-                checksum += block[it + 3].int and 0xFF
-            }
-            encodeInt(checksum).copyInto(block, 1, 0, 2)
+            val checksum = md5(block, 3)
+            block[1] = checksum[0]
+            block[2] = checksum[1]
 
             val seed = Random.nextBytes(1) + userName.toByteArray(Charsets.UTF_8)
             block[0] = seed[0]
@@ -165,13 +162,8 @@ object ChannelManager : YCModuleBase<ChannelManagerOptions>(INFO_CHANNEL_MANAGER
             block[it + 1] = block[it + 1] xor xorKey[it % 13]
         }
 
-        val blockChecksum = decodeInt(block.copyOfRange(1, 5))
-        var checksum = 0
-        repeat(block.size - 3) {
-            checksum *= 31
-            checksum += block[it + 3].int and 0xFF
-        }
-        checksum xor blockChecksum and 0xFFFF == 0 || return@noExcept
+        val checksum = md5(block, 3)
+        checksum[0] == block[1] && checksum[1] == block[2] || return@noExcept
 
         val meta = block[3].int
         val firstBlock = meta and 0x80 != 0
