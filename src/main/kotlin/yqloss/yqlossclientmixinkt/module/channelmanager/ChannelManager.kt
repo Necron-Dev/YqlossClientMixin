@@ -40,6 +40,7 @@ import yqloss.yqlossclientmixinkt.module.inHypixel
 import yqloss.yqlossclientmixinkt.module.moduleInfo
 import yqloss.yqlossclientmixinkt.module.option.invoke
 import yqloss.yqlossclientmixinkt.util.*
+import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.darkGray
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.invoke
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.pink
 import yqloss.yqlossclientmixinkt.util.TextBuilderContext.Companion.purple
@@ -243,7 +244,8 @@ object ChannelManager : YCModuleBase<ChannelManagerOptions>(INFO_CHANNEL_MANAGER
             register<ChannelManagerEvent.Message> { event ->
                 !event.canceled && event.channel == ".c" || longRet
                 printChat {
-                    -purple("YCC > ")
+                    -purple("YCC ")
+                    -darkGray("> ")
                     -pink(event.sender)
                     -white(": ${event.message.jsonPrimitive.content}")
                 }
