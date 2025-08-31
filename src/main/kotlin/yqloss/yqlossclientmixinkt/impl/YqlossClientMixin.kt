@@ -42,6 +42,7 @@ import yqloss.yqlossclientmixinkt.impl.option.language.LanguageManager
 import yqloss.yqlossclientmixinkt.impl.option.language.ResourceLanguageProvider
 import yqloss.yqlossclientmixinkt.impl.option.removeMod
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
+import yqloss.yqlossclientmixinkt.module.channelmanager.ChannelManager
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinder
 import yqloss.yqlossclientmixinkt.module.cursor.Cursor
 import yqloss.yqlossclientmixinkt.module.hotkeys.Hotkeys
@@ -108,6 +109,7 @@ class YqlossClientMixin : YqlossClient {
         loadWindowsX64NativeAPI()
 
         Repository
+        ChannelManager
         RawInput
         SSMotionBlur
         Tweaks

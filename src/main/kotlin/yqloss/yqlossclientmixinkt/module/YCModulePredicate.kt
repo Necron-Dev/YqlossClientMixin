@@ -28,6 +28,8 @@ val inWorld get() = MC.theWorld !== null
 
 val inGUI get() = MC.currentScreen !== null
 
+val inHypixel get() = MC.theWorld !== null && YC.api.hypixelLocation !== null
+
 val inSkyBlock get() = MC.theWorld !== null && YC.api.hypixelLocation?.serverType?.name == "SkyBlock"
 
 fun inSkyblockMode(mode: String) = inSkyBlock && YC.api.hypixelLocation?.mode == mode

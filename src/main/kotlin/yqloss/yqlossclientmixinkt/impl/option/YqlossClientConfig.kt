@@ -61,6 +61,9 @@ class YqlossClientConfig :
     var repository = RepositoryOptionsImpl()
 
     @SubConfig
+    var channelManager = ChannelManagerOptionsImpl()
+
+    @SubConfig
     var rawInput = RawInputOptionsImpl()
 
     @SubConfig
