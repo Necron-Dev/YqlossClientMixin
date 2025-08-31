@@ -72,7 +72,7 @@ class SendMessageOption : YCSendMessageOption {
         step = 1,
         size = 1,
     )
-    var maxPoolSizeOption = 2147483647
+    var maxPoolSizeOption = 4194304
 
     override val enabled by ::enabledOption
     override val text by ::textOption
