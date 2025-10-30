@@ -24,14 +24,13 @@ import net.yqloss.uktil.event.register
 import net.yqloss.uktil.math.Vec2D
 import yqloss.yqlossclientmixinkt.impl.nanovgui.GUIEvent
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
-import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 import yqloss.yqlossclientmixinkt.util.MC
 
-abstract class YCModuleScreenBase<TO, TM : YCModule<in TO>>(
+abstract class YCModuleScreenBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
     module: TM,
-) : YCModuleGUIBase<TO, TM>(module) where TO : YCModuleOptions, TO : OptionsImpl {
+) : YCModuleGUIBase<TO, TM>(module) {
     open val scaleOverride: Double? = null
 
     override val transformation: Transformation

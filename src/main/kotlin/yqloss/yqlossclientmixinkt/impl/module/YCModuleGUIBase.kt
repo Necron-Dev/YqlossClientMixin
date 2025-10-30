@@ -23,13 +23,12 @@ import net.yqloss.uktil.math.Vec2D
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Transformation
 import yqloss.yqlossclientmixinkt.impl.nanovgui.Widget
 import yqloss.yqlossclientmixinkt.impl.nanovgui.WindowAnimation
-import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 
-abstract class YCModuleGUIBase<TO, TM : YCModule<in TO>>(
+abstract class YCModuleGUIBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
     module: TM,
-) : YCModuleImplBase<TO, TM>(module) where TO : YCModuleOptions, TO : OptionsImpl {
+) : YCModuleImplBase<TO, TM>(module) {
     abstract val width: Double
     abstract val height: Double
     open val fadeOut = 0L

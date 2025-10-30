@@ -82,6 +82,7 @@ val RT: ReleaseType by lazy {
 val YCJson by lazy {
     Json {
         ignoreUnknownKeys = true
+        encodeDefaults = true
     }
 }
 

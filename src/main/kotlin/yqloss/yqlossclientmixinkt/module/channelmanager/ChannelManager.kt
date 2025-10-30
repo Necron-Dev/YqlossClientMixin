@@ -77,7 +77,7 @@ object ChannelManager : YCModuleBase<ChannelManagerOptions>(INFO_CHANNEL_MANAGER
         (bytes[2].int and 0xFF shl 16) or
         (bytes[3].int and 0xFF shl 24)
 
-    fun sendBytes(bytes: ByteArray, userName: String = MC.session.profile.name) {
+    fun sendBytes(bytes: ByteArray, userName: String = MC.session.profile.name.lowercase()) {
         val compressed = compressGzip(bytes)
 
         val blockSizeBytes = options.blockSize * BLOCK_SIZE_UNIT
@@ -131,7 +131,7 @@ object ChannelManager : YCModuleBase<ChannelManagerOptions>(INFO_CHANNEL_MANAGER
         @SerialName("d") val data: JsonElement,
     )
 
-    inline fun <reified T> send(channel: String, data: T, userName: String = MC.session.profile.name) {
+    inline fun <reified T> send(channel: String, data: T, userName: String = MC.session.profile.name.lowercase()) {
         val packet = Packet(channel, YCJson.encodeToJsonElement(data))
         sendBytes(YCJson.encodeToString(packet).toByteArray(Charsets.UTF_8), userName)
     }
@@ -151,7 +151,7 @@ object ChannelManager : YCModuleBase<ChannelManagerOptions>(INFO_CHANNEL_MANAGER
         YC.eventDispatcher(ChannelManagerEvent.Message(packet.channel, sender, packet.data, self))
     }
 
-    private fun receiveBlock(sender: String, message: String, userName: String = MC.session.profile.name) = noExcept(logger::warn) {
+    private fun receiveBlock(sender: String, message: String, userName: String = MC.session.profile.name.lowercase()) = noExcept(logger::warn) {
         val block = message
             .mapNotNull(::fromCharset)
             .toByteArray()
@@ -214,7 +214,7 @@ object ChannelManager : YCModuleBase<ChannelManagerOptions>(INFO_CHANNEL_MANAGER
 
                 val result = PARTY_MESSAGE.matchEntire(event.trimmedPlainText) ?: longRet
 
-                val sender = result.groupValues[1]
+                val sender = result.groupValues[1].lowercase()
                 val message = result.groupValues[2]
 
                 receiveBlock(sender, message)

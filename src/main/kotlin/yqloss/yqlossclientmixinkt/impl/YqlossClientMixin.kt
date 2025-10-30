@@ -34,6 +34,7 @@ import yqloss.yqlossclientmixinkt.impl.api.YCAPIImpl
 import yqloss.yqlossclientmixinkt.impl.hypixel.loadHypixelModAPI
 import yqloss.yqlossclientmixinkt.impl.module.betterterminal.BetterTerminalScreen
 import yqloss.yqlossclientmixinkt.impl.module.cursor.CursorOverlay
+import yqloss.yqlossclientmixinkt.impl.module.minigame.gomoku.Gomoku
 import yqloss.yqlossclientmixinkt.impl.module.miningprediction.MiningPredictionHUD
 import yqloss.yqlossclientmixinkt.impl.module.sackcounter.SackCounterHUD
 import yqloss.yqlossclientmixinkt.impl.module.ycleapmenu.YCLeapMenuScreen
@@ -129,6 +130,8 @@ class YqlossClientMixin : YqlossClient {
 
         MiningPredictionHUD
         SackCounterHUD
+
+        Gomoku
 
 //        Extensions
 

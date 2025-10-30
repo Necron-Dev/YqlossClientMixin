@@ -19,13 +19,12 @@
 package yqloss.yqlossclientmixinkt.impl.module
 
 import net.yqloss.uktil.generic.castTo
-import yqloss.yqlossclientmixinkt.impl.option.OptionsImpl
 import yqloss.yqlossclientmixinkt.module.YCModule
 import yqloss.yqlossclientmixinkt.module.YCModuleBase
 import yqloss.yqlossclientmixinkt.module.option.YCModuleOptions
 
-abstract class YCModuleImplBase<TO, TM : YCModule<in TO>>(
+abstract class YCModuleImplBase<TO : YCModuleOptions, TM : YCModule<in TO>>(
     val module: TM,
-) : YCModuleBase<TO>(module.castTo()) where TO : YCModuleOptions, TO : OptionsImpl {
+) : YCModuleBase<TO>(module.castTo()) {
     override val options = (if (module is YCModuleBase<*>) module.moduleInfo else module).options.castTo<TO>()
 }
