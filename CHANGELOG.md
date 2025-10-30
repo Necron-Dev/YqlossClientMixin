@@ -96,7 +96,7 @@
 * BREAKING CHANGE: extract the util part to a separate library
 * and I think it's time to release 1.0.0
 
-## 2.0.0 (UTC+8 2025/07/2 19:10)
+## 2.0.0 (UTC+8 2025/07/02 19:10)
 
 * Starting from 2.0.0 there will be 3 versions, normal, PLUS and EX
 * All illegal features (including macros) will be removed in the normal version
@@ -109,4 +109,9 @@
 * feat: add I18n (Internationalization) support
 * feat: add zh_CN Chinese 简体中文 language
 
-## 2.1.0 ()
+## 2.1.0 (UTC+8 2025/10/30 21:00)
+
+* fix: unable to enable HUDs when they are disabled
+* feat(SackCounter): init
+* fix: sub mods being visible in the main OneConfig menu
+* fix: precision loss when using Int.MAX_VALUE in OneConfig
