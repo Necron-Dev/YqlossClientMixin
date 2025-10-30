@@ -34,7 +34,6 @@ import yqloss.yqlossclientmixinkt.impl.api.YCAPIImpl
 import yqloss.yqlossclientmixinkt.impl.hypixel.loadHypixelModAPI
 import yqloss.yqlossclientmixinkt.impl.module.betterterminal.BetterTerminalScreen
 import yqloss.yqlossclientmixinkt.impl.module.cursor.CursorOverlay
-import yqloss.yqlossclientmixinkt.impl.module.minigame.gomoku.Gomoku
 import yqloss.yqlossclientmixinkt.impl.module.miningprediction.MiningPredictionHUD
 import yqloss.yqlossclientmixinkt.impl.module.sackcounter.SackCounterHUD
 import yqloss.yqlossclientmixinkt.impl.module.ycleapmenu.YCLeapMenuScreen
@@ -43,7 +42,6 @@ import yqloss.yqlossclientmixinkt.impl.option.language.LanguageManager
 import yqloss.yqlossclientmixinkt.impl.option.language.ResourceLanguageProvider
 import yqloss.yqlossclientmixinkt.impl.option.removeMod
 import yqloss.yqlossclientmixinkt.module.betterterminal.BetterTerminal
-import yqloss.yqlossclientmixinkt.module.channelmanager.ChannelManager
 import yqloss.yqlossclientmixinkt.module.corpsefinder.CorpseFinder
 import yqloss.yqlossclientmixinkt.module.cursor.Cursor
 import yqloss.yqlossclientmixinkt.module.hotkeys.Hotkeys
@@ -110,7 +108,7 @@ class YqlossClientMixin : YqlossClient {
         loadWindowsX64NativeAPI()
 
         Repository
-        ChannelManager
+//        ChannelManager
         RawInput
         SSMotionBlur
         Tweaks
@@ -131,7 +129,7 @@ class YqlossClientMixin : YqlossClient {
         MiningPredictionHUD
         SackCounterHUD
 
-        Gomoku
+//        Gomoku
 
 //        Extensions
 
