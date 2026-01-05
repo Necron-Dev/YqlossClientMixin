@@ -1,3 +1,34 @@
+# Repository Archived
+
+退游出号了，项目终止开发于 2.1.0 版本。
+
+不会做高版本移植，因为：
+* 我不会。我从来没有开发过高版本 Mod。我可以说对 1.8.9 的反编译源码了如指掌，但是对高版本一无所知
+* 我主玩地牢，在主玩 1.8.9 的前提下，个人感觉高版本手感远不如低版本，不喜欢用高版本玩地牢
+* 没有空余时间，没有开发动力，没有账号测试
+* OneConfig 库正在被重写，而本项目中包含许多关于 OneConfig 的黑魔法，重新适配略有难度
+* 如果放弃 OneConfig 的话有两条路可以走：自己加载 NanoVG 或者选择其他 2D 渲染库并重写 GUI，显然哪个都不容易
+* Minecraft 从低版本到高版本的改动也较大，尤其是对于本项目这种从来没有考虑过高版本适配的 Mod，需要调整很多东西才能适配
+* 已经有（或者马上就会有）更优秀的替代品
+
+Hypixel 是否会完全放弃 1.8.9 目前还不得而知。
+即使他们真的放弃了低版本，本项目也不会继续开发了，这个游戏我也不想玩了。
+
+### English Translated By Gemini-3 Flash Preview:
+
+I’m officially quitting Skyblock and selling my account. Development of this project has ceased as of **Version 2.1.0**.
+
+There are no plans to port the mod to modern versions (1.20+), for the following reasons:
+* **Lack of Experience:** I have never developed mods for modern versions. While I know the 1.8.9 decompiled source code inside out, I am completely unfamiliar with modern Minecraft’s architecture.
+* **Gameplay Feel:** I am a Dungeons main. Personally, I find the mechanics and "feel" of modern versions to be far inferior to 1.8.9, and I have no interest in playing Dungeons on newer versions.
+* **Lack of Resources:** I no longer have the time, the motivation, or even a test account to continue development.
+* **OneConfig Dependency:** OneConfig is currently being rewritten. This project relies on a lot of "black magic" (hacks) involving OneConfig that would be incredibly difficult to refactor for the new version.
+* **GUI Challenges:** If I were to drop OneConfig, I would either have to manually implement NanoVG or switch to a different 2D rendering library and rewrite the entire GUI—neither of which is a small feat.
+* **Structural Changes:** The jump from legacy to modern Minecraft involves massive changes. Since this mod was never designed with cross-version compatibility in mind, porting it would require a complete overhaul.
+* **Better Alternatives:** Superior alternatives already exist (or are about to be released).
+
+It remains to be seen whether Hypixel will eventually drop 1.8.9 support. However, even if they do, I will not be returning to this project. I'm moving on from the game for good.
+
 # Yqloss Client (Mixin)
 
 ![Yqloss Client (Mixin)](https://socialify.git.ci/Necron-Dev/YqlossClientMixin/image?description=1&font=Raleway&forks=1&issues=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2Fboopwdn%2FYqlossClientMixin%2Frefs%2Fheads%2Fmaster%2Ficon.svg&name=1&owner=1&pulls=1&stargazers=1&theme=Auto)
